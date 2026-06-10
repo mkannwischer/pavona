@@ -15,7 +15,7 @@
 
 .section .text.start
 
-#define STACK_SIZE 20000
+#define STACK_SIZE 6144
 #define CRYPTO_BYTES 32
 
 #if KYBER_K == 2
