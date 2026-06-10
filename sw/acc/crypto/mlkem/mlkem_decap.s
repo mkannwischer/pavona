@@ -91,10 +91,12 @@ indcpa_dec:
    *   STACK_DEC_B + K*512    : poly v
    *   STACK_DEC_B + (K+1)*512: secret key polyvec */
   #define STACK_DEC_M_ADDR     -32
+  #define STACK_DEC_SK_ADDR    -36
   #define STACK_DEC_B        -4640
 
   /* Store parameters to stack */
   sw a3, STACK_DEC_M_ADDR(fp)
+  sw a1, STACK_DEC_SK_ADDR(fp)
 
   /*** unpack_ciphertext ***/
   li  a2, STACK_DEC_B
@@ -104,6 +106,7 @@ indcpa_dec:
   jal x1, unpack_ciphertext
 
   /*** unpack_sk ***/
+  lw  a0, STACK_DEC_SK_ADDR(fp)
   jal x1, unpack_sk
 
   bn.wsrr   w16, 0x0 /* w16 = R | Q */
