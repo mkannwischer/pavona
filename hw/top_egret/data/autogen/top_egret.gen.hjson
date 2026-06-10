@@ -7174,7 +7174,7 @@
       type: acc
       param_decl:
       {
-        AccPQCEn: "0"
+        AccPQCEn: "1"
       }
       clock_srcs:
       {
@@ -7272,7 +7272,7 @@
           name: AccPQCEn
           desc: If enabled (1), vector ISA extension for PQC is enabled.
           type: bit
-          default: "0"
+          default: "1"
           local: "false"
           expose: "true"
           name_top: AccAccPQCEn

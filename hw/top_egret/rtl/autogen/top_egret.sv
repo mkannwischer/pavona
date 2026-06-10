@@ -82,7 +82,7 @@ module top_egret #(
   parameter acc_pkg::regfile_e AccRegFile = acc_pkg::RegFileFF,
   parameter bit SecAccMuteUrnd = 0,
   parameter bit SecAccSkipUrndReseedAtStart = 0,
-  parameter bit AccAccPQCEn = 0,
+  parameter bit AccAccPQCEn = 1,
   // parameters for aes
   parameter bit SecAesMasking = 1,
   parameter aes_pkg::sbox_impl_e SecAesSBoxImpl = aes_pkg::SBoxImplDom,

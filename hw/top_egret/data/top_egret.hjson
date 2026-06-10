@@ -880,7 +880,7 @@
     { name: "acc",
       type: "acc",
       param_decl: {
-        AccPQCEn: "0"
+        AccPQCEn: "1"
       }
       clock_srcs: {
         clk_i: {
