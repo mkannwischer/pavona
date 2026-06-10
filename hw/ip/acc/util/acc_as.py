@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # Copyright lowRISC contributors (OpenTitan project).
+# Copyright zeroRISC Inc.
 # Licensed under the Apache License, Version 2.0, see LICENSE for details.
 # SPDX-License-Identifier: Apache-2.0
 # Modified by Authors of "Towards ML-KEM & ML-DSA on OpenTitan" (https://eprint.iacr.org/2024/1192).
@@ -648,6 +649,12 @@ class Transformer:
         #    0: Waiting for statement
         #    1: Waiting for body of statement (directive or instruction)
         self.state = 0
+
+        # Emit instructions exactly as written: ACC does not support the
+        # relaxed sequences (e.g. an out-of-range conditional branch becoming
+        # an inverted branch plus jal) that the assembler may otherwise
+        # substitute. Out-of-range branches become errors instead.
+        out_handle.write('.option exact\n')
 
         # Write .file and .line directives to tell the assembler where the code
         # came from.
