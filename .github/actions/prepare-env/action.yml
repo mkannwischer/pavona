@@ -59,8 +59,14 @@ runs:
           sudo apt update --fix-missing
           grep '^[^#]' apt-requirements.txt | xargs sudo apt install -y
           sudo apt install wget
-          wget http://security.ubuntu.com/ubuntu/pool/universe/n/ncurses/libtinfo5_6.3-2ubuntu0.1_amd64.deb
-          sudo apt install ./libtinfo5_6.3-2ubuntu0.1_amd64.deb
+          ARCH="$(dpkg --print-architecture)"
+          if [ "$ARCH" = "amd64" ]; then
+            POOL_URL=http://security.ubuntu.com/ubuntu/pool/universe/n/ncurses
+          else
+            POOL_URL=http://ports.ubuntu.com/ubuntu-ports/pool/universe/n/ncurses
+          fi
+          wget "${POOL_URL}/libtinfo5_6.3-2ubuntu0.1_${ARCH}.deb"
+          sudo apt install "./libtinfo5_6.3-2ubuntu0.1_${ARCH}.deb"
         else
           # Install groupinstall groups
           grep '^["]' yum-requirements.txt | xargs sudo yum groupinstall -y
