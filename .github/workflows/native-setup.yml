@@ -1,0 +1,71 @@
+# Copyright zeroRISC Inc.
+# Licensed under the Apache License, Version 2.0, see LICENSE for details.
+# SPDX-License-Identifier: Apache-2.0
+
+name: Native setup
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - .github/workflows/native-setup.yml
+      - .github/actions/prepare-env/**
+      - apt-requirements.txt
+      - python-requirements.txt
+      - pyproject.toml
+      - MODULE.bazel
+      - MODULE.bazel.lock
+      - .bazelrc
+      - bazelisk.sh
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verilator_smoketest:
+    name: Verilator smoketest (${{ matrix.runner }})
+    if: ${{ !github.event.repository.private }}
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        runner:
+          - ubuntu-22.04
+          - ubuntu-24.04
+          - ubuntu-22.04-arm
+          - ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v4
+      - name: Free up disk space
+        run: |
+          df -h /
+          sudo rm -rf \
+            /usr/share/dotnet \
+            /usr/local/lib/android \
+            /opt/ghc \
+            /usr/local/.ghcup \
+            /opt/hostedtoolcache/CodeQL
+          sudo docker system prune --all --force > /dev/null || true
+          df -h /
+      - name: Prepare environment
+        uses: ./.github/actions/prepare-env
+      - name: Remove preinstalled Bazel
+        run: |
+          for tool in bazel bazelisk; do
+            path="$(command -v "$tool" || true)"
+            if [ -n "$path" ]; then
+              sudo rm "$path"
+            fi
+          done
+      - name: Run UART smoketest on Verilator
+        run: |
+          ./bazelisk.sh test \
+            --build_tests_only=true \
+            --test_timeout=2400,2400,4000,-1 \
+            --test_output=errors \
+            --//hw:make_options=-j,"$(nproc)" \
+            //sw/device/tests:uart_smoketest_sim_verilator
