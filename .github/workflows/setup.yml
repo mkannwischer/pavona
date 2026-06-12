@@ -55,6 +55,8 @@ jobs:
               sudo rm "$path"
             fi
           done
+      - name: Build device software
+        run: ./bazelisk.sh build //sw/device/examples/hello_world:hello_world_sim_dv
       - name: Run UART smoketest on Verilator
         run: |
           ./bazelisk.sh test \
@@ -86,7 +88,8 @@ jobs:
             -v "$PWD":/home/dev/src \
             --env DEV_UID="$(id -u)" --env DEV_GID="$(id -g)" \
             pavona:latest \
-            "cd src && ./bazelisk.sh test \
+            "cd src && ./bazelisk.sh build //sw/device/examples/hello_world:hello_world_sim_dv \
+            && ./bazelisk.sh test \
               --build_tests_only=true \
               --test_timeout=2400,2400,4000,-1 \
               --test_output=errors \
