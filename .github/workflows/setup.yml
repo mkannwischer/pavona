@@ -41,17 +41,6 @@ jobs:
           - ubuntu-24.04-arm
     steps:
       - uses: actions/checkout@v4
-      - name: Free up disk space
-        run: |
-          df -h /
-          sudo rm -rf \
-            /usr/share/dotnet \
-            /usr/local/lib/android \
-            /opt/ghc \
-            /usr/local/.ghcup \
-            /opt/hostedtoolcache/CodeQL
-          sudo docker system prune --all --force > /dev/null || true
-          df -h /
       - name: Prepare environment
         uses: ./.github/actions/prepare-env
       - name: Remove preinstalled Bazel
@@ -70,6 +59,8 @@ jobs:
             --test_output=errors \
             --//hw:make_options=-j,"$(nproc)" \
             //sw/device/tests:uart_smoketest_sim_verilator
+      - name: Run ACC ISS test
+        run: make -C hw/ip/acc/dv/accsim test
 
   docker_verilator_smoketest:
     name: Docker Verilator smoketest (${{ matrix.runner }})
@@ -83,20 +74,9 @@ jobs:
           - ubuntu-24.04-arm
     steps:
       - uses: actions/checkout@v4
-      - name: Free up disk space
-        run: |
-          df -h /
-          sudo rm -rf \
-            /usr/share/dotnet \
-            /usr/local/lib/android \
-            /opt/ghc \
-            /usr/local/.ghcup \
-            /opt/hostedtoolcache/CodeQL
-          sudo docker system prune --all --force > /dev/null || true
-          df -h /
       - name: Build container
         run: docker build -t pavona -f util/container/Dockerfile .
-      - name: Run UART smoketest on Verilator
+      - name: Run UART smoketest on Verilator and ACC ISS test
         run: |
           docker run \
             -v "$PWD":/home/dev/src \
@@ -107,4 +87,5 @@ jobs:
               --test_timeout=2400,2400,4000,-1 \
               --test_output=errors \
               --//hw:make_options=-j,\$(nproc) \
-              //sw/device/tests:uart_smoketest_sim_verilator"
+              //sw/device/tests:uart_smoketest_sim_verilator \
+            && make -C hw/ip/acc/dv/accsim test"
