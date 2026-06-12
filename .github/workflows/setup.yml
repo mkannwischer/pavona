@@ -5,6 +5,8 @@
 name: Setup
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '0 3 * * *'
   pull_request:
     paths:
       - .github/workflows/setup.yml
