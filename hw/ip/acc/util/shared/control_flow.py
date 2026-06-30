@@ -482,6 +482,13 @@ def _fix_cycles(program: ACCProgram, graph: ControlGraph) -> None:
     Modifies graph in place.
     '''
     _label_cycles(program, graph, graph.start, set())
+    # A cycle start can have its own CodeSection that the traversal above never
+    # entered: that section is reachable only through the Cycle edges the
+    # traversal just created, so its own back-edges (e.g. a branch that loops
+    # straight back to the section start) are left unlabeled. Label each cycle
+    # start's section directly so those internal cycles are marked too.
+    for cycle_start in graph.get_cycle_starts():
+        _label_cycles(program, graph, cycle_start, set())
     cycle_start_pcs = graph.get_cycle_starts()
     # The new_entries dictionary will have the same structure as graph.graph.
     new_entries = {}
