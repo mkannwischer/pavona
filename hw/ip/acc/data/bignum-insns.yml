@@ -1134,7 +1134,7 @@
     - *data-addr
   iflow:
     - to: [wrd]
-      from: [dmem]
+      from: [dmem-grs-32]
     - test:
         - grs_inc == 1
       to: [grs]
@@ -1191,7 +1191,7 @@
     target: [offset, grs]
     bytes: 32
   iflow:
-    - to: [dmem]
+    - to: [dmem-grs-32]
       from: [wrs]
     - test:
         - grs_inc == 1
