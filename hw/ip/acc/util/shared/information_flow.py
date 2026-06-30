@@ -541,6 +541,12 @@ class InformationFlowGraph:
             if sink.name == 'x1':
                 # Not real registers or flags, ignore
                 continue
+            elif sink.name == 'dmem' or sink.name.startswith('dmem:'):
+                # Memory is not a register; do not list it as clobbered.
+                continue
+            elif sink.name.startswith('kmac'):
+                # KMAC peripheral interface, not a register; do not list it.
+                continue
             elif sink.name.startswith('w') and sink.name[1:].isdigit():
                 wregs.append(int(sink.name[1:]))
             elif sink.name.startswith('x') and sink.name[1:].isdigit():
