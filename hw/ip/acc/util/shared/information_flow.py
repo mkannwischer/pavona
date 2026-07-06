@@ -90,6 +90,10 @@ class InformationFlowNode:
     def __hash__(self) -> int:
         return hash(self.name)
 
+    def __deepcopy__(self, memo: Optional[Dict[int, Any]]) -> 'InformationFlowNode':
+        # Immutable value object; a deep copy can share the same instance.
+        return self
+
 
 class DmemInformationFlowNode(InformationFlowNode):
     '''Represents a memory range.'''
