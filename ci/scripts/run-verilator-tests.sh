@@ -7,12 +7,16 @@ set -e
 
 suffix="sim_verilator"
 defines=()
+slow=false
 
 for arg in "$@"; do
     case "${arg}" in
         --pqc)
             suffix="sim_verilator_pqc"
             defines=(--define=acc_has_pqc=true)
+            ;;
+        --slow)
+            slow=true
             ;;
         *)
             echo "Unknown argument: ${arg}" >&2
@@ -21,24 +25,31 @@ for arg in "$@"; do
     esac
 done
 
-targets=(
-    "//sw/device/tests:aes_smoketest_${suffix}"
-    "//sw/device/tests:uart_smoketest_${suffix}"
-    "//sw/device/tests:crt_test_${suffix}"
-    "//sw/device/tests:acc_randomness_test_${suffix}"
-    "//sw/device/tests:acc_irq_test_${suffix}"
-    "//sw/device/tests:kmac_mode_cshake_test_${suffix}"
-    "//sw/device/tests:kmac_mode_kmac_test_${suffix}"
-    "//sw/device/tests:flash_ctrl_test_${suffix}"
-    "//sw/device/tests:usbdev_test_${suffix}"
-    "//sw/device/silicon_creator/lib/drivers:hmac_functest_${suffix}"
-    "//sw/device/silicon_creator/lib/drivers:uart_functest_${suffix}"
-    "//sw/device/silicon_creator/lib/drivers:retention_sram_functest_${suffix}"
-    "//sw/device/silicon_creator/lib/drivers:alert_functest_${suffix}"
-    "//sw/device/silicon_creator/lib/drivers:watchdog_functest_${suffix}"
-    "//sw/device/silicon_creator/lib:irq_asm_functest_${suffix}"
-    "//sw/device/silicon_creator/rom:rom_epmp_test_${suffix}"
-)
+if [[ "${slow}" == "true" ]]; then
+    targets=(
+        "//sw/device/tests/crypto:mlkem_functest_${suffix}"
+        "//sw/device/tests/crypto:mldsa_functest_${suffix}"
+    )
+else
+    targets=(
+        "//sw/device/tests:aes_smoketest_${suffix}"
+        "//sw/device/tests:uart_smoketest_${suffix}"
+        "//sw/device/tests:crt_test_${suffix}"
+        "//sw/device/tests:acc_randomness_test_${suffix}"
+        "//sw/device/tests:acc_irq_test_${suffix}"
+        "//sw/device/tests:kmac_mode_cshake_test_${suffix}"
+        "//sw/device/tests:kmac_mode_kmac_test_${suffix}"
+        "//sw/device/tests:flash_ctrl_test_${suffix}"
+        "//sw/device/tests:usbdev_test_${suffix}"
+        "//sw/device/silicon_creator/lib/drivers:hmac_functest_${suffix}"
+        "//sw/device/silicon_creator/lib/drivers:uart_functest_${suffix}"
+        "//sw/device/silicon_creator/lib/drivers:retention_sram_functest_${suffix}"
+        "//sw/device/silicon_creator/lib/drivers:alert_functest_${suffix}"
+        "//sw/device/silicon_creator/lib/drivers:watchdog_functest_${suffix}"
+        "//sw/device/silicon_creator/lib:irq_asm_functest_${suffix}"
+        "//sw/device/silicon_creator/rom:rom_epmp_test_${suffix}"
+    )
+fi
 
 ./bazelisk.sh test \
     --build_tests_only=true \
