@@ -287,7 +287,6 @@ jobs:
       - name: Run fast Verilator tests
         run: ./ci/scripts/run-verilator-tests.sh
       - name: Run slow Verilator tests
-        if: ${{ github.event_name != 'pull_request' }}
         run: ./ci/scripts/run-verilator-tests.sh --slow
       - name: Publish Bazel test results
         uses: ./.github/actions/publish-bazel-test-results
@@ -308,7 +307,6 @@ jobs:
       - name: Run fast Verilator tests
         run: ./ci/scripts/run-verilator-tests.sh --pqc
       - name: Run slow Verilator tests
-        if: ${{ github.event_name != 'pull_request' }}
         run: ./ci/scripts/run-verilator-tests.sh --pqc --slow
       - name: Publish Bazel test results
         uses: ./.github/actions/publish-bazel-test-results
