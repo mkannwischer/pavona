@@ -74,5 +74,5 @@ SECTIONS
     .scratchpad ORIGIN(dmem_scratch) (NOLOAD) : ALIGN(32)
     {
         *(.scratch*)
-    } >dmem_scratch AT>dmem_load
+    } >dmem_scratch
 }

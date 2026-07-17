@@ -75,6 +75,11 @@ def _get_elf_mem_data(elf_file: ELFFile,
         if seg_type != 'PT_LOAD':
             continue
 
+        # Skip segments with no file-backed content (pure NOLOAD/BSS, e.g. the
+        # DMEM scratchpad).
+        if segment['p_filesz'] == 0:
+            continue
+
         seg_lma = segment['p_paddr']
         seg_top = seg_lma + segment['p_memsz']
 
