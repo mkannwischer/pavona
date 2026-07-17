@@ -11,14 +11,23 @@
  * from one of the mldsa_params_{44,65,87} tables below.
  */
 
+#ifdef HARDENED
+#define NSHARES 2
+#else
+#define NSHARES 1
+#endif
+
 /* Register aliases */
 .equ x1, ra
 .equ x2, sp
 .equ x5, t0
 .equ x6, t1
+.equ x7, t2
 .equ x10, a0
 .equ x11, a1
 .equ x12, a2
+.equ x28, t3
+.equ x29, t4
 .equ w31, bn0
 
 /* Offsets into mldsa_params (see mldsa_consts.s). */
@@ -123,6 +132,9 @@ _mldsa_keygen_87:
     la   a0, mldsa_params_87
     jal  x1, _setup_params
 _mldsa_keygen_common:
+#ifdef HARDENED
+    jal  x1, _setup_masked_vectors
+#endif
     jal  x1, crypto_sign_keypair
     ecall
 
@@ -138,6 +150,9 @@ _mldsa_sign_87:
     la   a0, mldsa_params_87
     jal  x1, _setup_params
 _mldsa_sign_common:
+#ifdef HARDENED
+    jal  x1, _setup_masked_vectors
+#endif
     la   a0, sig
     jal  x1, crypto_sign_signature_internal
     ecall
@@ -154,6 +169,10 @@ _mldsa_verify_87:
     la   a0, mldsa_params_87
     jal  x1, _setup_params
 _mldsa_verify_common:
+#ifdef HARDENED
+    /* Populate the broadcast vectors that polyz_unpack/poly_use_hint read. */
+    jal  x1, _setup_masked_vectors
+#endif
     la   a0, sig
     jal  x1, crypto_sign_verify_internal
     ecall
@@ -173,6 +192,7 @@ _setup_params:
     bn.lid t0, 32(a0)
     bn.sid t0, 32(a1)
     ret
+
 
 .section .data
 
@@ -230,101 +250,4 @@ mldsa_params_87:
     .word 4627
     .zero 16
 
-.bss
-
-/* Operation mode (one of MODE_*). */
-.globl mode
-.balign 4
-mode:
-    .zero 4
-
-/* Keygen seed (32 bytes). */
-.globl zeta
-.balign 32
-zeta:
-    .zero 32
-
-/* Public key (worst-case ML-DSA-87 = 2592 bytes). */
-.globl pk
-.balign 32
-pk:
-    .zero 2592
-
-/* Secret key (sk) for keypair/sign and the packed z polyvec (z_polyvec)
- * for verify share storage: sk is unused during verify and z_polyvec is
- * unused during keypair/sign. Sized for the larger consumer (z_polyvec =
- * L*1024 = 7168 bytes for ML-DSA-87); sk uses only the first 4896 bytes. */
-.globl sk
-.globl z_polyvec
-.balign 32
-sk:
-z_polyvec:
-    .zero 7168
-
-/* Signature (worst-case ML-DSA-87 = 4627 bytes). */
-.globl sig
-.balign 32
-sig:
-    .zero 4627
-
-/* External mu (64 bytes), computed by the caller for sign and verify. */
-.globl mu
-.balign 32
-mu:
-    .zero 64
-
-/* Hedge randomness for signing (32 bytes). */
-.globl rnd
-.balign 32
-rnd:
-    .zero 32
-
-/* Verify result (HARDENED_BOOL_TRUE if valid, HARDENED_BOOL_FALSE otherwise). */
-.globl result
-.balign 4
-result:
-    .zero 4
-
-/* Shared kernel scratch. Buffers that are only live within a single
- * operation are overlaid by aliasing label names to the same storage. */
-
-.balign 32
-.globl tmp_poly
-tmp_poly:
-    .zero 1024
-
-.balign 32
-.globl c_poly
-.globl y_poly
-.globl s1_poly
-c_poly:
-y_poly:
-s1_poly:
-    .zero 1024
-
-.balign 32
-.globl rhoprime
-.globl ctilde
-rhoprime:
-ctilde:
-    .zero 64
-
-.balign 4
-.globl dptr_sig
-dptr_sig:
-    .zero 4
-
-.balign 32
-.globl w1_repvec
-w1_repvec:
-    .zero 256
-
-/* keypair: t_polyvec; sign: w0_polyvec; verify: w1_polyvec. */
-.balign 32
-.globl t_polyvec
-.globl w0_polyvec
-.globl w1_polyvec
-t_polyvec:
-w0_polyvec:
-w1_polyvec:
-    .zero 8192
+/* The .bss DMEM layout lives in mldsa_dmem.s. */

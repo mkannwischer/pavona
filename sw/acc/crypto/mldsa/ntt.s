@@ -20,7 +20,8 @@
  * Flags: Clobbers FG0, has no meaning beyond the scope of this subroutine.
  *
  * @param[in]  x10: dptr_input, dmem pointer to first word of input polynomial
- * @param[in]  w31: all-zero
+ * @param[in]  x11: (HARDENED only) dmem pointer to the forward twiddle table
+ * @param[in]  w31: all-zero register
  * @param[out] x12: dmem pointer to result
  *
  * clobbered registers: x5-x7, x10-x12, w0-w15, w17-w19, w24-w30
@@ -29,7 +30,10 @@
 .type ntt, @function
 ntt:
     /* Load twiddle factors. */
+#ifndef HARDENED
     la   x11, twiddles_fwd
+#endif
+    /* HARDENED: x11 = forward twiddle table, staged by the caller. */
 
     /* Set up constants for input/twiddle factors */
     li x6, 17
@@ -40,7 +44,7 @@ ntt:
     bn.lid x7, 32(x11) /* w18 */
     bn.mov w19, w17 /* Save first batch of Twiddle factors */
 
-    LOOPI 2, 294
+    loopi 2, 294
         /* Load input data */
         addi   x5, x0, 0
         bn.lid x5++, 0(x10)
@@ -392,6 +396,7 @@ ntt:
 
         addi x10, x10, 32
         addi x12, x12, 32
+    endloop
 
     /* Restore input pointer */
     addi x10, x10, -64
@@ -402,7 +407,7 @@ ntt:
     addi x11, x11, 64
 
     /* w16--w23 are used for the twiddle factors on layers 5--8 */
-    LOOPI 2, 403
+    loopi 2, 403
         /* Load input data */
         addi   x5, x0, 0
         bn.lid x5++, 0(x12)
@@ -890,6 +895,7 @@ ntt:
 
         addi x10, x10, 512
         addi x12, x12, 512
+    endloop
 
     /* Zero w31 again */
     bn.xor w31, w31, w31

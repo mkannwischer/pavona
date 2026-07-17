@@ -210,12 +210,23 @@ _ctilde_unpack_done:
     bn.shv.8S mod_x2, w16 << 1 /* mod_x2 = 2*R | 2*Q */
 
     bn.wsrw 0x0, mod_x2 /* MOD = 2*R | 2*Q */
+#ifdef HARDENED
+    /* Stage the forward twiddle table once.  Nothing in verify clobbers
+     * scratch, so it stays resident for NTT(z), NTT(c) and every per-row
+     * ntt(t1). */
+    jal  x1, gen_twiddles_fwd
+#endif
     /* NTT(z) */
     la   a0, z_polyvec
     addi a2, a0, 0 /* inplace */
 
     lw t0, MLDSA_PARAM_L_OFFSET(s11)
+#ifdef HARDENED
+    LOOP t0, 4
+        la   x11, scratch
+#else
     LOOP t0, 2
+#endif
         jal  x1, ntt
         addi a1, a1, -1024
 
@@ -242,6 +253,9 @@ _ctilde_unpack_done:
     /* NTT(c) */
     la   a0, c_poly
     addi a2, a0, 0 /* inplace */
+#ifdef HARDENED
+    la   x11, scratch
+#endif
     jal  x1, ntt
 
 
@@ -351,8 +365,24 @@ _ctilde_unpack_done:
     la  s1, w1_polyvec
     la  s3, tmp_poly
     la  s4, c_poly
+#ifdef HARDENED
+    /* z_polyvec is dead after the A*z matmul: copy the resident forward table
+     * there, then turn scratch into the inverse table.  The per-row loop runs
+     * ntt(t1) from z_polyvec and intt from scratch with no regeneration. */
+    la     t0, scratch
+    la     t1, z_polyvec
+    li     t2, 0
+    LOOPI 32, 2
+        bn.lid t2, 0(t0++)
+        bn.sid t2, 0(t1++)
+    jal    x1, _inv_transform
+#endif
     lw  a4, MLDSA_PARAM_K_OFFSET(s11)
+#ifdef HARDENED
+    LOOP a4, 49
+#else
     LOOP a4, 45
+#endif
         /* Unpack the next polynomial from t1 and store it in temp buffer. */
         addi a0, s3, 0
         addi a1, s6, 0
@@ -367,6 +397,9 @@ _ctilde_unpack_done:
         /* Compute ntt(t1) in place. */
         addi a0, s3, 0
         addi a2, s3, 0
+#ifdef HARDENED
+        la   x11, z_polyvec
+#endif
         jal  x1, ntt
         /* Compute cp * t1, storing the result in t1. */
         addi a0, s4, 0
@@ -380,6 +413,9 @@ _ctilde_unpack_done:
         jal x1, poly_sub
         /* Inverse NTT on w_approx (stored in w1 buffer). */
         addi a0, s1, 0
+#ifdef HARDENED
+        la   x11, scratch
+#endif
         jal  x1, intt
         /* Decode the next polynomial from the hint and update the error register. */
         addi a0, s3, 0

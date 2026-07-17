@@ -41,6 +41,9 @@ montg_R:
   .word 0xfc7fdfff
   .word 0xfc7fdfff
 
+/* Hardened builds regenerate the twiddles into scratch at runtime (see
+ * gen_twiddles.s), so the 1 KiB table is omitted. */
+#ifndef HARDENED
 .globl twiddles_fwd
 twiddles_fwd:
   /* Layers 1-4 */
@@ -309,276 +312,7 @@ twiddles_fwd:
   .word 0x0049c5aa
   .word 0x006b16e0
   .word 0x001e29ce
-
-.globl twiddles_inv
-twiddles_inv:
- /* Layer 8 - 1 */
-    .word 0x0061b633
-    .word 0x0014c921
-    .word 0x00361a57
-    .word 0x0022e2f7
-    .word 0x003a8025
-    .word 0x0062b999
-    .word 0x0078abf3
-    .word 0x007bc241
-    .word 0x000ce94a
-    .word 0x0000bcb2
-    .word 0x006743d7
-    .word 0x00066c23
-    .word 0x0003fa26
-    .word 0x001b8352
-    .word 0x0065aa1a
-    .word 0x0044deec
-    .word 0x006a8199
-    .word 0x004410d5
-    .word 0x000ee7fb
-    .word 0x00221e51
-    .word 0x0010d9cd
-    .word 0x00659331
-    .word 0x000ee40c
-    .word 0x004a1ac8
-    .word 0x0043ca37
-    .word 0x000875b0
-    .word 0x007d136e
-    .word 0x002cd89c
-    .word 0x00197168
-    .word 0x000682bb
-    .word 0x005e1b0a
-    .word 0x002e5ec4
-    .word 0x001b73c3
-    .word 0x0051e290
-    .word 0x00126c59
-    .word 0x00028371
-    .word 0x0039a1e1
-    .word 0x001c2ea9
-    .word 0x004be732
-    .word 0x0014fa53
-    .word 0x00385e99
-    .word 0x006735f9
-    .word 0x007d0b46
-    .word 0x005a6c4a
-    .word 0x0076cf29
-    .word 0x00198008
-    .word 0x005dc219
-    .word 0x0026da88
-    .word 0x0066a867
-    .word 0x007d63e5
-    .word 0x004c7769
-    .word 0x005ac276
-    .word 0x0038d3ee
-    .word 0x002b35f4
-    .word 0x0074041a
-    .word 0x00629f68
-    .word 0x0073835c
-    .word 0x00309342
-    .word 0x00620269
-    .word 0x001eb9a8
-    .word 0x00276ee5
-    .word 0x000846cc
-    .word 0x0068fbfc
-    .word 0x001386ad
-    /* Layer 7 - 1 */
-    .word 0x00454828
-    .word 0x003b3864
-    .word 0x0015f7fe
-    .word 0x00182f20
-    .word 0x006b686f
-    .word 0x0002b520
-    .word 0x001c400a
-    .word 0x003637f8
-    .word 0x00375fa9
-    .word 0x002e115e
-    .word 0x000c66bc
-    .word 0x006c41dc
-    .word 0x006bccfc
-    .word 0x0024c36d
-    .word 0x004fa93f
-    .word 0x007cfb95
-    .word 0x001417f8
-    .word 0x00033821
-    .word 0x00319640
-    .word 0x00002182
-    .word 0x004378a7
-    .word 0x0010c942
-    .word 0x00509a79
-    .word 0x007bd511
-    .word 0x00744760
-    .word 0x005b6a95
-    .word 0x0066a6b9
-    .word 0x0038d436
-    .word 0x007212bd
-    .word 0x007f3301
-    .word 0x00781bea
-    .word 0x00330417
-    /* Layer 6 - 1 */
-    .word 0x002ab0d3
-    .word 0x006042ad
-    .word 0x002703d0
-    .word 0x00445acd
-    .word 0x0044a7ae
-    .word 0x0071508b
-    .word 0x0077c467
-    .word 0x00737c59
-    .word 0x00476c75
-    .word 0x00186ba4
-    .word 0x0020a9e9
-    .word 0x004a5bc2
-    .word 0x003a50a7
-    .word 0x004a61e3
-    .word 0x0019152a
-    .word 0x0019edc3
-    /* Layer 5 - 1 */
-    .word 0x007b9a3c
-    .word 0x0042ae00
-    .word 0x00004bde
-    .word 0x00650fcc
-    .word 0x00320368
-    .word 0x00155b09
-    .word 0x003ae519
-    .word 0x0020522a
-    /* Layer 8 - 2 */
-    .word 0x001df292
-    .word 0x0015d2d1
-    .word 0x0010095a
-    .word 0x00362470
-    .word 0x006785bb
-    .word 0x006c9290
-    .word 0x007cc6dd
-    .word 0x00412fe6
-    .word 0x004d6d7e
-    .word 0x0032a1c2
-    .word 0x0062d4b6
-    .word 0x0057a770
-    .word 0x0059efb0
-    .word 0x002785c6
-    .word 0x0065633a
-    .word 0x002532bf
-    .word 0x006bd93a
-    .word 0x006cfee6
-    .word 0x00635ac2
-    .word 0x006ccb43
-    .word 0x006cd67d
-    .word 0x0056ce68
-    .word 0x0032ffc5
-    .word 0x007b7ef5
-    .word 0x0006e21c
-    .word 0x00145742
-    .word 0x002daf77
-    .word 0x00397ae8
-    .word 0x0041fee5
-    .word 0x0054811c
-    .word 0x004b6d1a
-    .word 0x007aa6e8
-    .word 0x0036de3e
-    .word 0x004ef07b
-    .word 0x0007f904
-    .word 0x007360a7
-    .word 0x0030ba22
-    .word 0x004a44a4
-    .word 0x00365bde
-    .word 0x00459e09
-    .word 0x000bba6e
-    .word 0x0060df7d
-    .word 0x0000a8fc
-    .word 0x0071ff1b
-    .word 0x001244aa
-    .word 0x0012db10
-    .word 0x00255461
-    .word 0x005c872d
-    .word 0x0008032a
-    .word 0x002fa50a
-    .word 0x00189d76
-    .word 0x006381e7
-    .word 0x00395d04
-    .word 0x005aba7a
-    .word 0x005da206
-    .word 0x004be0a7
-    .word 0x00364683
-    .word 0x0009ffdf
-    .word 0x0078507e
-    .word 0x007221a3
-    .word 0x0035b760
-    .word 0x007bcd0c
-    .word 0x0033008e
-    .word 0x005ff56e
-    /* Layer 7 - 2 */
-    .word 0x0015d39e
-    .word 0x006b4a2d
-    .word 0x0013f609
-    .word 0x0012beed
-    .word 0x0025cbf7
-    .word 0x00385bb5
-    .word 0x00567162
-    .word 0x000f017b
-    .word 0x00639a9e
-    .word 0x0005d423
-    .word 0x000059c5
-    .word 0x000a3d7e
-    .word 0x00064593
-    .word 0x002d485d
-    .word 0x005f19c9
-    .word 0x004bcf0f
-    .word 0x007df037
-    .word 0x00302d52
-    .word 0x000f430a
-    .word 0x0062488f
-    .word 0x00183045
-    .word 0x004ad613
-    .word 0x002e67e7
-    .word 0x0017537f
-    .word 0x00376f20
-    .word 0x0030ad80
-    .word 0x003e4f8e
-    .word 0x0013308b
-    .word 0x005eaa3a
-    .word 0x001629a3
-    .word 0x00381e31
-    .word 0x003bf91b
-    /* Layer 6 - 2 */
-    .word 0x00083aa3
-    .word 0x005c0965
-    .word 0x000495b3
-    .word 0x0049dc01
-    .word 0x002bc1bf
-    .word 0x0049556b
-    .word 0x002e7184
-    .word 0x003aea7b
-    .word 0x00442152
-    .word 0x0026b82c
-    .word 0x0036cfd4
-    .word 0x00195afd
-    .word 0x004a013c
-    .word 0x0050eb34
-    .word 0x007e69e1
-    .word 0x0056959a
-    /* Layer 5 - 2 */
-    .word 0x00202c85
-    .word 0x0057e699
-    .word 0x00111560
-    .word 0x00086270
-    .word 0x00492879
-    .word 0x00107a5c
-    .word 0x00703f91
-    .word 0x005649a9
-    /* Layer 1--4 */
-    .word 0x0056fada
-    .word 0x005065b8
-    .word 0x002c04f7
-    .word 0x0050458c
-    .word 0x001feb81
-    .word 0x00057b53
-    .word 0x005bf6d6
-    .word 0x006401d6
-    .word 0x0078c1dd
-    .word 0x000d5ed8
-    .word 0x000bdee8
-    .word 0x007c41bd
-    .word 0x0007eafd
-    .word 0x0027cefe
-    /* including ninv */
-    .word 0x003caa21
-    /* ninv */
-    .word 0x0000a3fa
+#endif
 
 .balign 32
 .globl reduce32_const
@@ -592,6 +326,8 @@ reduce32_const:
     .word 0x1
     .word 0x1
 
+/* Unused in hardened builds; poly_power2round uses the preprocessed form. */
+#ifndef HARDENED
 .balign 32
 .globl power2round_D
 power2round_D:
@@ -603,6 +339,7 @@ power2round_D:
     .word 0xd
     .word 0xd
     .word 0xd
+#endif
 
 .balign 32
 .globl power2round_D_preprocessed
@@ -616,6 +353,7 @@ power2round_D_preprocessed:
     .word 0xfff
     .word 0xfff
 
+#ifndef HARDENED
 .balign 32
 .globl eta_2
 eta_2:
@@ -640,6 +378,7 @@ eta_4:
     .word 4
     .word 4
 
+#endif
 .balign 32
 .globl polyt0_pack_const
 polyt0_pack_const:
@@ -676,6 +415,10 @@ decompose_const_32:
     .word 1025
     .word 1025
 
+/* In hardened builds polyz_pack/poly_use_hint use the runtime-broadcast
+ * gamma1_vec_const/gamma2_vec_const; the per-K tables are aliased to those in
+ * run_mldsa.s, so the static tables are omitted here. */
+#ifndef HARDENED
 .balign 32
 .globl gamma1_vec_const_17
 gamma1_vec_const_17:
@@ -723,6 +466,7 @@ gamma2_vec_const_32:
     .word 261888
     .word 261888
     .word 261888
+#endif
 
 .balign 32
 .globl qm1half_const
@@ -772,6 +516,7 @@ decompose_43_const_32:
     .word 0x000000f
     .word 0x000000f
 
+#ifndef HARDENED
 .balign 32
 .globl polyeta_unpack_mask_eta_2
 polyeta_unpack_mask_eta_2:
@@ -796,6 +541,7 @@ polyeta_unpack_mask_eta_4:
     .word 0x0f
     .word 0x0f
 
+#endif
 .balign 32
 .globl polyt1_unpack_mask
 polyt1_unpack_mask:
@@ -820,6 +566,8 @@ polyt0_unpack_mask:
     .word 0x1fff
     .word 0x1fff
 
+/* Aliased to polyz_unpack_mask in run_mldsa.s for hardened builds. */
+#ifndef HARDENED
 .balign 32
 .globl polyz_unpack_mask_17
 polyz_unpack_mask_17:
@@ -843,7 +591,9 @@ polyz_unpack_mask_19:
     .word 0xfffff
     .word 0xfffff
     .word 0xfffff
+#endif
 
+#ifndef HARDENED
 .balign 32
 .globl poly_uniform_eta_205
 poly_uniform_eta_205:
@@ -880,6 +630,7 @@ poly_uniform_eta_5:
     .word 5
     .word 5
 
+#endif
 .globl poly_wdr2gpr
 poly_wdr2gpr:
     .zero 32

@@ -32,7 +32,7 @@ poly_pointwise:
     /* Set up constants for input/state */
     li x4, 1
 
-    LOOPI 32, 9
+    loopi 32, 9
         bn.lid x0, 0(x10++)
         bn.lid x4, 0(x11++)
 
@@ -44,6 +44,7 @@ poly_pointwise:
         bn.mulv.l.8S.odd.acc.hi  w0, w0, sw0.0
 
         bn.sid x0, 0(x12++)
+    endloop
 
     ret
 
@@ -71,7 +72,7 @@ poly_pointwise_acc:
     /* Set up constants for input/state */
     li x4, 1
 
-    LOOPI 32, 11
+    loopi 32, 11
         bn.lid x0, 0(x10++)
         bn.lid x4, 0(x11++)
 
@@ -87,5 +88,6 @@ poly_pointwise_acc:
         bn.addvm.8S w0, w0, w1
 
         bn.sid x0, 0(x12++)
+    endloop
 
     ret

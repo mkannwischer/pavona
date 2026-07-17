@@ -546,6 +546,7 @@ acc_binary(
     ],
     deps = [
         "//sw/acc/crypto/mldsa:consts",
+        "//sw/acc/crypto/mldsa:dmem_unprotected",
         "//sw/acc/crypto/mldsa:intt",
         "//sw/acc/crypto/mldsa:keypair",
         "//sw/acc/crypto/mldsa:kmac_send_msg",
@@ -555,7 +556,35 @@ acc_binary(
         "//sw/acc/crypto/mldsa:poly_pointwise",
         "//sw/acc/crypto/mldsa:poly_sub",
         "//sw/acc/crypto/mldsa:rounding",
+        "//sw/acc/crypto/mldsa:scratch",
         "//sw/acc/crypto/mldsa:sign",
         "//sw/acc/crypto/mldsa:verify",
+    ],
+)
+
+acc_binary(
+    name = "run_mldsa_hardened",
+    srcs = [
+        "run_mldsa.s",
+    ],
+    copts = ["-DHARDENED"],
+    deps = [
+        "//sw/acc/crypto/mldsa:consts_hardened",
+        "//sw/acc/crypto/mldsa:dmem_hardened",
+        "//sw/acc/crypto/mldsa:gadgets",
+        "//sw/acc/crypto/mldsa:gen_twiddles",
+        "//sw/acc/crypto/mldsa:intt_hardened",
+        "//sw/acc/crypto/mldsa:keypair_hardened",
+        "//sw/acc/crypto/mldsa:kmac_send_msg",
+        "//sw/acc/crypto/mldsa:masked_setup",
+        "//sw/acc/crypto/mldsa:ntt_hardened",
+        "//sw/acc/crypto/mldsa:poly_add",
+        "//sw/acc/crypto/mldsa:poly_hardened",
+        "//sw/acc/crypto/mldsa:poly_pointwise",
+        "//sw/acc/crypto/mldsa:poly_sub",
+        "//sw/acc/crypto/mldsa:rounding",
+        "//sw/acc/crypto/mldsa:scratch",
+        "//sw/acc/crypto/mldsa:sign_hardened",
+        "//sw/acc/crypto/mldsa:verify_hardened",
     ],
 )
