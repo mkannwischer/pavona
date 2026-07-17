@@ -20,7 +20,7 @@
  * Flags: -
  *
  * @param[in]  x10: dptr_input, dmem pointer to first word of input polynomial
- * @param[in]  w31: all-zero
+ * @param[in]  w31: all-zero register
  * @param[out] x10: dmem pointer to result
  *
  * clobbered registers: x5-x7, x10-x12, w0-w15, w17-w21, w24-w30
@@ -29,8 +29,51 @@
 .type intt, @function
 intt:
 
+#ifndef HARDENED
+    /* Derive inverse twiddles in scratch (inv[i] = q - fwd[255-i]).
+     * Needs MOD low32 = q, so borrow w16 (= R | Q); preserves w22/w23. */
+    bn.mov  w24, w22
+    bn.mov  w25, w23
+    bn.wsrr w26, 0x0             /* save MOD = 2*R | 2*Q */
+    bn.wsrw 0x0, w16             /* MOD = R | Q (low32 = q) */
+    bn.xor  w23, w23, w23        /* minuend 0 for modular negate */
+    la      x12, twiddles_fwd
+    addi    x12, x12, 32*31      /* src = &fwd[248] */
+    la      x11, scratch         /* dst = &inv[0] */
+    li      x5, 20               /* WDR index w20 */
+    loopi 30, 9
+        bn.lid      x5, 0(x12)
+        addi        x12, x12, -32
+        bn.rshi     w21, w20, w20 >> 32
+        bn.trn1.8S  w21, w21, w20
+        bn.rshi     w22, w21, w21 >> 64
+        bn.trn1.4D  w22, w22, w21
+        bn.rshi     w20, w22, w22 >> 128
+        bn.subvm.8S w20, w23, w20
+        bn.sid      x5, 0(x11++)
+    endloop
+    la   x6, twiddles_fwd
+    addi x6, x6, 14*4            /* &fwd[14] */
+    li   x5, 0x7fe001            /* q */
+    loopi 14, 5
+        lw   x7, 0(x6)
+        sub  x7, x5, x7
+        sw   x7, 0(x11)
+        addi x11, x11, 4
+        addi x6, x6, -4
+    endloop
+    li   x7, 0x003caa21          /* inv[254] = ninv * fwd[1] (Mont) */
+    sw   x7, 0(x11)
+    li   x7, 0x0000a3fa          /* inv[255] = ninv (Mont) */
+    sw   x7, 4(x11)
+    bn.wsrw 0x0, w26             /* restore MOD = 2*R | 2*Q */
+    bn.mov  w23, w25
+    bn.mov  w22, w24
+
     /* Load twiddle factors. */
-    la   x11, twiddles_inv
+    la   x11, scratch
+#endif
+    /* HARDENED: x11 = inverse twiddle table, staged by the caller. */
 
     /* Empty w20 */
     bn.xor w20, w20, w20
@@ -39,7 +82,7 @@ intt:
     li x6, 17
     li x7, 18
 
-    LOOPI 2, 402
+    loopi 2, 402
         /* Load input data */
         addi   x5, x0, 0
         bn.lid x5++, 0(x10)
@@ -527,6 +570,7 @@ intt:
         bn.sid x5++, 448(x10)
         bn.sid x5++, 480(x10)
         addi   x10, x10, 512
+    endloop
 
     /* Restore input pointer */
     addi x10, x10, -1024
@@ -536,7 +580,7 @@ intt:
     bn.lid x7, 32(x11) /* w18 */
     bn.mov w19, w17 /* Save the first batch of Twiddle factors to w19 */
 
-    LOOPI 2, 360
+    loopi 2, 360
         /* Load input data */
         addi  x5, x0, 0
         bn.lid x5++, 0(x10)
@@ -953,6 +997,7 @@ intt:
         bn.sid x5++, 896(x10)
         bn.sid x5++, 960(x10)
         addi   x10, x10, 32
+    endloop
 
     bn.xor w31, w31, w31
     /* Restore input pointer */

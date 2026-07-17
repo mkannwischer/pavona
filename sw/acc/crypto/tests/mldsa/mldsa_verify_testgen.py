@@ -10,7 +10,7 @@ import random
 from typing import TextIO
 from dilithium_py.ml_dsa import ML_DSA_44, ML_DSA_65, ML_DSA_87
 
-from shared.testgen import write_test_data, write_test_exp, write_test_dexp
+from shared.testgen import write_testcase
 
 INSTANCE_FOR_PARAMS = {
     'mldsa44': ML_DSA_44,
@@ -25,7 +25,7 @@ MIN_CTX_LEN = 0
 MAX_CTX_LEN = 255
 
 
-def gen_verify_test(mldsa, data_file: TextIO, exp_file: TextIO, dexp_file: TextIO):
+def gen_verify_test(mldsa, mode_symbol: str, tc_file: TextIO):
     # Generate a random key pair.
     pk, sk = mldsa.keygen()
 
@@ -42,20 +42,17 @@ def gen_verify_test(mldsa, data_file: TextIO, exp_file: TextIO, dexp_file: TextI
     tr = hashlib.shake_256(pk).digest(64)
     mu = hashlib.shake_256(tr + bytes([0, ctxlen]) + ctx + msg).digest(64)
 
-    # Write input values.
-    data = {
+    # result starts at a sentinel so a skipped write is caught, and must be
+    # HARDENED_BOOL_TRUE (0x739) after a valid verification.
+    inputs = {
+        'mode': mode_symbol,
+        'result': (1).to_bytes(4, 'little'),
         'sig': sig,
         'pk': pk,
         'mu': mu,
     }
-    write_test_data(data, data_file)
-
-    # Write expected register values (none).
-    write_test_exp({}, exp_file)
-
-    # Write expected dmem values (HARDENED_BOOL_TRUE for a valid signature).
-    result = (0x739).to_bytes(4, 'little') + bytes([0] * 28)
-    write_test_dexp({'result': result}, dexp_file)
+    outputs = {'result': (0x739).to_bytes(4, 'little')}
+    write_testcase(tc_file, inputs, outputs)
 
 
 if __name__ == '__main__':
@@ -68,18 +65,10 @@ if __name__ == '__main__':
                         type=str,
                         help=('Parameters to use. Options: '
                               f'{", ".join(INSTANCE_FOR_PARAMS.keys())}'))
-    parser.add_argument('data',
+    parser.add_argument('testcase',
                         metavar='FILE',
                         type=argparse.FileType('w'),
-                        help=('Output file for input DMEM values.'))
-    parser.add_argument('exp',
-                        metavar='FILE',
-                        type=argparse.FileType('w'),
-                        help=('Output file for expected register values.'))
-    parser.add_argument('dexp',
-                        metavar='FILE',
-                        type=argparse.FileType('w'),
-                        help=('Output file for expected DMEM values.'))
+                        help=('Output file for the accsim testcase (hjson).'))
     args = parser.parse_args()
 
     if args.seed is not None:
@@ -88,4 +77,6 @@ if __name__ == '__main__':
         raise ValueError(f'Invalid parameters: {args.params}. Expected one of '
                          f'{", ".join(INSTANCE_FOR_PARAMS.keys())}')
     mldsa = INSTANCE_FOR_PARAMS[args.params]
-    gen_verify_test(mldsa, args.data, args.exp, args.dexp)
+    # run_mldsa dispatches on this mode symbol (e.g. mldsa44 -> MODE_VERIFY_44).
+    mode_symbol = 'MODE_VERIFY_' + args.params.removeprefix('mldsa')
+    gen_verify_test(mldsa, mode_symbol, args.testcase)

@@ -1232,6 +1232,7 @@ poly_uniform_mask_and_check_vectors:
  *
  * clobbered registers: a1, a3-a5, w8-w15, w20, t0-t6
  */
+#ifndef HARDENED
 .global poly_uniform_eta
 .type poly_uniform_eta, @function
 poly_uniform_eta:
@@ -1478,6 +1479,7 @@ _poly_uniform_eta_arithmetic_eta_4:
  *
  * clobbered registers: a0-a2, t0-t1, w0-w15, w30
  */
+#endif
 .global poly_use_hint
 .type poly_use_hint, @function
 poly_use_hint:
@@ -1724,6 +1726,7 @@ _inner_polyt1_pack:
  *
  * clobbered registers: a0-a1, t0-t3, w1, w2
  */
+#ifndef HARDENED
 .global polyeta_pack
 .type polyeta_pack, @function
 polyeta_pack:
@@ -1860,6 +1863,7 @@ _inner_polyeta_pack_eta_4:
  *
  * clobbered registers: a0-a1, t0-t3, w1, w2
  */
+#endif
 .global polyt0_pack
 .type polyt0_pack, @function
 polyt0_pack:
@@ -2117,6 +2121,7 @@ _inner_polyw1_pack_32:
  *
  * clobbered registers: a0-a1, t0-t2, w1-w2
  */
+#ifndef HARDENED
 .global polyeta_unpack
 .type polyeta_unpack, @function
 polyeta_unpack:
@@ -2272,6 +2277,7 @@ _inner_polyeta_unpack_eta_4:
  *
  * clobbered registers: a0-a7, t0-t6
  */
+#endif
 .global poly_decode_h
 .type poly_decode_h, @function
 poly_decode_h:
@@ -2542,6 +2548,7 @@ _inner_polyt0_unpack:
  *
  * clobbered registers: a1, t0-t3, w1-w6
  */
+#ifndef HARDENED
 .global poly_uniform_gamma_1
 .type poly_uniform_gamma_1, @function
 poly_uniform_gamma_1:
@@ -2895,6 +2902,7 @@ poly_decompose_32:
  *
  * clobbered registers: t0-t2, t5-t6, a0-a2, a4-a7
  */
+#endif
 .global poly_make_hint
 .type poly_make_hint, @function
 poly_make_hint:

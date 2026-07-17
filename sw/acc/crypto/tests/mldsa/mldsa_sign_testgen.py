@@ -6,11 +6,12 @@
 
 import argparse
 import hashlib
+import json
 import random
 from typing import TextIO
 from dilithium_py.ml_dsa import ML_DSA_44, ML_DSA_65, ML_DSA_87
 
-from shared.testgen import write_test_data, write_test_exp, write_test_dexp
+from shared.testgen import write_testcase
 
 INSTANCE_FOR_PARAMS = {
     'mldsa44': ML_DSA_44,
@@ -25,37 +26,35 @@ MIN_CTX_LEN = 0
 MAX_CTX_LEN = 255
 
 
-def gen_sign_test(mldsa, data_file: TextIO, exp_file: TextIO, dexp_file: TextIO):
-    # Generate a random key pair.
-    pk, sk = mldsa.keygen()
+def gen_sign_test(mldsa, mode_symbol: str, tc_file: TextIO, vector=None):
+    if vector is not None:
+        # Curated bench vector (empty context, as produced by mldsa-sign-bench).
+        sk = bytes.fromhex(vector['sk'])
+        rnd = bytes.fromhex(vector['rnd'])
+        msg = bytes.fromhex(vector['msg'])
+        ctx = b''
+        sig = bytes.fromhex(vector['sig'])
+    else:
+        # Generate a random key pair.
+        pk, sk = mldsa.keygen()
 
-    # Generate a random message and context.
-    msglen = random.randrange(MIN_MSG_LEN, MAX_MSG_LEN + 1)
-    ctxlen = random.randrange(MIN_CTX_LEN, MAX_CTX_LEN + 1)
-    msg = random.randbytes(msglen)
-    ctx = random.randbytes(ctxlen)
+        # Generate a random message and context.
+        msglen = random.randrange(MIN_MSG_LEN, MAX_MSG_LEN + 1)
+        ctxlen = random.randrange(MIN_CTX_LEN, MAX_CTX_LEN + 1)
+        msg = random.randbytes(msglen)
+        ctx = random.randbytes(ctxlen)
 
-    # Sign the message using deterministic signing.
-    rnd = bytes([0] * 32)
-    sig = mldsa.sign(sk, msg, ctx=ctx, deterministic=True)
+        # Sign the message using deterministic signing.
+        rnd = bytes([0] * 32)
+        sig = mldsa.sign(sk, msg, ctx=ctx, deterministic=True)
 
     # External mu: tr = sk[64:128]; the kernel signs from this mu.
     tr = sk[64:128]
-    mu = hashlib.shake_256(tr + bytes([0, ctxlen]) + ctx + msg).digest(64)
+    mu = hashlib.shake_256(tr + bytes([0, len(ctx)]) + ctx + msg).digest(64)
 
-    # Write input values.
-    data = {
-        'sk': sk,
-        'rnd': rnd,
-        'mu': mu,
-    }
-    write_test_data(data, data_file)
-
-    # Write expected register values (none).
-    write_test_exp({}, exp_file)
-
-    # Write expected dmem values.
-    write_test_dexp({'sig': sig}, dexp_file)
+    inputs = {'mode': mode_symbol, 'sk': sk, 'rnd': rnd, 'mu': mu}
+    outputs = {'sig': sig + bytes((-len(sig)) % 4)}
+    write_testcase(tc_file, inputs, outputs)
 
 
 if __name__ == '__main__':
@@ -68,18 +67,18 @@ if __name__ == '__main__':
                         type=str,
                         help=('Parameters to use. Options: '
                               f'{", ".join(INSTANCE_FOR_PARAMS.keys())}'))
-    parser.add_argument('data',
+    parser.add_argument('--from-vector',
+                        dest='from_vector',
+                        help=('Load sk/rnd/msg/sig from a mldsa-sign-bench '
+                              'testset JSON instead of generating randomly.'))
+    parser.add_argument('--index',
+                        type=int,
+                        default=0,
+                        help=('Index of the vector within the testset.'))
+    parser.add_argument('testcase',
                         metavar='FILE',
                         type=argparse.FileType('w'),
-                        help=('Output file for input DMEM values.'))
-    parser.add_argument('exp',
-                        metavar='FILE',
-                        type=argparse.FileType('w'),
-                        help=('Output file for expected register values.'))
-    parser.add_argument('dexp',
-                        metavar='FILE',
-                        type=argparse.FileType('w'),
-                        help=('Output file for expected DMEM values.'))
+                        help=('Output file for the accsim testcase (hjson).'))
     args = parser.parse_args()
 
     if args.seed is not None:
@@ -88,4 +87,9 @@ if __name__ == '__main__':
         raise ValueError(f'Invalid parameters: {args.params}. Expected one of '
                          f'{", ".join(INSTANCE_FOR_PARAMS.keys())}')
     mldsa = INSTANCE_FOR_PARAMS[args.params]
-    gen_sign_test(mldsa, args.data, args.exp, args.dexp)
+    vector = None
+    if args.from_vector is not None:
+        vector = json.load(open(args.from_vector))[args.index]
+    # run_mldsa dispatches on this mode symbol (e.g. mldsa44 -> MODE_SIGN_44).
+    mode_symbol = 'MODE_SIGN_' + args.params.removeprefix('mldsa')
+    gen_sign_test(mldsa, mode_symbol, args.testcase, vector=vector)
