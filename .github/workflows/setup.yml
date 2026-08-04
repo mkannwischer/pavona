@@ -67,6 +67,11 @@ jobs:
             //sw/device/tests:uart_smoketest_sim_verilator
       - name: Run ACC ISS test
         run: make -C hw/ip/acc/dv/accsim test
+      - name: Install Python dependencies with the system Python
+        run: |
+          sudo apt-get install -y python3-venv
+          python3 -m venv .venv
+          ./.venv/bin/pip3 install -r python-requirements.txt --require-hashes
 
   container_verilator_smoketest:
     name: Container Verilator smoketest (${{ matrix.image }}, ${{ matrix.runner }})
@@ -102,6 +107,11 @@ jobs:
             //sw/device/tests:uart_smoketest_sim_verilator
       - name: Run ACC ISS test
         run: make -C hw/ip/acc/dv/accsim test
+      - name: Install Python dependencies with the system Python
+        run: |
+          sudo apt-get install -y python3-venv
+          python3 -m venv .venv
+          ./.venv/bin/pip3 install -r python-requirements.txt --require-hashes
 
   docker_verilator_smoketest:
     name: Docker Verilator smoketest (${{ matrix.runner }})
@@ -131,3 +141,12 @@ jobs:
               --//hw:make_options=-j,\$(nproc) \
               //sw/device/tests:uart_smoketest_sim_verilator \
             && make -C hw/ip/acc/dv/accsim test"
+      - name: Install Python dependencies with the system Python
+        run: |
+          docker run \
+            -v "$PWD":/home/dev/src \
+            --env DEV_UID="$(id -u)" --env DEV_GID="$(id -g)" \
+            pavona:latest \
+            "cd src && sudo apt-get update && sudo apt-get install -y python3-venv \
+            && python3 -m venv .venv \
+            && ./.venv/bin/pip3 install -r python-requirements.txt --require-hashes"
