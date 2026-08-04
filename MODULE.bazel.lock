@@ -2076,10 +2076,13 @@
         "bzlTransitiveDigest": "+kD0xs0Ri5a+XKRcO6soDCgHTzVRyY15sflqqpmJ9vY=",
         "usagesDigest": "6SsJMu2YKa7CwbdXpWF84TuUKywW42ajyI1wp5wt3XE=",
         "recordedFileInputs": {
-          "@@//python-requirements.txt": "5f9ffcacf5e4b851e95c55719e3a6086d0cfbac57901e7a7e00013a17527f927",
+          "@@//python-requirements.txt": "b0992005b8d734d09c3bc6537e9ae41dd271eabd86a4c0f53b67bd66508fca3b",
           "@@lowrisc_misc_linters+//requirements.txt": "c6970973760040a085c07efdfd08dcadb7e052a18efa51f88a3eb19ab9f787c7",
           "@@protobuf+//python/requirements.txt": "983be60d3cec4b319dcab6d48aeb3f5b2f7c3350f26b3a9e97486c37967c73c5",
           "@@rules_fuzzing+//fuzzing/requirements.txt": "ab04664be026b632a0d2a2446c4f65982b7654f5b6851d2f9d399a19b7242a5b",
+          "@@rules_python++internal_deps+pypi__packaging//packaging-24.0.dist-info/RECORD": "be1aea790359b4c2c9ea83d153c1a57c407742a35b95ee36d00723509f5ed5dd",
+          "@@rules_python+//python/private/pypi/requirements_parser/resolve_target_platforms.py": "42bf51980528302373529bcdfddb8014e485182d6bc9d2f7d3bbe1f11d8d923d",
+          "@@rules_python+//python/private/pypi/whl_installer/platform.py": "b944b908b25a2f97d6d9f491504ad5d2507402d7e37c802ee878783f87f2aa11",
           "@@rules_python+//tools/publish/requirements_darwin.txt": "095d4a4f3d639dce831cd493367631cd51b53665292ab20194bac2c0c6458fa8",
           "@@rules_python+//tools/publish/requirements_linux.txt": "d576e0d8542df61396a9b38deeaa183c24135ed5e8e73bb9622f298f2671811e",
           "@@rules_python+//tools/publish/requirements_windows.txt": "d18538a3982beab378fd5687f4db33162ee1ece69801f9a451661b1b64286b76"
@@ -2090,6 +2093,15 @@
           "RULES_PYTHON_REPO_DEBUG_VERBOSITY": null
         },
         "generatedRepoSpecs": {
+          "ot_python_deps_310_ansicon": {
+            "repoRuleId": "@@rules_python+//python/private/pypi:whl_library.bzl%whl_library",
+            "attributes": {
+              "dep_template": "@ot_python_deps//{name}:{target}",
+              "python_interpreter_target": "@@rules_python++python+python_3_10_host//:python",
+              "repo": "ot_python_deps_310",
+              "requirement": "ansicon==1.89.0 --hash=sha256:e4d039def5768a47e4afec8e89e83ec3ae5a26bf00ad851f914d1240b444d2b1 --hash=sha256:f1def52d17f65c2c9682cf8370c03f541f410c1752d6a14029f97318e4b9dfec"
+            }
+          },
           "ot_python_deps_310_antlr4_python3_runtime": {
             "repoRuleId": "@@rules_python+//python/private/pypi:whl_library.bzl%whl_library",
             "attributes": {
@@ -2349,6 +2361,15 @@
               "python_interpreter_target": "@@rules_python++python+python_3_10_host//:python",
               "repo": "ot_python_deps_310",
               "requirement": "jinja2==3.1.6 --hash=sha256:0137fb05990d35f1275a587e9aee6d56da821fc83491a0fb838183be43f66d6d --hash=sha256:85ece4451f492d0c13c5dd7c13a64681a86afae63a5f347908daf103ce6d2f67"
+            }
+          },
+          "ot_python_deps_310_jinxed": {
+            "repoRuleId": "@@rules_python+//python/private/pypi:whl_library.bzl%whl_library",
+            "attributes": {
+              "dep_template": "@ot_python_deps//{name}:{target}",
+              "python_interpreter_target": "@@rules_python++python+python_3_10_host//:python",
+              "repo": "ot_python_deps_310",
+              "requirement": "jinxed==2.1.0 --hash=sha256:43b802d18b70e405d410fb66eb2837d1101e7e5ea922e666507bb43f34d11d09 --hash=sha256:7e755b831faa2443d44fb4ce7c0202eb9c3ed39bd5bf1193365888f4f6092b54"
             }
           },
           "ot_python_deps_310_jsonschema": {
@@ -2727,6 +2748,15 @@
               "python_interpreter_target": "@@rules_python++python+python_3_10_host//:python",
               "repo": "ot_python_deps_310",
               "requirement": "pyyaml==6.0.2 --hash=sha256:01179a4a8559ab5de078078f37e5c1a30d76bb88519906844fd7bdea1b7729ff --hash=sha256:0833f8694549e586547b576dcfaba4a6b55b9e96098b36cdc7ebefe667dfed48 --hash=sha256:0a9a2848a5b7feac301353437eb7d5957887edbf81d56e903999a75a3d743086 --hash=sha256:0b69e4ce7a131fe56b7e4d770c67429700908fc0752af059838b1cfb41960e4e --hash=sha256:0ffe8360bab4910ef1b9e87fb812d8bc0a308b0d0eef8c8f44e0254ab3b07133 --hash=sha256:11d8f3dd2b9c1207dcaf2ee0bbbfd5991f571186ec9cc78427ba5bd32afae4b5 --hash=sha256:17e311b6c678207928d649faa7cb0d7b4c26a0ba73d41e99c4fff6b6c3276484 --hash=sha256:1e2120ef853f59c7419231f3bf4e7021f1b936f6ebd222406c3b60212205d2ee --hash=sha256:1f71ea527786de97d1a0cc0eacd1defc0985dcf6b3f17bb77dcfc8c34bec4dc5 --hash=sha256:23502f431948090f597378482b4812b0caae32c22213aecf3b55325e049a6c68 --hash=sha256:24471b829b3bf607e04e88d79542a9d48bb037c2267d7927a874e6c205ca7e9a --hash=sha256:29717114e51c84ddfba879543fb232a6ed60086602313ca38cce623c1d62cfbf --hash=sha256:2e99c6826ffa974fe6e27cdb5ed0021786b03fc98e5ee3c5bfe1fd5015f42b99 --hash=sha256:39693e1f8320ae4f43943590b49779ffb98acb81f788220ea932a6b6c51004d8 --hash=sha256:3ad2a3decf9aaba3d29c8f537ac4b243e36bef957511b4766cb0057d32b0be85 --hash=sha256:3b1fdb9dc17f5a7677423d508ab4f243a726dea51fa5e70992e59a7411c89d19 --hash=sha256:41e4e3953a79407c794916fa277a82531dd93aad34e29c2a514c2c0c5fe971cc --hash=sha256:43fa96a3ca0d6b1812e01ced1044a003533c47f6ee8aca31724f78e93ccc089a --hash=sha256:50187695423ffe49e2deacb8cd10510bc361faac997de9efef88badc3bb9e2d1 --hash=sha256:5ac9328ec4831237bec75defaf839f7d4564be1e6b25ac710bd1a96321cc8317 --hash=sha256:5d225db5a45f21e78dd9358e58a98702a0302f2659a3c6cd320564b75b86f47c --hash=sha256:6395c297d42274772abc367baaa79683958044e5d3835486c16da75d2a694631 --hash=sha256:688ba32a1cffef67fd2e9398a2efebaea461578b0923624778664cc1c914db5d --hash=sha256:68ccc6023a3400877818152ad9a1033e3db8625d899c72eacb5a668902e4d652 --hash=sha256:70b189594dbe54f75ab3a1acec5f1e3faa7e8cf2f1e08d9b561cb41b845f69d5 --hash=sha256:797b4f722ffa07cc8d62053e4cff1486fa6dc094105d13fea7b1de7d8bf71c9e --hash=sha256:7c36280e6fb8385e520936c3cb3b8042851904eba0e58d277dca80a5cfed590b --hash=sha256:7e7401d0de89a9a855c839bc697c079a4af81cf878373abd7dc625847d25cbd8 --hash=sha256:80bab7bfc629882493af4aa31a4cfa43a4c57c83813253626916b8c7ada83476 --hash=sha256:82d09873e40955485746739bcb8b4586983670466c23382c19cffecbf1fd8706 --hash=sha256:8388ee1976c416731879ac16da0aff3f63b286ffdd57cdeb95f3f2e085687563 --hash=sha256:8824b5a04a04a047e72eea5cec3bc266db09e35de6bdfe34c9436ac5ee27d237 --hash=sha256:8b9c7197f7cb2738065c481a0461e50ad02f18c78cd75775628afb4d7137fb3b --hash=sha256:9056c1ecd25795207ad294bcf39f2db3d845767be0ea6e6a34d856f006006083 --hash=sha256:936d68689298c36b53b29f23c6dbb74de12b4ac12ca6cfe0e047bedceea56180 --hash=sha256:9b22676e8097e9e22e36d6b7bda33190d0d400f345f23d4065d48f4ca7ae0425 --hash=sha256:a4d3091415f010369ae4ed1fc6b79def9416358877534caf6a0fdd2146c87a3e --hash=sha256:a8786accb172bd8afb8be14490a16625cbc387036876ab6ba70912730faf8e1f --hash=sha256:a9f8c2e67970f13b16084e04f134610fd1d374bf477b17ec1599185cf611d725 --hash=sha256:bc2fa7c6b47d6bc618dd7fb02ef6fdedb1090ec036abab80d4681424b84c1183 --hash=sha256:c70c95198c015b85feafc136515252a261a84561b7b1d51e3384e0655ddf25ab --hash=sha256:cc1c1159b3d456576af7a3e4d1ba7e6924cb39de8f67111c735f6fc832082774 --hash=sha256:ce826d6ef20b1bc864f0a68340c8b3287705cae2f8b4b1d932177dcc76721725 --hash=sha256:d584d9ec91ad65861cc08d42e834324ef890a082e591037abe114850ff7bbc3e --hash=sha256:d7fded462629cfa4b685c5416b949ebad6cec74af5e2d42905d41e257e0869f5 --hash=sha256:d84a1718ee396f54f3a086ea0a66d8e552b2ab2017ef8b420e92edbc841c352d --hash=sha256:d8e03406cac8513435335dbab54c0d385e4a49e4945d2909a581c83647ca0290 --hash=sha256:e10ce637b18caea04431ce14fabcf5c64a1c61ec9c56b071a4b7ca131ca52d44 --hash=sha256:ec031d5d2feb36d1d1a24380e4db6d43695f3748343d99434e6f5f9156aaa2ed --hash=sha256:ef6107725bd54b262d6dedcc2af448a266975032bc85ef0172c5f059da6325b4 --hash=sha256:efdca5630322a10774e8e98e1af481aad470dd62c3170801852d752aa7a783ba --hash=sha256:f753120cb8181e736c57ef7636e83f31b9c0d1722c516f7e86cf15b7aa57ff12 --hash=sha256:ff3824dc5261f50c9b0dfb3be22b4567a6f938ccce4587b38952d85fd9e9afe4"
+            }
+          },
+          "ot_python_deps_310_pyyaml_ft": {
+            "repoRuleId": "@@rules_python+//python/private/pypi:whl_library.bzl%whl_library",
+            "attributes": {
+              "dep_template": "@ot_python_deps//{name}:{target}",
+              "python_interpreter_target": "@@rules_python++python+python_3_10_host//:python",
+              "repo": "ot_python_deps_310",
+              "requirement": "pyyaml-ft==8.0.0 --hash=sha256:052561b89d5b2a8e1289f326d060e794c21fa068aa11255fe71d65baf18a632e --hash=sha256:06237267dbcab70d4c0e9436d8f719f04a51123f0ca2694c00dd4b68c338e40b --hash=sha256:0c947dce03954c7b5d38869ed4878b2e6ff1d44b08a0d84dc83fdad205ae39ab --hash=sha256:30c5f1751625786c19de751e3130fc345ebcba6a86f6bddd6e1285342f4bbb69 --hash=sha256:3bb4b927929b0cb162fb1605392a321e3333e48ce616cdcfa04a839271373255 --hash=sha256:3fa992481155ddda2e303fcc74c79c05eddcdbc907b888d3d9ce3ff3e2adcfb0 --hash=sha256:58e1015098cf8d8aec82f360789c16283b88ca670fe4275ef6c48c5e30b22a96 --hash=sha256:7d10175a746be65f6feb86224df5d6bc5c049ebf52b89a88cf1cd78af5a367a8 --hash=sha256:8a7f332bc565817644cdb38ffe4739e44c3e18c55793f75dddb87630f03fc254 --hash=sha256:8c1306282bc958bfda31237f900eb52c9bedf9b93a11f82e1aab004c9a5657a6 --hash=sha256:8c56bb46b4fda34cbb92a9446a841da3982cdde6ea13de3fbd80db7eeeab8b49 --hash=sha256:8d445bf6ea16bb93c37b42fdacfb2f94c8e92a79ba9e12768c96ecde867046d1 --hash=sha256:bd48d639cab5ca50ad957b6dd632c7dd3ac02a1abe0e8196a3c24a52f5db3f7a --hash=sha256:cec6c92b4207004b62dfad1f0be321c9f04725e0f271c16247d8b39c3bf3ea42 --hash=sha256:dab0abb46eb1780da486f022dce034b952c8ae40753627b27a626d803926483b --hash=sha256:de04cfe9439565e32f178106c51dd6ca61afaa2907d143835d501d84703d3793 --hash=sha256:e64fa5f3e2ceb790d50602b2fd4ec37abbd760a8c778e46354df647e7c5a4ebb"
             }
           },
           "ot_python_deps_310_questionary": {
@@ -5484,6 +5514,7 @@
               "repo_name": "ot_python_deps",
               "extra_hub_aliases": {},
               "whl_map": {
+                "ansicon": "{\"ot_python_deps_310_ansicon\":[{\"version\":\"3.10\"}]}",
                 "antlr4_python3_runtime": "{\"ot_python_deps_310_antlr4_python3_runtime\":[{\"version\":\"3.10\"}]}",
                 "anytree": "{\"ot_python_deps_310_anytree\":[{\"version\":\"3.10\"}]}",
                 "argcomplete": "{\"ot_python_deps_310_argcomplete\":[{\"version\":\"3.10\"}]}",
@@ -5513,6 +5544,7 @@
                 "iniconfig": "{\"ot_python_deps_310_iniconfig\":[{\"version\":\"3.10\"}]}",
                 "isort": "{\"ot_python_deps_310_isort\":[{\"version\":\"3.10\"}]}",
                 "jinja2": "{\"ot_python_deps_310_jinja2\":[{\"version\":\"3.10\"}]}",
+                "jinxed": "{\"ot_python_deps_310_jinxed\":[{\"version\":\"3.10\"}]}",
                 "jsonschema": "{\"ot_python_deps_310_jsonschema\":[{\"version\":\"3.10\"}]}",
                 "jsonschema2md": "{\"ot_python_deps_310_jsonschema2md\":[{\"version\":\"3.10\"}]}",
                 "jsonschema_specifications": "{\"ot_python_deps_310_jsonschema_specifications\":[{\"version\":\"3.10\"}]}",
@@ -5555,6 +5587,7 @@
                 "pytest_timeout": "{\"ot_python_deps_310_pytest_timeout\":[{\"version\":\"3.10\"}]}",
                 "pytz": "{\"ot_python_deps_310_pytz\":[{\"version\":\"3.10\"}]}",
                 "pyyaml": "{\"ot_python_deps_310_pyyaml\":[{\"version\":\"3.10\"}]}",
+                "pyyaml_ft": "{\"ot_python_deps_310_pyyaml_ft\":[{\"version\":\"3.10\"}]}",
                 "questionary": "{\"ot_python_deps_310_questionary\":[{\"version\":\"3.10\"}]}",
                 "referencing": "{\"ot_python_deps_310_referencing\":[{\"version\":\"3.10\"}]}",
                 "requests": "{\"ot_python_deps_310_requests\":[{\"version\":\"3.10\"}]}",
@@ -5655,6 +5688,7 @@
                 "pytest_timeout",
                 "pytz",
                 "pyyaml",
+                "pyyaml_ft",
                 "questionary",
                 "referencing",
                 "requests",
