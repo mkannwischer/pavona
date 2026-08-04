@@ -6,17 +6,19 @@ load("@rules_python//python:defs.bzl", "py_library")
 
 package(default_visibility = ["//visibility:public"])
 
-filegroup(
-    name = "tpl_files",
-    srcs = glob(["templates/*.tpl"]),
-)
-
 py_library(
-    name = "autogen_testutils",
+    name = "raclgen",
     srcs = [
         "__init__.py",
-        "gen.py",
+        "lib.py",
     ],
-    data = [":tpl_files"],
-    deps = ["//util/topgen"],
+    imports = [".."],
+    deps = [
+        "//util/reggen:ip_block",
+        "//util/reggen:md_helpers",
+        "//util/reggen:multi_register",
+        "//util/reggen:register",
+        "//util/reggen:validate",
+        "//util/reggen:window",
+    ],
 )
