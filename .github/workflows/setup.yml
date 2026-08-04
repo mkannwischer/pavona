@@ -67,6 +67,94 @@ jobs:
             //sw/device/tests:uart_smoketest_sim_verilator
       - name: Run ACC ISS test
         run: make -C hw/ip/acc/dv/accsim test
+      - name: Install Python dependencies with the system Python
+        run: |
+          sudo apt-get install -y python3-venv
+          python3 -m venv .venv
+          ./.venv/bin/pip3 install -r python-requirements.txt --require-hashes
+
+  python_verilator_smoketest:
+    name: Python Verilator smoketest (${{ matrix.python-version }}, ${{ matrix.runner }})
+    if: ${{ !github.event.repository.private }}
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version:
+          - '3.10'
+          - '3.11'
+          - '3.12'
+          - '3.13'
+          - '3.14'
+        runner:
+          - ubuntu-26.04
+          - ubuntu-26.04-arm
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prepare environment
+        uses: ./.github/actions/prepare-env
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Remove preinstalled Bazel
+        run: |
+          for tool in bazel bazelisk; do
+            path="$(command -v "$tool" || true)"
+            if [ -n "$path" ]; then
+              sudo rm "$path"
+            fi
+          done
+      - name: Build device software
+        run: ./bazelisk.sh build //sw/device/examples/hello_world:hello_world_sim_dv
+      - name: Run UART smoketest on Verilator
+        run: |
+          ./bazelisk.sh test \
+            --build_tests_only=true \
+            --test_timeout=2400,2400,4000,-1 \
+            --test_output=errors \
+            --//hw:make_options=-j,"$(nproc)" \
+            //sw/device/tests:uart_smoketest_sim_verilator
+      - name: Run ACC ISS test
+        run: make -C hw/ip/acc/dv/accsim test
+
+  container_verilator_smoketest:
+    name: Container Verilator smoketest (${{ matrix.image }}, ${{ matrix.runner }})
+    if: ${{ !github.event.repository.private }}
+    runs-on: ${{ matrix.runner }}
+    container:
+      image: ${{ matrix.image }}
+    strategy:
+      fail-fast: false
+      matrix:
+        image:
+          - debian:13
+        runner:
+          - ubuntu-24.04
+          - ubuntu-24.04-arm
+    env:
+      DEBIAN_FRONTEND: noninteractive
+    steps:
+      - name: Bootstrap container
+        run: apt-get update && apt-get install -y sudo git curl wget ca-certificates
+      - uses: actions/checkout@v4
+      - name: Prepare environment
+        uses: ./.github/actions/prepare-env
+      - name: Build device software
+        run: ./bazelisk.sh build //sw/device/examples/hello_world:hello_world_sim_dv
+      - name: Run UART smoketest on Verilator
+        run: |
+          ./bazelisk.sh test \
+            --build_tests_only=true \
+            --test_timeout=2400,2400,4000,-1 \
+            --test_output=errors \
+            --//hw:make_options=-j,"$(nproc)" \
+            //sw/device/tests:uart_smoketest_sim_verilator
+      - name: Run ACC ISS test
+        run: make -C hw/ip/acc/dv/accsim test
+      - name: Install Python dependencies with the system Python
+        run: |
+          sudo apt-get install -y python3-venv
+          python3 -m venv .venv
+          ./.venv/bin/pip3 install -r python-requirements.txt --require-hashes
 
   docker_verilator_smoketest:
     name: Docker Verilator smoketest (${{ matrix.runner }})
@@ -96,3 +184,12 @@ jobs:
               --//hw:make_options=-j,\$(nproc) \
               //sw/device/tests:uart_smoketest_sim_verilator \
             && make -C hw/ip/acc/dv/accsim test"
+      - name: Install Python dependencies with the system Python
+        run: |
+          docker run \
+            -v "$PWD":/home/dev/src \
+            --env DEV_UID="$(id -u)" --env DEV_GID="$(id -g)" \
+            pavona:latest \
+            "cd src && sudo apt-get update && sudo apt-get install -y python3-venv \
+            && python3 -m venv .venv \
+            && ./.venv/bin/pip3 install -r python-requirements.txt --require-hashes"

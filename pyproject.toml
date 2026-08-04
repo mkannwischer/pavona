@@ -15,7 +15,9 @@ dependencies = [
   "hjson==3.1.0",
   "kyber-py==1.0.1",
   "libclang==16.0.0",
-  "libcst ~= 1.1",
+  # Scoped to the supported range: libcst's metadata for 3.14 would otherwise
+  # fork the universal resolution, which rules_python cannot consume.
+  "libcst ~= 1.1 ; python_version < '3.14'",
   "lxml ~= 5.0",
   "mako ~= 1.2",
   "ninja ~= 1.11.1.1",

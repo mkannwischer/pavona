@@ -9,7 +9,10 @@ package(default_visibility = ["//visibility:public"])
 
 py_library(
     name = "lib",
-    srcs = ["lib.py"],
+    srcs = [
+        "__init__.py",
+        "lib.py",
+    ],
 )
 
 py_library(
@@ -87,6 +90,7 @@ py_library(
     name = "interrupt",
     srcs = ["interrupt.py"],
     deps = [
+        ":access",
         ":bits",
         ":lib",
         ":signal",
@@ -116,6 +120,7 @@ py_library(
         ":inter_signal",
         ":interrupt",
         ":lib",
+        ":memory",
         ":params",
         ":reg_block",
         ":signal",
@@ -145,6 +150,7 @@ py_library(
         ":bus_interfaces",
         ":clocking",
         ":field",
+        ":interrupt",
         ":lib",
         ":memory",
         ":multi_register",
@@ -198,6 +204,7 @@ py_library(
         ":access",
         ":lib",
         ":params",
+        ":window",
     ],
 )
 
@@ -263,6 +270,29 @@ py_library(
 )
 
 py_library(
+    name = "gen_md",
+    srcs = ["gen_md.py"],
+    deps = [
+        ":ip_block",
+        ":md_helpers",
+        ":multi_register",
+        ":reg_block",
+        ":register",
+        ":window",
+    ],
+)
+
+py_library(
+    name = "gen_cfg_md",
+    srcs = ["gen_cfg_md.py"],
+    deps = [
+        ":ip_block",
+        ":md_helpers",
+        ":params",
+    ],
+)
+
+py_library(
     name = "gen_json",
     srcs = ["gen_json.py"],
     deps = [requirement("hjson")],
@@ -306,6 +336,7 @@ py_library(
         ":register",
         ":signal",
         ":window",
+        "//util:version_file",
     ],
 )
 
@@ -354,6 +385,7 @@ py_library(
         ":reg_block",
         ":register",
         ":window",
+        "//util/reggen/systemrdl:udp",
         requirement("peakrdl_systemrdl"),
     ],
 )
