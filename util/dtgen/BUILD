@@ -13,14 +13,14 @@ py_library(
         "__init__.py",
         "helper.py",
     ],
-    deps = ["//util/topgen:lib"],
+    deps = ["//util/topgen"],
 )
 
 py_library(
     name = "ipgen_ext",
     srcs = ["ipgen_ext.py"],
     deps = [
-        "//util/topgen:lib",
+        "//util/topgen",
         requirement("jsonschema"),
     ],
 )

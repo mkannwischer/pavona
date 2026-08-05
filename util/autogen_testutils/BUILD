@@ -18,5 +18,5 @@ py_library(
         "gen.py",
     ],
     data = [":tpl_files"],
-    deps = ["//util/topgen:lib"],
+    deps = ["//util/topgen"],
 )
