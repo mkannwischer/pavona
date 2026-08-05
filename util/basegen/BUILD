@@ -14,4 +14,5 @@ py_library(
         "lib.py",
         "typing.py",
     ],
+    imports = [".."],
 )

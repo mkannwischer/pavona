@@ -14,6 +14,7 @@ py_library(
         "__init__.py",
         "lib.py",
     ],
+    imports = [".."],
 )
 
 py_library(
@@ -91,6 +92,7 @@ py_library(
     name = "interrupt",
     srcs = ["interrupt.py"],
     deps = [
+        ":access",
         ":bits",
         ":lib",
         ":signal",
@@ -105,7 +107,10 @@ py_library(
 py_library(
     name = "inter_signal",
     srcs = ["inter_signal.py"],
-    deps = [":lib"],
+    deps = [
+        ":lib",
+        ":params",
+    ],
 )
 
 py_library(
@@ -120,6 +125,7 @@ py_library(
         ":inter_signal",
         ":interrupt",
         ":lib",
+        ":memory",
         ":params",
         ":reg_block",
         ":signal",
@@ -137,7 +143,10 @@ py_library(
 py_library(
     name = "reg_base",
     srcs = ["reg_base.py"],
-    deps = [":field"],
+    deps = [
+        ":clocking",
+        ":field",
+    ],
 )
 
 py_library(
@@ -149,6 +158,7 @@ py_library(
         ":bus_interfaces",
         ":clocking",
         ":field",
+        ":interrupt",
         ":lib",
         ":memory",
         ":multi_register",
@@ -170,6 +180,7 @@ py_library(
         ":lib",
         ":params",
         ":reg_base",
+        "//util/design/mubi:prim_mubi",
     ],
 )
 
@@ -202,6 +213,7 @@ py_library(
         ":access",
         ":lib",
         ":params",
+        ":window",
     ],
 )
 
@@ -333,6 +345,7 @@ py_library(
         ":register",
         ":signal",
         ":window",
+        "//util:version_file",
     ],
 )
 
@@ -354,6 +367,7 @@ py_library(
         ":enum_entry",
         ":field",
         ":ip_block",
+        ":lib",
         ":multi_register",
         ":register",
         ":validate",
@@ -381,6 +395,7 @@ py_library(
         ":reg_block",
         ":register",
         ":window",
+        "//util/reggen/systemrdl:udp",
         requirement("peakrdl_systemrdl"),
     ],
 )

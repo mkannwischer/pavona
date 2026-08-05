@@ -13,7 +13,10 @@ py_library(
         "__init__.py",
         "helper.py",
     ],
-    deps = ["//util/topgen"],
+    deps = [
+        "//util/basegen",
+        "//util/topgen",
+    ],
 )
 
 py_library(

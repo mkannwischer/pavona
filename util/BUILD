@@ -1,4 +1,5 @@
 # Copyright lowRISC contributors (OpenTitan project).
+# Copyright zeroRISC Inc.
 # Licensed under the Apache License, Version 2.0, see LICENSE for details.
 # SPDX-License-Identifier: Apache-2.0
 
@@ -40,6 +41,7 @@ py_binary(
 py_binary(
     name = "rom_chip_info",
     srcs = ["rom_chip_info.py"],
+    deps = [":version_file"],
 )
 
 py_test(
@@ -48,18 +50,24 @@ py_test(
         "rom_chip_info.py",
         "rom_chip_info_test.py",
     ],
+    deps = [":version_file"],
 )
 
 py_binary(
     name = "regtool",
     srcs = ["regtool.py"],
+    imports = ["."],
     deps = [
+        ":version_file",
         "//util/reggen:countermeasure",
+        "//util/reggen:gen_cfg_md",
+        "//util/reggen:lib",
         "//util/reggen:gen_cheader",
         "//util/reggen:gen_dv",
         "//util/reggen:gen_fpv",
         "//util/reggen:gen_html",
         "//util/reggen:gen_json",
+        "//util/reggen:gen_md",
         "//util/reggen:gen_rtl",
         "//util/reggen:gen_rust",
         "//util/reggen:gen_sec_cm_testplan",
@@ -78,7 +86,9 @@ py_binary(
     data = [
         "//util/make_new_dif:tpl_files",
     ],
+    imports = ["."],
     deps = [
+        ":autogen_banner",
         ":repo_top",
         "//util/make_new_dif:ip",
         requirement("hjson"),
@@ -92,6 +102,7 @@ py_binary(
     data = [
         "//util/dtgen:tpl_files",
     ],
+    imports = ["."],
     deps = [
         "//util/dtgen:helper",
         "//util/dtgen:ipgen_ext",
@@ -106,8 +117,10 @@ py_binary(
 py_binary(
     name = "gen_testutils",
     srcs = ["gen_testutils.py"],
+    imports = ["."],
     deps = [
         "//util/autogen_testutils",
+        "//util/make_new_dif:ip",
         "//util/topgen",
         requirement("mako"),
         requirement("hjson"),
@@ -142,6 +155,7 @@ py_library(
 py_library(
     name = "version_file",
     srcs = ["version_file.py"],
+    imports = ["."],
 )
 
 py_library(

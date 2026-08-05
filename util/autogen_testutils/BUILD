@@ -18,5 +18,9 @@ py_library(
         "gen.py",
     ],
     data = [":tpl_files"],
-    deps = ["//util/topgen"],
+    deps = [
+        "//util:autogen_banner",
+        "//util/make_new_dif:ip",
+        "//util/topgen",
+    ],
 )
