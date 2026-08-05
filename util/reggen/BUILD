@@ -405,6 +405,7 @@ py_library(
     srcs = ["md_helpers.py"],
     deps = [
         ":signal",
+        requirement("tabulate"),
     ],
 )
 

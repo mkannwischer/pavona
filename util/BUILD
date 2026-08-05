@@ -61,7 +61,6 @@ py_binary(
         ":version_file",
         "//util/reggen:countermeasure",
         "//util/reggen:gen_cfg_md",
-        "//util/reggen:lib",
         "//util/reggen:gen_cheader",
         "//util/reggen:gen_dv",
         "//util/reggen:gen_fpv",
@@ -74,6 +73,7 @@ py_binary(
         "//util/reggen:gen_selfdoc",
         "//util/reggen:gen_tock",
         "//util/reggen:ip_block",
+        "//util/reggen:lib",
         "//util/reggen:systemrdl_exporter",
         "//util/reggen:version",
         requirement("tabulate"),
@@ -171,27 +171,40 @@ cc_library(
     ],
 )
 
+MDBOOK_PREPROCESSOR_DEPS = {
+    "code_snippet": [],
+    "dashboard": ["//util/dashboard"],
+    "doxygen": [],
+    "acc": [],
+    "readme2index": [],
+    "reggen": [
+        "//util/reggen:gen_cfg_md",
+        "//util/reggen:gen_md",
+        "//util/reggen:ip_block",
+    ],
+    "testplan": ["//util/dvsim:testplan"],
+    "template": [
+        "//util/ipgen",
+        requirement("hjson"),
+    ],
+}
+
 [
     py_binary(
         name = "mdbook_{}".format(preprocessor),
         srcs = ["mdbook_{}.py".format(preprocessor)],
+        deps = ["//util/mdbook"] + extra_deps,
     )
-    for preprocessor in [
-        "code_snippet",
-        "dashboard",
-        "doxygen",
-        "acc",
-        "readme2index",
-        "reggen",
-        "testplan",
-        "template",
-    ]
+    for preprocessor, extra_deps in MDBOOK_PREPROCESSOR_DEPS.items()
 ]
 
 py_binary(
     name = "mdbook_toolversion",
     srcs = ["mdbook_toolversion.py"],
-    deps = ["//hw:check_tool_requirements"],
+    deps = [
+        "//hw:check_tool_requirements",
+        "//util/mdbook",
+    ],
 )
 
 py_binary(
