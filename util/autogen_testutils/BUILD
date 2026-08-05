@@ -13,7 +13,10 @@ filegroup(
 
 py_library(
     name = "autogen_testutils",
-    srcs = ["gen.py"],
+    srcs = [
+        "__init__.py",
+        "gen.py",
+    ],
     data = [":tpl_files"],
     deps = ["//util/topgen:lib"],
 )

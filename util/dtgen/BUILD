@@ -9,7 +9,10 @@ package(default_visibility = ["//visibility:public"])
 
 py_library(
     name = "helper",
-    srcs = ["helper.py"],
+    srcs = [
+        "__init__.py",
+        "helper.py",
+    ],
     deps = ["//util/topgen:lib"],
 )
 

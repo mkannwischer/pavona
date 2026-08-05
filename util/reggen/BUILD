@@ -1,4 +1,5 @@
 # Copyright lowRISC contributors (OpenTitan project).
+# Copyright zeroRISC Inc.
 # Licensed under the Apache License, Version 2.0, see LICENSE for details.
 # SPDX-License-Identifier: Apache-2.0
 
@@ -9,7 +10,10 @@ package(default_visibility = ["//visibility:public"])
 
 py_library(
     name = "lib",
-    srcs = ["lib.py"],
+    srcs = [
+        "__init__.py",
+        "lib.py",
+    ],
 )
 
 py_library(
@@ -259,6 +263,29 @@ py_library(
         ":register",
         ":window",
         requirement("mistletoe"),
+    ],
+)
+
+py_library(
+    name = "gen_md",
+    srcs = ["gen_md.py"],
+    deps = [
+        ":ip_block",
+        ":md_helpers",
+        ":multi_register",
+        ":reg_block",
+        ":register",
+        ":window",
+    ],
+)
+
+py_library(
+    name = "gen_cfg_md",
+    srcs = ["gen_cfg_md.py"],
+    deps = [
+        ":ip_block",
+        ":md_helpers",
+        ":params",
     ],
 )
 

@@ -9,11 +9,7 @@ package(default_visibility = ["//visibility:public"])
 
 py_library(
     name = "ipgen",
-    srcs = [
-        "__init__.py",
-        "lib.py",
-        "renderer.py",
-    ],
+    srcs = glob(["*.py"]),
     deps = [
         "//util/reggen:gen_rtl",
         "//util/reggen:lib",
