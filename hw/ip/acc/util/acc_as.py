@@ -974,7 +974,7 @@ class Transformer:
             pos += end
 
         # Return if at EOL
-        if pos == len(line):
+        if pos >= len(line):
             return pos
 
         # Spot a line comment ('#'). In that case, eat to EOL and return.
@@ -1129,8 +1129,10 @@ class Transformer:
                 self.macros.append(line_match.group(1))
 
         def perform_replacement(line: str, symbol_table: Dict[str, List[str]]) -> str:
-            # Remove comment (only works single-line comments)
-            line_new = re.sub(r"/\*.*\*/", "", line)
+            # Blank out single-line comments. The length must be preserved:
+            # the caller resumes parsing at an offset into this line.
+            line_new = re.sub(r"/\*.*?\*/", lambda m: " " * len(m.group(0)),
+                              line)
             # Check if the token is a symbol in the symbol table
             for sym in symbol_table:
                 # Replace the token with the value from the most recent definition
