@@ -18,6 +18,7 @@ py_library(
 py_test(
     name = "common_test",
     srcs = ["common_test.py"],
+    imports = ["."],
     deps = [":common"],
 )
 
