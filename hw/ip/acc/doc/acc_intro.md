@@ -290,8 +290,8 @@ Look below for instructions on how to reproduce these benchmarks.
 | Operation | Cycles | Commit | Target | Constant time |
 |-----------|-------:|--------|:-------|---------------|
 | P256 scalar mult | 670089 | 5bcd7d | p256_scalar_mult_test | yes |
-| ECDSA-P256 sign | 704126 | 5bcd7d | run_p256_sign_test | yes |
-| ECDSA-P256 verify | 420220 | 5bcd7d | run_p256_verify_test | no |
+| ECDSA-P256 sign | 704126 | 5bcd7d | p256_ecdsa_sign_test | yes |
+| ECDSA-P256 verify | 420220 | 5bcd7d | p256_ecdsa_verify_test | no |
 | P384 scalar mult | 1632638 | 875b3a | p384_scalar_mult_test | yes |
 | ECDSA-P384 sign | 1697985 | 875b3a | p384_ecdsa_sign_test | yes |
 | ECDSA-P384 verify | 1075092 | 875b3a | p384_ecdsa_verify_test | no |
@@ -316,11 +316,11 @@ To reproduce these benchmarks yourself, checkout the specified commit, then run 
 
 #### Step 1: Build the tests.
 
-To build the tests with Bazel, run `bazel build //sw/acc/crypto/tests:<target_name>`, e.g. `bazel build //sw/acc/crypto/tests:run_p256_verify_test`.
-Then you'll need to find the `.elf` file that Bazel generates; for me this is e.g. `bazel-out/k8-fastbuild-ST-2cc462681f62/bin/sw/acc/crypto/tests/run_p256_verify_test.elf`.
-You can find the path for yours by running:
+To build the tests with Bazel, run `bazel build //sw/acc/crypto/tests:<target_name>`, e.g. `bazel build //sw/acc/crypto/tests:p256_ecdsa_verify_test`.
+Then locate the `.elf` file that Bazel generates, for example `bazel-out/k8-fastbuild-ST-2cc462681f62/bin/sw/acc/crypto/tests/p256_ecdsa_verify_test.elf`.
+The exact path depends on the build configuration and can be queried with:
 ```
-bazel aquery 'outputs(".*.elf", //sw/acc/crypto/tests:run_p256_verify_test)' | grep 'Outputs'
+bazel aquery 'outputs(".*.elf", //sw/acc/crypto/tests:p256_ecdsa_verify_test)' | grep 'Outputs'
 ```
 
 Alternatively, you can build the tests manually with `acc_as.py` and `acc_ld.py`, as described in the [ACC development guide](developing_acc.md#build-acc-software).
@@ -328,7 +328,7 @@ In this case you won't need to dig around for the `.elf` file, but you will need
 
 #### Step 2: Run the simulator.
 
-Once you have the `.elf` file, either from Bazel or from the manual build process, run `hw/ip/dv/accsim/standalone.py --dump-stats - path/to/test.elf` to get a nice printout with the cycle counts plus other statistics.
+Once you have the `.elf` file, either from Bazel or from the manual build process, run `hw/ip/acc/dv/accsim/standalone.py --dump-stats - path/to/test.elf` to get a nice printout with the cycle counts plus other statistics.
 See the [ACC development guide](developing_acc.md#run-the-python-simulator) for more information about using the ACC simulator.
 
 ## SCA methodology
