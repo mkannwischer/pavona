@@ -55,6 +55,7 @@ These package manifests can be found at:
 
 * Bzlmod: `MODULE.bazel` in the root of the repository.
 * APT: `apt-requirements.txt` in the root of the repository.
+* Homebrew: `Brewfile` in the root of the repository.
 
 Some of these manifests have lock files which ensure we're using exactly the same
 versions on different builds. These must be kept up to date with changes to the

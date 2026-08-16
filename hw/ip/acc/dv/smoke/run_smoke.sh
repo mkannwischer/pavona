@@ -14,10 +14,13 @@ fail() {
 set -o pipefail
 set -e
 
-SCRIPT_DIR="$(dirname "$(readlink -e "${BASH_SOURCE[0]}")")"
-ROOT_DIR="$(readlink -e "$SCRIPT_DIR/../../../../..")" || \
+# `readlink -e` is GNU-only, so canonicalize with `cd`/`pwd -P` instead.
+abs_dir() { (cd "$1" >/dev/null && pwd -P); }
+
+SCRIPT_DIR="$(abs_dir "$(dirname "${BASH_SOURCE[0]}")")"
+ROOT_DIR="$(abs_dir "$SCRIPT_DIR/../../../../..")" || \
   fail "Can't find repository root dir"
-UTIL_DIR="$(readlink -e "$ROOT_DIR/util")" || \
+UTIL_DIR="$(abs_dir "$ROOT_DIR/util")" || \
   fail "Can't find repository util dir"
 
 source "$UTIL_DIR/build_consts.sh"

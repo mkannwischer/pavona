@@ -34,16 +34,27 @@ if __name__ == "__main__":
     # Use LLVM libc++ as the C++ standard library, and prevent clang from
     # searching for the host `libstdc++`.
     cxxflags = ["-stdlib=libc++"]
-    ldflags = [
-        "-fuse-ld=lld",
-        "-static-libstdc++",
-        "-stdlib=libc++",
-        # Static C++ runtime, but dynamic host libraries such as libelf.
-        "-Wl,-Bstatic",
-        "-lc++abi",
-        "-Wl,-Bdynamic",
-        "-lzstd",
-    ]
+    if sys.platform == "darwin":
+        # `-Bstatic`/`-Bdynamic` are GNU ld directives that ld64.lld rejects,
+        # and Mach-O has no equivalent way to pick per-library linkage, so link
+        # everything dynamically here.
+        ldflags = [
+            "-fuse-ld=lld",
+            "-stdlib=libc++",
+            "-lc++abi",
+            "-lzstd",
+        ]
+    else:
+        ldflags = [
+            "-fuse-ld=lld",
+            "-static-libstdc++",
+            "-stdlib=libc++",
+            # Static C++ runtime, but dynamic host libraries such as libelf.
+            "-Wl,-Bstatic",
+            "-lc++abi",
+            "-Wl,-Bdynamic",
+            "-lzstd",
+        ]
     if "VERILATOR_AR" in os.environ:
         verilator_ar = os.environ["VERILATOR_AR"]
         verilator_ar_abs = os.path.join(cwd, verilator_ar)

@@ -23,15 +23,32 @@ string_flag(
 # llvm libaries from source. Building llvm from source has a huge impact on
 # build times. Instead, we depend on a pre-built llvm release and instantiate
 # the bindgen toolchain with the prebuilt binaries.
+config_setting(
+    name = "macos",
+    constraint_values = ["@platforms//os:macos"],
+)
+
+config_setting(
+    name = "linux_aarch64",
+    constraint_values = [
+        "@platforms//cpu:aarch64",
+        "@platforms//os:linux",
+    ],
+)
+
 cc_import(
     name = "libclang",
-    shared_library = "@llvm_toolchain_llvm//:lib/libclang.so",
+    shared_library = select({
+        ":macos": "@llvm_toolchain_llvm//:lib/libclang.dylib",
+        "//conditions:default": "@llvm_toolchain_llvm//:lib/libclang.so",
+    }),
 )
 
 cc_import(
     name = "libcxx",
     shared_library = select({
-        "@platforms//cpu:aarch64": "@llvm_toolchain_llvm//:lib/aarch64-unknown-linux-gnu/libc++.so",
+        ":macos": "@llvm_toolchain_llvm//:lib/libc++.dylib",
+        ":linux_aarch64": "@llvm_toolchain_llvm//:lib/aarch64-unknown-linux-gnu/libc++.so",
         "//conditions:default": "@llvm_toolchain_llvm//:lib/x86_64-unknown-linux-gnu/libc++.so",
     }),
 )
