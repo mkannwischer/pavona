@@ -667,24 +667,35 @@ struct OtSignConversionUnsupportedType {
 
 /**
  * This macro converts a given unsigned integer value to its signed counterpart.
+ *
+ * The `_Generic` arms are spelled with the native integer types rather than the
+ * `<stdint.h>` typedefs. The five native unsigned types are always distinct, so
+ * this covers `uint8_t` through `uint64_t` plus `uintptr_t` and `size_t` on
+ * every data model. Spelling them as typedefs would either duplicate an arm
+ * (which is a hard error) or miss one, depending on whether `uint64_t` maps to
+ * `unsigned long` (LP64, e.g. Linux) or `unsigned long long` (e.g. macOS).
  */
-#define OT_SIGNED(value)          \
-  _Generic((value),               \
-      uint8_t: (int8_t)(value),   \
-      uint16_t: (int16_t)(value), \
-      uint32_t: (int32_t)(value), \
-      uint64_t: (int64_t)(value), \
+#define OT_SIGNED(value)                      \
+  _Generic((value),                           \
+      unsigned char: (signed char)(value),    \
+      unsigned short: (short)(value),         \
+      unsigned int: (int)(value),             \
+      unsigned long: (long)(value),           \
+      unsigned long long: (long long)(value), \
       default: (struct OtSignConversionUnsupportedType){.err = 1})
 
 /**
  * This macro converts a given signed integer value to its unsigned counterpart.
+ *
+ * See `OT_SIGNED` for why the arms use native types.
  */
-#define OT_UNSIGNED(value)        \
-  _Generic((value),               \
-      int8_t: (uint8_t)(value),   \
-      int16_t: (uint16_t)(value), \
-      int32_t: (uint32_t)(value), \
-      int64_t: (uint64_t)(value), \
+#define OT_UNSIGNED(value)                    \
+  _Generic((value),                           \
+      signed char: (unsigned char)(value),    \
+      short: (unsigned short)(value),         \
+      int: (unsigned int)(value),             \
+      long: (unsigned long)(value),           \
+      long long: (unsigned long long)(value), \
       default: (struct OtSignConversionUnsupportedType){.err = 1})
 #else  // __cplusplus
 // Templates require "C++" linkage. Even though this block is only reachable

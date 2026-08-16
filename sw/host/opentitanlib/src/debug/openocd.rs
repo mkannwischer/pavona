@@ -94,6 +94,9 @@ impl OpenOcd {
             .stdout(Stdio::piped())
             .stderr(Stdio::piped());
 
+        // `PR_SET_PDEATHSIG` has no equivalent outside Linux; elsewhere OpenOCD
+        // outlives an abnormally terminated parent.
+        #[cfg(target_os = "linux")]
         // SAFETY: prctl is a syscall which is atomic and thus async-signal-safe.
         unsafe {
             cmd.pre_exec(|| {

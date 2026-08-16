@@ -50,7 +50,12 @@ impl SerialPortUart {
 
     /// Open a pseudo port (e.g. a verilator pts device).
     pub fn open_pseudo(port_name: &str, baud: u32) -> Result<Self> {
-        let port = TTYPort::open(&serialport::new(port_name, baud).preserve_dtr_on_open())
+        // A pseudo-terminal has no line rate; `pseudo_baud` below is what paces
+        // the data. On macOS the rate is set with an `IOSSIOSPEED` ioctl that
+        // pseudo-terminals do not implement, and `serialport` only skips it for
+        // a requested rate of zero.
+        let open_baud = if cfg!(target_os = "macos") { 0 } else { baud };
+        let port = TTYPort::open(&serialport::new(port_name, open_baud).preserve_dtr_on_open())
             .map_err(|e| UartError::OpenError(e.to_string()))?;
         let _runtime_guard = crate::util::runtime().enter();
         let port = AsyncFd::new(port)?;

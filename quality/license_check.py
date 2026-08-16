@@ -172,6 +172,7 @@ COMMENT_CHARS = [
     ([".yml", ".yaml"], HASH),  # YAML
     ([".toml"], HASH),  # TOML
     (["-requirements.txt"], HASH),  # Apt and Python requirements files
+    (["Brewfile"], HASH),  # Homebrew requirements file
     (["redirector.conf"], HASH),  # nginx config
     # Documentation
     ([".md", ".html"], []),  # Markdown and HTML (not checked)

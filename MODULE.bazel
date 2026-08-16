@@ -133,6 +133,17 @@ rust.repository_set(
     versions = ["1.90.0"],
 )
 rust.repository_set(
+    name = "rust_host_darwin_aarch64",
+    edition = "2024",
+    exec_triple = "aarch64-apple-darwin",
+    target_compatible_with = [
+        "@platforms//cpu:aarch64",
+        "@platforms//os:macos",
+    ],
+    target_triple = "aarch64-apple-darwin",
+    versions = ["1.90.0"],
+)
+rust.repository_set(
     name = "rust_tock",
     edition = "2021",
     exec_triple = "x86_64-unknown-linux-gnu",
@@ -185,6 +196,7 @@ crate.from_cargo(
     # By default rules_rust will analyze dependencies for all supported target triples, which is very slow.
     # Restrict to ones that we're interested in. See https://github.com/bazelbuild/rules_rust/issues/2876
     supported_platform_triples = [
+        "aarch64-apple-darwin",
         "aarch64-unknown-linux-gnu",
         "x86_64-unknown-linux-gnu",
     ],
@@ -232,6 +244,7 @@ crate.from_cargo(
     cargo_lockfile = "//third_party/mdbook:Cargo.lock",
     manifests = ["//third_party/mdbook:Cargo.toml"],
     supported_platform_triples = [
+        "aarch64-apple-darwin",
         "aarch64-unknown-linux-gnu",
         "x86_64-unknown-linux-gnu",
     ],
@@ -250,20 +263,26 @@ use_repo(crate, "mdbook_index")
 # Rust bindgen toolchain:
 register_toolchains("//third_party/rust:bindgen_toolchain")
 
+# Use the system `make` for rules_foreign_cc builds on macOS.
+register_toolchains("//third_party/foreign_cc:preinstalled_make_toolchain_macos")
+
 # LLVM toolchain used for host and device software.
 llvm = use_extension("@toolchains_llvm//toolchain/extensions:llvm.bzl", "llvm")
 llvm.toolchain(
     name = "llvm_toolchain",
     llvm_versions = {"": "22.1.2"},
     sha256 = {
+        "darwin-aarch64": "7b290ec4529c309b6b952d64a3513595c816dff1c217d54466a586d6e35dcec9",
         "linux-aarch64": "cf2e84d965a95954971cafc71d18c0eb38e723c3ac7276286fd5636df4374b3a",
         "linux-x86_64": "ff32497b6801267ee427bc69cdaeecfb2d19578af8c2a942e864c45215f9a2ac",
     },
     strip_prefix = {
+        "darwin-aarch64": "LLVM-22.1.2-macOS-ARM64",
         "linux-aarch64": "LLVM-22.1.2-Linux-ARM64",
         "linux-x86_64": "LLVM-22.1.2-Linux-X64",
     },
     urls = {
+        "darwin-aarch64": ["https://github.com/llvm/llvm-project/releases/download/llvmorg-22.1.2/LLVM-22.1.2-macOS-ARM64.tar.xz"],
         "linux-aarch64": ["https://github.com/llvm/llvm-project/releases/download/llvmorg-22.1.2/LLVM-22.1.2-Linux-ARM64.tar.xz"],
         "linux-x86_64": ["https://github.com/llvm/llvm-project/releases/download/llvmorg-22.1.2/LLVM-22.1.2-Linux-X64.tar.xz"],
     },
@@ -322,6 +341,7 @@ crate.from_cargo(
     cargo_lockfile = "@elf2tab//:Cargo.lock",
     manifests = ["@elf2tab//:Cargo.toml"],
     supported_platform_triples = [
+        "aarch64-apple-darwin",
         "aarch64-unknown-linux-gnu",
         "x86_64-unknown-linux-gnu",
     ],

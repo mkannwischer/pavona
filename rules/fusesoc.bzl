@@ -100,8 +100,15 @@ def _fusesoc_build_impl(ctx):
         executable = ctx.executable._fusesoc,
         use_default_shell_env = False,
         env = dicts.add(
-            # Verilator build doesn't need nonhermetic environment variables
+            # The Verilator build needs the header/library search paths from
+            # `ENV` to find system libraries such as libelf, but none of the
+            # Vivado variables.
             ENV if ctx.attr.target == "synth" else {
+                k: v
+                for k, v in ENV.items()
+                if k in ("C_INCLUDE_PATH", "CPLUS_INCLUDE_PATH", "LIBRARY_PATH")
+            },
+            {} if ctx.attr.target == "synth" else {
                 # Contains the `execroot`-relative paths for verilator and C/C++
                 # compiler provided by Bazel. `fusesoc_build.py` converts these
                 # into absolute paths once the working directory is known.

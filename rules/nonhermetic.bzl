@@ -5,6 +5,12 @@
 NONHERMETIC_ENV_VARS = [
     "XILINX_VIVADO",
     "XILINXD_LICENSE_FILE",
+    # Where to find system headers and libraries that Bazel does not provide,
+    # such as libelf for the Verilator DPI. Needed on platforms where these do
+    # not live in the compiler's default search paths, e.g. macOS.
+    "C_INCLUDE_PATH",
+    "CPLUS_INCLUDE_PATH",
+    "LIBRARY_PATH",
 ]
 
 # Binarys that Bazel rule may depend on from the PATH.

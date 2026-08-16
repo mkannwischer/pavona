@@ -155,6 +155,17 @@ run --sandbox_explicit_pseudoterminal
 # which would help the cacheability.
 build --incompatible_strict_action_env
 
+# Make Homebrew's prefix visible to Bazel, which strict action env hides.
+common --enable_platform_specific_config
+build:macos --action_env=PATH=/opt/homebrew/opt/bison/bin:/opt/homebrew/opt/flex/bin:/opt/homebrew/bin:/bin:/usr/bin:/usr/local/bin
+build:macos --host_action_env=PATH=/opt/homebrew/opt/bison/bin:/opt/homebrew/opt/flex/bin:/opt/homebrew/bin:/bin:/usr/bin:/usr/local/bin
+build:macos --host_action_env=C_INCLUDE_PATH=/opt/homebrew/include:/opt/homebrew/include/libelf:/opt/homebrew/opt/flex/include
+build:macos --host_action_env=CPLUS_INCLUDE_PATH=/opt/homebrew/include:/opt/homebrew/include/libelf:/opt/homebrew/opt/flex/include
+build:macos --host_action_env=LIBRARY_PATH=/opt/homebrew/lib
+build:macos --repo_env=C_INCLUDE_PATH=/opt/homebrew/include:/opt/homebrew/include/libelf:/opt/homebrew/opt/flex/include
+build:macos --repo_env=CPLUS_INCLUDE_PATH=/opt/homebrew/include:/opt/homebrew/include/libelf:/opt/homebrew/opt/flex/include
+build:macos --repo_env=LIBRARY_PATH=/opt/homebrew/lib
+
 # Bazel remote cache configuration.
 common --remote_cache=https://storage.googleapis.com/pavona-bazel-cache"
 build --remote_upload_local_results=false
