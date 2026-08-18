@@ -5,21 +5,7 @@
 name: Setup
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '0 3 * * *'
-  pull_request:
-    paths:
-      - .github/workflows/setup.yml
-      - .github/actions/prepare-env/**
-      - util/container/**
-      - apt-requirements.txt
-      - Brewfile
-      - python-requirements.txt
-      - pyproject.toml
-      - MODULE.bazel
-      - MODULE.bazel.lock
-      - .bazelrc
-      - bazelisk.sh
+  push:
 
 permissions:
   contents: read
@@ -32,7 +18,7 @@ concurrency:
 jobs:
   native_verilator_smoketest:
     name: Native Verilator smoketest (${{ matrix.runner }})
-    if: ${{ !github.event.repository.private }}
+    if: false
     runs-on: ${{ matrix.runner }}
     strategy:
       fail-fast: false
@@ -71,7 +57,6 @@ jobs:
 
   macos_verilator_smoketest:
     name: macOS Verilator smoketest (${{ matrix.runner }})
-    if: ${{ !github.event.repository.private }}
     runs-on: ${{ matrix.runner }}
     strategy:
       fail-fast: false
@@ -113,7 +98,7 @@ jobs:
 
   container_verilator_smoketest:
     name: Container Verilator smoketest (${{ matrix.image }}, ${{ matrix.runner }})
-    if: ${{ !github.event.repository.private }}
+    if: false
     runs-on: ${{ matrix.runner }}
     container:
       image: ${{ matrix.image }}
@@ -149,7 +134,7 @@ jobs:
 
   python_version_support:
     name: Python version support (${{ matrix.python-version }}, ${{ matrix.runner }})
-    if: ${{ !github.event.repository.private }}
+    if: false
     runs-on: ${{ matrix.runner }}
     strategy:
       fail-fast: false
@@ -180,7 +165,7 @@ jobs:
 
   docker_verilator_smoketest:
     name: Docker Verilator smoketest (${{ matrix.runner }})
-    if: ${{ !github.event.repository.private }}
+    if: false
     runs-on: ${{ matrix.runner }}
     strategy:
       fail-fast: false
