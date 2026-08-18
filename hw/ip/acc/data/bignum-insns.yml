@@ -1328,6 +1328,10 @@
         - wsr == 0x9
       to: [wsr]
       from: [wsr]
+    - test:
+        - wsr == 0xc
+      to: [wsr]
+      from: [wsr]
   encoding:
     scheme: wcsr
     mapping:

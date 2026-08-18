@@ -37,7 +37,9 @@ ISR_REMAPPING = {
     'mod6': ['mod'],
     'mod7': ['mod'],
     'kmac_msg': ['kmac_core'],
+    'kmac_msg1': ['kmac_core'],
     'kmac_digest': ['kmac_core'],
+    'kmac_digest1': ['kmac_core'],
 }
 
 
