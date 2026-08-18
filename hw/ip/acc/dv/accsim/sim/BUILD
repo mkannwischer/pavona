@@ -10,17 +10,20 @@ package(default_visibility = ["//visibility:public"])
 py_library(
     name = "constants",
     srcs = ["constants.py"],
+    imports = [".."],
 )
 
 py_library(
     name = "kmac",
     srcs = ["kmac.py"],
+    imports = [".."],
     deps = [requirement("pycryptodome")],
 )
 
 py_library(
     name = "csr",
     srcs = ["csr.py"],
+    imports = [".."],
     deps = [
         ":flags",
         ":wsr",
@@ -30,6 +33,7 @@ py_library(
 py_library(
     name = "decode",
     srcs = ["decode.py"],
+    imports = [".."],
     deps = [
         ":constants",
         ":insn",
@@ -41,6 +45,7 @@ py_library(
 py_library(
     name = "dmem",
     srcs = ["dmem.py"],
+    imports = [".."],
     deps = [
         ":trace",
         "//hw/ip/acc/util/shared:mem_layout",
@@ -50,11 +55,13 @@ py_library(
 py_library(
     name = "edn_client",
     srcs = ["edn_client.py"],
+    imports = [".."],
 )
 
 py_library(
     name = "ext_regs",
     srcs = ["ext_regs.py"],
+    imports = [".."],
     deps = [
         ":edn_client",
         ":trace",
@@ -68,6 +75,7 @@ py_library(
 py_library(
     name = "flags",
     srcs = ["flags.py"],
+    imports = [".."],
     deps = [
         ":trace",
     ],
@@ -76,6 +84,7 @@ py_library(
 py_library(
     name = "gpr",
     srcs = ["gpr.py"],
+    imports = [".."],
     deps = [
         ":constants",
         ":reg",
@@ -85,6 +94,7 @@ py_library(
 py_library(
     name = "insn",
     srcs = ["insn.py"],
+    imports = [".."],
     deps = [
         ":constants",
         ":flags",
@@ -96,6 +106,7 @@ py_library(
 py_library(
     name = "isa",
     srcs = ["isa.py"],
+    imports = [".."],
     deps = [
         ":state",
         "//hw/ip/acc/util/shared:insn_yaml",
@@ -105,6 +116,7 @@ py_library(
 py_library(
     name = "load_elf",
     srcs = ["load_elf.py"],
+    imports = [".."],
     deps = [
         ":decode",
         ":sim",
@@ -115,6 +127,7 @@ py_library(
 py_library(
     name = "loop",
     srcs = ["loop.py"],
+    imports = [".."],
     deps = [
         ":constants",
         ":trace",
@@ -124,6 +137,7 @@ py_library(
 py_library(
     name = "reg",
     srcs = ["reg.py"],
+    imports = [".."],
     deps = [
         ":trace",
     ],
@@ -132,6 +146,7 @@ py_library(
 py_library(
     name = "sim",
     srcs = ["sim.py"],
+    imports = [".."],
     deps = [
         ":constants",
         ":decode",
@@ -145,6 +160,7 @@ py_library(
 py_library(
     name = "standalonesim",
     srcs = ["standalonesim.py"],
+    imports = [".."],
     deps = [
         ":sim",
     ],
@@ -153,6 +169,7 @@ py_library(
 py_library(
     name = "state",
     srcs = ["state.py"],
+    imports = [".."],
     deps = [
         ":constants",
         ":csr",
@@ -173,6 +190,7 @@ py_library(
 py_library(
     name = "stats",
     srcs = ["stats.py"],
+    imports = [".."],
     deps = [
         ":insn",
         ":isa",
@@ -185,11 +203,13 @@ py_library(
 py_library(
     name = "trace",
     srcs = ["trace.py"],
+    imports = [".."],
 )
 
 py_library(
     name = "wsr",
     srcs = ["wsr.py"],
+    imports = [".."],
     deps = [
         ":ext_regs",
         ":kmac",

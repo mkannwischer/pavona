@@ -10,6 +10,7 @@ package(default_visibility = ["//visibility:public"])
 py_library(
     name = "cryptotest_util",
     srcs = ["cryptotest_util.py"],
+    imports = ["."],
     visibility = ["//visibility:private"],
 )
 
@@ -19,6 +20,7 @@ py_test(
         "cryptotest_util.py",
         "cryptotest_util_test.py",
     ],
+    imports = ["."],
     visibility = ["//visibility:private"],
 )
 
