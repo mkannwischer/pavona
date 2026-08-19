@@ -1495,8 +1495,8 @@ _rej_crypto_sign_signature_internal:
     addi t1, s1, 0
     la t2, mldsa_params
     lw t3, MLDSA_PARAM_K_OFFSET(t2)
-    LOOP t3, 3
-        LOOPI 32, 1
+    loop t3, 3
+        loopi 32, 1
           bn.sid t0, 0(t1++)
         nop
 
@@ -1535,7 +1535,7 @@ _rej_crypto_sign_signature_internal:
     */
     la t2, mldsa_params
     lw t3, MLDSA_PARAM_L_OFFSET(t2)
-    LOOP t3, 46
+    loop t3, 46
         /* Zero the buffer for y[j]. */
         addi  t0, s8, 0
         loopi 32, 1
@@ -1563,7 +1563,7 @@ _rej_crypto_sign_signature_internal:
         jal x1, ntt
         la t2, mldsa_params
         lw t3, MLDSA_PARAM_K_OFFSET(t2)
-        LOOP t3, 15
+        loop t3, 15
             /* Compute A[i][j]. */
             addi a1, s10, 0
             jal  x1, poly_uniform
@@ -1599,7 +1599,7 @@ _rej_crypto_sign_signature_internal:
 
     la t2, mldsa_params
     lw t3, MLDSA_PARAM_K_OFFSET(t2)
-    LOOP t3, 2
+    loop t3, 2
         jal x1, intt
         /* Go to next input polynomial */
         addi a0, a0, 1024
@@ -1611,7 +1611,7 @@ _rej_crypto_sign_signature_internal:
     addi  a1, x0, CRHBYTES
     la t2, mldsa_params
     lw t4, MLDSA_PARAM_POLYW1_PACKEDBYTES_OFFSET(t2)
-    LOOP t3, 1
+    loop t3, 1
         add a1, a1, t4
     slli  t0, a1, 5
     addi  t0, t0, SHAKE256_CFG
@@ -1642,7 +1642,7 @@ _rej_crypto_sign_signature_internal:
 
        Afterwards, the w1[i] value can be discarded, so we do not need to keep
        two w-sized polyvecs in scope at once. */
-    LOOP t3, 19
+    loop t3, 19
         /* Decompose w and store w0 in-place, w1 in tmp. */
         addi   a0, s0, 0
         addi   a1, s4, 0
@@ -1698,14 +1698,14 @@ _sign_pack_ctilde_65:
     /* ML-DSA-65 (K=6, CTILDEBYTES=48). The signature is not aligned, so
        copy via GPRs. */
     bn.sid  t1, 0(t0)
-    LOOPI 8, 4
+    loopi 8, 4
         lw t2, 0(t0)
         sw t2, 0(s3)
         addi t0, t0, 4
         addi s3, s3, 4
     bn.wsrr w8, 0xA
     bn.sid  t1, 0(t0)
-    LOOPI 4, 4
+    loopi 4, 4
         lw t2, 0(t0)
         sw t2, 0(s3)
         addi t0, t0, 4
@@ -1819,7 +1819,7 @@ _rejsmpl_loop:
         sub  t0, a0, s2   /* POLYZ_PACKEDBYTES */
         srli t0, t0, 2
         addi a1, s2, 0
-        LOOP t0, 4
+        loop t0, 4
             lw   t1, 0(a1)
             sw   t1, 0(s9)
             addi a1, a1, 4
@@ -1839,7 +1839,7 @@ _rejsmpl_loop:
     add   t1, t1, t2
     addi  t1, t1, 3
     srli  t1, t1, 2
-    LOOP  t1, 2
+    loop  t1, 2
       sw   x0, 0(a0)
       addi a0, a0, 4
 
@@ -1874,8 +1874,8 @@ _rejsmpl_loop:
     bn.lid t1, 0(t0)
     la t0, mldsa_params
     lw t1, MLDSA_PARAM_K_OFFSET(t0)
-    LOOP t1, 6
-        LOOPI 32, 4
+    loop t1, 6
+        loopi 32, 4
             bn.lid      x0, 0(a0)
             bn.addv.8S  w0, w0, w1
             bn.addvm.8S w0, bn0, w0
@@ -1901,7 +1901,7 @@ _rejsmpl_loop:
      */
     la t0, mldsa_params
     lw t1, MLDSA_PARAM_K_OFFSET(t0)
-    LOOP t1, 85
+    loop t1, 85
         /* If there was a failure, skip to the end of the
            loop body (because of architectural loop rules, we have to complete
            all iterations). */

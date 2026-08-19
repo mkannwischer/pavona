@@ -154,7 +154,7 @@ polyt1_unpack:
  */
 _inner_polyt1_unpack:
     /* Unpack 16 coefficients in one go */
-    LOOPI 2, 18
+    loopi 2, 18
         /* This could also be done by a loop but it causes 64 cycles per
            function call, which is a lot to save 14 instructions */
         .rept 8
@@ -211,7 +211,7 @@ polyz_unpack_17:
     li t3, 3
     li t6, 6
 
-    LOOPI 2, 42
+    loopi 2, 42
         bn.lid  t6, 0(a1++)
         bn.mov  w1, w6
         jal     x1, _inner_polyz_unpack_17
@@ -305,7 +305,7 @@ polyz_unpack_19:
     li t3, 3
     li t6, 6
 
-    LOOPI 4, 22
+    loopi 4, 22
         bn.lid  t6, 0(a1++)
         bn.mov  w1, w6
         jal     x1, _inner_polyz_unpack_19
@@ -479,7 +479,7 @@ poly_challenge:
 
     /* w31 contains all zeros by convention */
     li t0, 31
-    LOOPI 32, 1
+    loopi 32, 1
         bn.sid t0, 0(t1++)
 
     /* Setup WDR */
@@ -515,7 +515,7 @@ poly_challenge:
     li t3, 1
 
     /* Loop TAU times. */
-    LOOP t1, 25
+    loop t1, 25
     /* get address of c->coeffs[i], the current coefficient */
     slli a5, a3, 2 /* i * 4 for byte position */
     add  a5, a5, a0 /* Add the array start address: c->coeffs + i * 4 */
@@ -1298,7 +1298,7 @@ poly_uniform_eta_eta_2:
 
 _rej_eta_sample_loop_eta_2:
         bn.wsrr  shake_reg, 0xA /* KECCAK_DIGEST */
-LOOPI 64, 13
+loopi 64, 13
         beq a1, t0, _rej_eta_sample_loop_continue_eta_2
         /* Process 4 bits */
         bn.and  w9, shake_reg, w14            /* Mask out all other bits */
@@ -1392,7 +1392,7 @@ poly_uniform_eta_eta_4:
 
 _rej_eta_sample_loop_eta_4:
         bn.wsrr  shake_reg, 0xA /* KECCAK_DIGEST */
-LOOPI 64, 13
+loopi 64, 13
         beq a1, t0, _rej_eta_sample_loop_continue_eta_4
         /* Process 4 bits */
         bn.and  w9, shake_reg, w14            /* Mask out all other bits */
@@ -1519,7 +1519,7 @@ poly_use_hint_88:
     bn.addv.8S w12, w12, w8
     bn.wsrw MOD, w12
 
-    LOOPI 32, 11
+    loopi 32, 11
       bn.lid x0, 0(a1++)
       jal    x1, decompose_88
 
@@ -1572,7 +1572,7 @@ poly_use_hint_32:
     bn.addv.8S w12, w12, w8
     bn.wsrw MOD, w12
 
-    LOOPI 32, 11
+    loopi 32, 11
       bn.lid x0, 0(a1++)
       jal    x1, decompose_32
 
@@ -1699,7 +1699,7 @@ polyt1_pack:
     ret
 
 _inner_polyt1_pack:
-    LOOPI 2, 5
+    loopi 2, 5
         bn.lid t1, 0(a1++)
         loopi 8, 2
             bn.rshi w2, w1, w2 >> 10 /* Write one coefficient into the output WDR */
@@ -1799,7 +1799,7 @@ polyeta_pack_eta_2:
  * Does not adhere to calling convention.
  */
 _inner_polyeta_pack_eta_2:
-    LOOPI 10, 18
+    loopi 10, 18
         bn.lid t1, 0(a1++)
         /* w1 <= eta - w1 */
         bn.subvm.8S w1, w3, w1
@@ -1841,7 +1841,7 @@ polyeta_pack_eta_4:
  * Does not adhere to calling convention.
  */
 _inner_polyeta_pack_eta_4:
-    LOOPI 8, 18
+    loopi 8, 18
         bn.lid t1, 0(a1++)
         /* w1 <= eta - w1 */
         bn.subvm.8S w1, w3, w1
@@ -1959,7 +1959,7 @@ polyt0_pack:
     ret
 
 _inner_polyt0_pack:
-    LOOPI 2, 6
+    loopi 2, 6
         bn.lid t1, 0(a1++)
         /* w1 <= eta - w1 */
         bn.subv.8S w1, w3, w1
@@ -2052,7 +2052,7 @@ polyw1_pack_88:
     li t2, 2
     li t4, 4
 
-    LOOPI 2, 13
+    loopi 2, 13
         jal     x1, _inner_polyw1_pack_88
         bn.rshi w4, w2, w4 >> 192
 
@@ -2076,7 +2076,7 @@ polyw1_pack_88:
     ret
 
 _inner_polyw1_pack_88:
-    LOOPI 4, 5
+    loopi 4, 5
         bn.lid t1, 0(a1++)
         loopi 8, 2
             bn.rshi w2, w1, w2 >> 6 /* Write one coefficient into the output WDR */
@@ -2095,13 +2095,13 @@ polyw1_pack_32:
     li t2, 2
     li t4, 4
 
-    LOOPI 4, 2
+    loopi 4, 2
         jal     x1, _inner_polyw1_pack_32
         bn.sid t2, 0(a0++)
     ret
 
 _inner_polyw1_pack_32:
-    LOOPI 8, 5
+    loopi 8, 5
         bn.lid t1, 0(a1++)
         loopi 8, 2
             bn.rshi w2, w1, w2 >> 4 /* Write one coefficient into the output WDR */
@@ -2177,7 +2177,7 @@ polyeta_unpack_eta_2:
  */
 _inner_polyeta_unpack_eta_2:
     /* Unpack 64 coefficients in one go */
-    LOOPI 8, 19
+    loopi 8, 19
         /* This could also be done by a loop but it causes 64 cycles per
            function call, which is a lot to save 14 instructions */
         .rept 8
@@ -2237,7 +2237,7 @@ polyeta_unpack_eta_4:
  */
 _inner_polyeta_unpack_eta_4:
     /* Unpack 64 coefficients in one go */
-    LOOPI 8, 19
+    loopi 8, 19
         /* This could also be done by a loop but it causes 64 cycles per
            function call, which is a lot to save 14 instructions */
         .rept 8
@@ -2284,7 +2284,7 @@ poly_decode_h:
     /* Initialize h[i] to zero */
     add t1, zero, a0
     li t0, 31
-    LOOPI 32, 1
+    loopi 32, 1
         bn.sid t0, 0(t1++)
 
     /* Initialize constants */
@@ -2510,7 +2510,7 @@ polyt0_unpack:
  */
 _inner_polyt0_unpack:
     /* Unpack 16 coefficients in one go */
-    LOOPI 2, 19
+    loopi 2, 19
         /* This could also be done by a loop but it causes 64 cycles per
            function call, which is a lot to save 14 instructions */
         .rept 8
@@ -2598,7 +2598,7 @@ poly_uniform_gamma_1_17:
 
     /* Setup WDR */
     li t2, 2
-    LOOPI 2, 42
+    loopi 2, 42
         bn.wsrr w6, 0xA /* KECCAK_DIGEST */
         bn.mov  w1, w6
         jal     x1, _inner_poly_uniform_gamma_1_17
@@ -2720,7 +2720,7 @@ poly_uniform_gamma_1_19:
     /* Setup WDR */
     li t2, 2
 
-    LOOPI 4, 22
+    loopi 4, 22
         bn.wsrr w6, 0xA /* KECCAK_DIGEST */
         bn.mov  w1, w6
         jal     x1, _inner_poly_uniform_gamma_1_19
@@ -2831,7 +2831,7 @@ poly_decompose_88:
     li t1, 1
     li t2, 2
 
-    LOOPI 32, 4
+    loopi 32, 4
         bn.lid t0, 0(a2++)
         jal x1, decompose_88
         bn.sid t1, 0(a0++)
@@ -2874,7 +2874,7 @@ poly_decompose_32:
     li t1, 1
     li t2, 2
 
-    LOOPI 32, 4
+    loopi 32, 4
         bn.lid t0, 0(a2++)
         jal x1, decompose_32
         bn.sid t1, 0(a0++)
@@ -2917,7 +2917,7 @@ poly_make_hint:
     sub a7, a6, t6 /* q - gamma2 */
 
     /* Loop over every coefficient pair of the input */
-    LOOPI 256, 19
+    loopi 256, 19
         lw t0, 0(a1)
 
         /* Collect the bit corresponding to whether the high part is nonzero in
@@ -3176,7 +3176,7 @@ polyz_pack_19:
     /* Setup WDRs */
     li t1, 1
     li t4, 4
-    LOOPI 4, 25
+    loopi 4, 25
         jal     x1, _inner_polyz_pack_19
         bn.rshi w4, w2, w4 >> 160
 
@@ -3254,7 +3254,7 @@ poly_encode_h:
     li t2, 0
 
     /* Loop through each coefficient and store indices of nonzero ones. */
-    LOOPI N, 13
+    loopi N, 13
         lw   t3, 0(a1)
         addi a1, a1, 4   /* Increment input pointer */
         beq  zero, t3, _skip_store_poly_encode_h
@@ -3319,7 +3319,7 @@ poly_reduce32:
     /* Set up constants for input/state */
     li t3, 2
 
-    LOOPI 32, 7
+    loopi 32, 7
         bn.lid t3, 0(a0++)
 
         /* t = a + (1 << 22) */
@@ -3368,7 +3368,7 @@ poly_power2round:
 
     li t1, 5
 
-    LOOPI 32, 7
+    loopi 32, 7
         /* Load input */
         bn.lid t1, 0(a0++)
 

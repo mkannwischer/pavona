@@ -139,12 +139,12 @@ _ctilde_unpack_65:
     /* ML-DSA-65 (K=6, CTILDEBYTES=48): the signature is not 32-byte aligned,
        so copy using GPRs. Zero-pad the remaining 16B to avoid bignum load
        errors at the later compare. */
-    LOOPI 12, 4
+    loopi 12, 4
         lw t3, 0(t0)
         sw t3, 0(t1)
         addi t0, t0, 4
         addi t1, t1, 4
-    LOOPI 4, 2
+    loopi 4, 2
         sw x0, 0(t1)
         addi t1, t1, 4
 _ctilde_unpack_done:
@@ -161,7 +161,7 @@ _ctilde_unpack_done:
     srli t1, t1, 2
     addi s9, t0, 0   /* walk the sig z-region; ends at the hint */
     la   a0, w1_polyvec
-    LOOP t1, 4
+    loop t1, 4
         lw   t2, 0(s9)
         sw   t2, 0(a0)
         addi s9, s9, 4
@@ -172,7 +172,7 @@ _ctilde_unpack_done:
     la   a0, z_polyvec
     lw   a4, MLDSA_PARAM_K_OFFSET(s11)
     lw   t0, MLDSA_PARAM_L_OFFSET(s11)
-    LOOP t0, 2
+    loop t0, 2
         jal x1, polyz_unpack
         nop
 
@@ -180,7 +180,7 @@ _ctilde_unpack_done:
     la a0, z_polyvec
     la a1, w1_polyvec
     lw   t0, MLDSA_PARAM_L_OFFSET(s11)
-    LOOP t0, 2
+    loop t0, 2
         jal x1, poly_reduce32
         nop
 
@@ -190,7 +190,7 @@ _ctilde_unpack_done:
     li   s2, 0
 
     lw   t0, MLDSA_PARAM_L_OFFSET(s11)
-    LOOP t0, 2
+    loop t0, 2
         jal x1, poly_chknorm
         or  s2, s2, a2
     bne s2, x0, _fail_crypto_sign_verify_internal /* Raise error */
@@ -222,10 +222,10 @@ _ctilde_unpack_done:
 
     lw t0, MLDSA_PARAM_L_OFFSET(s11)
 #ifdef HARDENED
-    LOOP t0, 4
+    loop t0, 4
         la   x11, scratch
 #else
-    LOOP t0, 2
+    loop t0, 2
 #endif
         jal  x1, ntt
         addi a1, a1, -1024
@@ -276,7 +276,7 @@ _ctilde_unpack_done:
 
     /* Compute A * z, computing elements of A on the fly. */
     lw a4, MLDSA_PARAM_K_OFFSET(s11)
-    LOOP a4, 43
+    loop a4, 43
         /* Compute A[i][0]. */
         addi a1, s1, 0
         jal  x1, poly_uniform
@@ -297,7 +297,7 @@ _ctilde_unpack_done:
         addi s0, s0, 1024
         lw t0, MLDSA_PARAM_L_OFFSET(s11)
         addi t0, t0, -1
-        LOOP t0, 14
+        loop t0, 14
             /* Compute A[i][j]. */
             addi a1, s1, 0
             jal  x1, poly_uniform
@@ -322,7 +322,7 @@ _ctilde_unpack_done:
         /* Adjust the matrix nonce to reset the column and increment the row. */
         bn.addi w23, w23, 256
         lw t0, MLDSA_PARAM_L_OFFSET(s11)
-        LOOP t0, 1
+        loop t0, 1
             bn.subi w23, w23, 1
         /* Start the SHAKE128 operation for poly_uniform for A[i+1][j]. */
         csrrw     x0, kmac_cfg, s4
@@ -337,7 +337,7 @@ _ctilde_unpack_done:
     li a1, CRHBYTES
     lw t0, MLDSA_PARAM_POLYW1_PACKEDBYTES_OFFSET(s11)
     lw a4, MLDSA_PARAM_K_OFFSET(s11)
-    LOOP a4, 1
+    loop a4, 1
         add a1, a1, t0
     slli  t0, a1, 5
     addi  t0, t0, SHAKE256_CFG
@@ -372,16 +372,16 @@ _ctilde_unpack_done:
     la     t0, scratch
     la     t1, z_polyvec
     li     t2, 0
-    LOOPI 32, 2
+    loopi 32, 2
         bn.lid t2, 0(t0++)
         bn.sid t2, 0(t1++)
     jal    x1, _inv_transform
 #endif
     lw  a4, MLDSA_PARAM_K_OFFSET(s11)
 #ifdef HARDENED
-    LOOP a4, 49
+    loop a4, 49
 #else
-    LOOP a4, 45
+    loop a4, 45
 #endif
         /* Unpack the next polynomial from t1 and store it in temp buffer. */
         addi a0, s3, 0
@@ -390,7 +390,7 @@ _ctilde_unpack_done:
         addi s6, a1, 0
         /* Shift-left of t1 polynomial. */
         addi t1, s3, 0
-        LOOPI 32, 3
+        loopi 32, 3
             bn.lid    x0, 0(t1)
             bn.shv.8S w0, w0 << D
             bn.sid    x0, 0(t1++)

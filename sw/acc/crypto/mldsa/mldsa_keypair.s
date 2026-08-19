@@ -630,8 +630,8 @@ _t_unmask_loop:
     /* Zero the destination buffer. */
     li t0, 31
     addi t1, s2, 0
-    LOOP s10, 3
-        LOOPI 32, 1
+    loop s10, 3
+        loopi 32, 1
           bn.sid t0, 0(t1++)
         nop
 
@@ -670,7 +670,7 @@ _t_unmask_loop:
              t[i] += A[i][j] * s1j
     */
     lw t0, MLDSA_PARAM_L_OFFSET(s11)
-    LOOP t0, 43
+    loop t0, 43
         bn.wsrw   mod, w16 /* MOD = R | Q */
         /* Sample the next polynomial from s1. */
         addi a0, s5, 0
@@ -698,7 +698,7 @@ _t_unmask_loop:
         addi a0, s0, 0
         addi a2, s0, 0
         jal  x1, ntt
-        LOOP s10, 15
+        loop s10, 15
             /* Compute A[i][j]. */
             addi a1, s1, 0
             jal  x1, poly_uniform
@@ -731,7 +731,7 @@ _t_unmask_loop:
     /* Inverse NTT on t=A*s1 */
     la  a0, t_polyvec
 
-    LOOP s10, 2
+    loop s10, 2
         jal  x1, intt
         addi a0, a0, 1024 /* Go to next input polynomial */
     bn.wsrw 0x0, w16 /* Restore MOD = R | Q */
@@ -745,7 +745,7 @@ _t_unmask_loop:
     lw s6, MLDSA_PARAM_L_OFFSET(s11)
 
     /* This loop samples s2 and adds it to A*s1 (currently in the t buffer). */
-    LOOP s10, 16
+    loop s10, 16
         /* Sample the next polynomial from s2 and store in temp buffer. */
         addi a0, s3, 0
         addi a1, s0, 0
@@ -770,7 +770,7 @@ _t_unmask_loop:
     /* Reset t pointer for power2round loop. */
     la  s1, t_polyvec
 
-    LOOP s10, 9
+    loop s10, 9
         /* Split t polynomial into t0 (tmp buffer) and t1 (t buffer). */
         addi a0, s1, 0
         addi a1, s0, 0
@@ -796,7 +796,7 @@ _t_unmask_loop:
     la  a1, t_polyvec
 
     /* Pack t1 */
-    LOOP s10, 2
+    loop s10, 2
         jal x1, polyt1_pack
         nop
 
