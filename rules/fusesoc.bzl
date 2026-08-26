@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 load("@bazel_skylib//lib:dicts.bzl", "dicts")
-load("@nonhermetic//:env.bzl", "BIN_PATHS", "ENV")
+load("@nonhermetic//:env.bzl", "BIN_PATHS", "ENV", "IS_MACOS", "MACOS_SEARCH_PATHS")
 
 """Rules for running FuseSoC.
 
@@ -84,6 +84,23 @@ def _fusesoc_build_impl(ctx):
     args.add_all(ctx.attr.systems)
     args.add_all(flags)
 
+    if ctx.attr.target == "synth":
+        target_env = ENV
+    else:
+        # Contains the `execroot`-relative paths for verilator and C/C++
+        # compiler provided by Bazel. `fusesoc_build.py` converts these into
+        # absolute paths once the working directory is known.
+        target_env = {
+            "VERILATOR_BINARY": ctx.executable._verilator.path,
+            "VERILATOR_AR": ctx.executable._ar.path,
+            "VERILATOR_CC": ctx.executable._cc.path,
+            "VERILATOR_CXX": ctx.executable._cxx.path,
+            "VERILATOR_LIBCXX": ctx.files._libcxx[0].path,
+            "VERILATOR_INCLUDE": ctx.files._include[0].path,
+        }
+        if IS_MACOS:
+            target_env |= MACOS_SEARCH_PATHS
+
     ctx.actions.run(
         mnemonic = "FuseSoC",
         outputs = outputs,
@@ -100,18 +117,7 @@ def _fusesoc_build_impl(ctx):
         executable = ctx.executable._fusesoc,
         use_default_shell_env = False,
         env = dicts.add(
-            # Verilator build doesn't need nonhermetic environment variables
-            ENV if ctx.attr.target == "synth" else {
-                # Contains the `execroot`-relative paths for verilator and C/C++
-                # compiler provided by Bazel. `fusesoc_build.py` converts these
-                # into absolute paths once the working directory is known.
-                "VERILATOR_BINARY": ctx.executable._verilator.path,
-                "VERILATOR_AR": ctx.executable._ar.path,
-                "VERILATOR_CC": ctx.executable._cc.path,
-                "VERILATOR_CXX": ctx.executable._cxx.path,
-                "VERILATOR_LIBCXX": ctx.files._libcxx[0].path,
-                "VERILATOR_INCLUDE": ctx.files._include[0].path,
-            },
+            target_env,
             {
                 "HOME": home_dir,
                 # Obtain the non-hermetic binary path and append Bazel's default PATH.
