@@ -6,6 +6,7 @@ use std::fmt::LowerHex;
 use std::io::{BufRead, BufReader, Write};
 use std::mem::size_of;
 use std::net::TcpStream;
+#[cfg(target_os = "linux")]
 use std::os::unix::process::CommandExt;
 use std::path::Path;
 use std::process::{Child, Command, Stdio};
@@ -94,6 +95,8 @@ impl OpenOcd {
             .stdout(Stdio::piped())
             .stderr(Stdio::piped());
 
+        // `PR_SET_PDEATHSIG` is Linux-only; elsewhere OpenOCD outlives its parent.
+        #[cfg(target_os = "linux")]
         // SAFETY: prctl is a syscall which is atomic and thus async-signal-safe.
         unsafe {
             cmd.pre_exec(|| {
