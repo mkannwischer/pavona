@@ -158,6 +158,17 @@ run --sandbox_explicit_pseudoterminal
 # which would help the cacheability.
 build --incompatible_strict_action_env
 
+common --enable_platform_specific_config
+build:macos --action_env=PATH=/opt/homebrew/opt/bison/bin:/opt/homebrew/opt/flex/bin:/opt/homebrew/bin:/bin:/usr/bin:/usr/local/bin
+build:macos --host_action_env=PATH=/opt/homebrew/opt/bison/bin:/opt/homebrew/opt/flex/bin:/opt/homebrew/bin:/bin:/usr/bin:/usr/local/bin
+# `<FlexLexer.h>`, used by Verilator's generated lexer, is not in the macOS SDK.
+build:macos --host_action_env=CPLUS_INCLUDE_PATH=/opt/homebrew/opt/flex/include
+
+# FuseSoC builds its own environment, so libelf comes via @nonhermetic.
+common:macos --repo_env=C_INCLUDE_PATH=/opt/homebrew/include:/opt/homebrew/include/libelf
+common:macos --repo_env=CPLUS_INCLUDE_PATH=/opt/homebrew/include:/opt/homebrew/include/libelf
+common:macos --repo_env=LIBRARY_PATH=/opt/homebrew/lib
+
 # Bazel remote cache configuration.
 common --remote_cache=https://storage.googleapis.com/pavona-bazel-cache"
 build --remote_upload_local_results=false
