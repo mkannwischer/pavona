@@ -14,6 +14,10 @@ on:
       vivado_version:
         default: "2024.1"
         type: string
+      nightly:
+        default: false
+        type: boolean
+        description: Run on the prioritized nightly runner group.
 
 jobs:
   check-cache:
@@ -67,7 +71,7 @@ jobs:
   bitstream:
     name: Build bitstream
     runs-on:
-      group: pavona-vivado
+      group: pavona-vivado${{ inputs.nightly && '-nightly' || '' }}
     needs: check-cache
     if: needs.check-cache.outputs.bitstreamStrategy != 'cached'
     timeout-minutes: 240

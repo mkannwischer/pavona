@@ -25,6 +25,7 @@ jobs:
       tag_filters: cw340_test_rom
       timeout_filters: 'long,eternal'
       timeout: 300
+      nightly: true
 
   execute_long_rom_fpga_tests_cw340:
     name: CW340 ROM Long Tests
@@ -39,6 +40,7 @@ jobs:
       tag_filters: "cw340_rom_with_fake_keys,cw340_rom_with_real_keys,-manuf"
       timeout_filters: 'long,eternal'
       timeout: 300
+      nightly: true
 
   execute_long_rom_ext_fpga_tests_cw340:
     name: CW340 ROM_EXT Long Tests
@@ -53,6 +55,7 @@ jobs:
       tag_filters: cw340_rom_ext
       timeout_filters: 'long,eternal'
       timeout: 300
+      nightly: true
 
   execute_long_sival_fpga_tests_cw340:
     name: CW340 SiVal Long Tests
@@ -67,6 +70,7 @@ jobs:
       tag_filters: "cw340_sival,-manuf"
       timeout_filters: 'long,eternal'
       timeout: 300
+      nightly: true
 
   execute_long_sival_rom_ext_fpga_tests_cw340:
     name: CW340 SiVal ROM_EXT Long Tests
@@ -81,6 +85,7 @@ jobs:
       tag_filters: cw340_sival_rom_ext
       timeout_filters: 'long,eternal'
       timeout: 300
+      nightly: true
 
   execute_long_manuf_fpga_tests_cw340:
     name: CW340 Manufacturing Long Tests
@@ -95,6 +100,7 @@ jobs:
       tag_filters: "manuf,-cw310"
       timeout_filters: 'long,eternal'
       timeout: 300
+      nightly: true
 
   execute_long_pqc_fpga_tests_cw340:
     name: CW340 PQCEn=1 Long Tests
@@ -109,6 +115,7 @@ jobs:
       tag_filters: cw340_pqc_test_rom
       timeout_filters: 'long,eternal'
       timeout: 300
+      nightly: true
       extra_bazel_flags: --define=acc_has_pqc=true
 
   verify_fpga_jobs:

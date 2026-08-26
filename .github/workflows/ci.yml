@@ -7,6 +7,11 @@ name: CI
 on:
   pull_request:
   workflow_call:
+    inputs:
+      nightly:
+        default: false
+        type: boolean
+        description: Run on the prioritized nightly runner group.
 
 permissions:
   contents: read
@@ -321,6 +326,7 @@ jobs:
     with:
       top_name: egret
       design_suffix: cw310_hyperdebug
+      nightly: ${{ inputs.nightly || false }}
 
   chip_egret_cw340:
     name: Egret for CW340
@@ -330,6 +336,7 @@ jobs:
     with:
       top_name: egret
       design_suffix: cw340
+      nightly: ${{ inputs.nightly || false }}
 
   chip_egret_cw340_pqc:
     name: Egret for CW340 (PQC)
@@ -339,6 +346,7 @@ jobs:
     with:
       top_name: egret
       design_suffix: cw340_pqc
+      nightly: ${{ inputs.nightly || false }}
 
   # CW310 FPGA jobs
   execute_tests_cw310:

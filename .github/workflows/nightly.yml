@@ -25,6 +25,8 @@ jobs:
       pull-requests: write
     uses: ./.github/workflows/ci.yml
     secrets: inherit
+    with:
+      nightly: true
 
   # Hyper310 nightly FPGA jobs
   execute_nightly_tests_egret_cw310:

@@ -24,6 +24,7 @@ jobs:
       tag_filters: cw310_test_rom
       timeout_filters: 'long,eternal'
       timeout: 300
+      nightly: true
 
   execute_long_rom_fpga_tests_cw310:
     name: CW310 ROM Long Tests
@@ -38,6 +39,7 @@ jobs:
       tag_filters: "cw310_rom_with_fake_keys,cw310_rom_with_real_keys,-manuf"
       timeout_filters: 'long,eternal'
       timeout: 300
+      nightly: true
 
   execute_long_rom_ext_fpga_tests_cw310:
     name: CW310 ROM_EXT Long Tests
@@ -52,6 +54,7 @@ jobs:
       tag_filters: cw310_rom_ext
       timeout_filters: 'long,eternal'
       timeout: 300
+      nightly: true
 
   execute_long_sival_fpga_tests_cw310:
     name: CW310 SiVal Long Tests
@@ -66,6 +69,7 @@ jobs:
       tag_filters: "cw310_sival,-manuf"
       timeout_filters: 'long,eternal'
       timeout: 300
+      nightly: true
 
   execute_long_sival_rom_ext_fpga_tests_cw310:
     name: CW310 SiVal ROM_EXT Long Tests
@@ -80,6 +84,7 @@ jobs:
       tag_filters: cw310_sival_rom_ext
       timeout_filters: 'long,eternal'
       timeout: 300
+      nightly: true
 
   execute_long_manuf_fpga_tests_cw310:
     name: CW310 Manufacturing Long Tests
@@ -94,6 +99,7 @@ jobs:
       tag_filters: "manuf,-cw340"
       timeout_filters: 'long,eternal'
       timeout: 300
+      nightly: true
 
   verify_fpga_jobs:
     name: Verify FPGA jobs
