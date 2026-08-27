@@ -53,7 +53,7 @@ configure_make(
     # See <https://github.com/bazelbuild/rules_foreign_cc/issues/329>.
     args = [
         "-j",
-        "`nproc`",
+        "`getconf _NPROCESSORS_ONLN`",
     ],
     configure_in_place = True,
     configure_options = [
