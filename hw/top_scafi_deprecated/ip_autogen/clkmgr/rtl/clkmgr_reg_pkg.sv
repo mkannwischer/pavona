@@ -24,12 +24,6 @@ package clkmgr_reg_pkg;
     AlertFatalFaultIdx = 1
   } clkmgr_alert_idx_t;
 
-  // Fatal alert classification
-  localparam bit [NumAlerts-1:0] AlertIsFatal = {
-    1'b1, // fatal_fault
-    1'b0 // recov_fault
-  };
-
   ////////////////////////////
   // Typedefs for registers //
   ////////////////////////////

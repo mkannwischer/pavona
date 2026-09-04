@@ -16,21 +16,6 @@ package ascon_reg_pkg;
   // Address widths within the block
   parameter int BlockAw = 8;
 
-  // Number of registers for every interface
-  parameter int NumRegs = 47;
-
-  // Alert indices
-  typedef enum int {
-    AlertRecovCtrlUpdateErrIdx = 0,
-    AlertFatalFaultIdx = 1
-  } ascon_alert_idx_t;
-
-  // Fatal alert classification
-  localparam bit [NumAlerts-1:0] AlertIsFatal = {
-    1'b0, // recov_ctrl_update_err
-    1'b1 // fatal_fault
-  };
-
   ////////////////////////////
   // Typedefs for registers //
   ////////////////////////////
@@ -186,30 +171,18 @@ package ascon_reg_pkg;
     struct packed {
       logic        d;
       logic        de;
-    } wipe;
+    } start;
     struct packed {
       logic        d;
       logic        de;
-    } start;
+    } wipe;
   } ascon_hw2reg_trigger_reg_t;
 
   typedef struct packed {
     struct packed {
       logic        d;
       logic        de;
-    } alert_fatal_fault;
-    struct packed {
-      logic        d;
-      logic        de;
-    } alert_recov_ctrl_update_err;
-    struct packed {
-      logic        d;
-      logic        de;
-    } ascon_error;
-    struct packed {
-      logic        d;
-      logic        de;
-    } wait_edn;
+    } idle;
     struct packed {
       logic        d;
       logic        de;
@@ -217,22 +190,34 @@ package ascon_reg_pkg;
     struct packed {
       logic        d;
       logic        de;
-    } idle;
+    } wait_edn;
+    struct packed {
+      logic        d;
+      logic        de;
+    } ascon_error;
+    struct packed {
+      logic        d;
+      logic        de;
+    } alert_recov_ctrl_update_err;
+    struct packed {
+      logic        d;
+      logic        de;
+    } alert_fatal_fault;
   } ascon_hw2reg_status_reg_t;
 
   typedef struct packed {
     struct packed {
-      logic [1:0]  d;
+      logic        d;
       logic        de;
-    } tag_comparison_valid;
+    } msg_valid;
     struct packed {
       logic        d;
       logic        de;
     } tag_valid;
     struct packed {
-      logic        d;
+      logic [1:0]  d;
       logic        de;
-    } msg_valid;
+    } tag_comparison_valid;
   } ascon_hw2reg_output_valid_reg_t;
 
   typedef struct packed {
@@ -243,11 +228,7 @@ package ascon_reg_pkg;
     struct packed {
       logic        d;
       logic        de;
-    } flag_input_missmatch;
-    struct packed {
-      logic        d;
-      logic        de;
-    } wrong_order;
+    } no_key;
     struct packed {
       logic        d;
       logic        de;
@@ -255,7 +236,11 @@ package ascon_reg_pkg;
     struct packed {
       logic        d;
       logic        de;
-    } no_key;
+    } wrong_order;
+    struct packed {
+      logic        d;
+      logic        de;
+    } flag_input_missmatch;
   } ascon_hw2reg_error_reg_t;
 
   // Register -> HW type

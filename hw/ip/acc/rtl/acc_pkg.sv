@@ -71,6 +71,9 @@ package acc_pkg;
 
   // Toplevel constants ============================================================================
 
+  parameter int AlertFatal = 0;
+  parameter int AlertRecov = 1;
+
   // Register file implementation selection enum.
   typedef enum integer {
     RegFileFF    = 0, // Generic flip-flop based implementation

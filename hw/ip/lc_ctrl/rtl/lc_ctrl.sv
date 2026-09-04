@@ -651,7 +651,7 @@ module lc_ctrl
     prim_alert_sender #(
       .AsyncOn(AlertAsyncOn[k]),
       .SkewCycles(AlertSkewCycles),
-      .IsFatal(AlertIsFatal[k])
+      .IsFatal(1)
     ) u_prim_alert_sender (
       .clk_i,
       .rst_ni,

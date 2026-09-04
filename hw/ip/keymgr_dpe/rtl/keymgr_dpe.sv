@@ -762,7 +762,7 @@ module keymgr_dpe
   prim_alert_sender #(
     .AsyncOn(AlertAsyncOn[1]),
     .SkewCycles(AlertSkewCycles),
-    .IsFatal(AlertIsFatal[1])
+    .IsFatal(1)
   ) u_fault_alert (
     .clk_i,
     .rst_ni,
@@ -780,7 +780,7 @@ module keymgr_dpe
   prim_alert_sender #(
     .AsyncOn(AlertAsyncOn[0]),
     .SkewCycles(AlertSkewCycles),
-    .IsFatal(AlertIsFatal[0])
+    .IsFatal(0)
   ) u_op_err_alert (
     .clk_i,
     .rst_ni,

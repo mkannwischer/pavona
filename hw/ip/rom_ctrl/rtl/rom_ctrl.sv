@@ -503,7 +503,7 @@ module rom_ctrl
     prim_alert_sender #(
       .AsyncOn(AlertAsyncOn[i]),
       .SkewCycles(AlertSkewCycles),
-      .IsFatal(AlertIsFatal[i])
+      .IsFatal(i == AlertFatalIdx)
     ) u_alert_sender (
       .clk_i,
       .rst_ni,

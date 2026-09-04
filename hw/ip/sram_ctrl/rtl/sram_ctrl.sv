@@ -207,7 +207,7 @@ module sram_ctrl
   prim_alert_sender #(
     .AsyncOn(AlertAsyncOn[0]),
     .SkewCycles(AlertSkewCycles),
-    .IsFatal(AlertIsFatal[0])
+    .IsFatal(1)
   ) u_prim_alert_sender_parity (
     .clk_i,
     .rst_ni,

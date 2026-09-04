@@ -97,7 +97,7 @@ module edn
     prim_alert_sender #(
       .AsyncOn(AlertAsyncOn[i]),
       .SkewCycles(AlertSkewCycles),
-      .IsFatal(AlertIsFatal[i])
+      .IsFatal(i)
     ) u_prim_alert_sender (
       .clk_i,
       .rst_ni,

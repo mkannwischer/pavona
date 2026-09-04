@@ -386,7 +386,7 @@ module pwrmgr
     prim_alert_sender #(
       .AsyncOn(AlertAsyncOn[i]),
       .SkewCycles(AlertSkewCycles),
-      .IsFatal(AlertIsFatal[i])
+      .IsFatal(1'b1)
     ) u_prim_alert_sender (
       .clk_i         ( clk_lc        ),
       .rst_ni        ( rst_lc_n      ),

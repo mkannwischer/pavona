@@ -65,11 +65,12 @@ module soc_dbg_ctrl
   assign alert_test[1] = core_reg2hw.alert_test.recov_ctrl_update_err.q &
                          core_reg2hw.alert_test.recov_ctrl_update_err.qe;
 
+  localparam logic [NumAlerts-1:0] IsFatal = {1'b0, 1'b1};
   for (genvar i = 0; i < NumAlerts; i++) begin : gen_alert_tx
     prim_alert_sender #(
       .AsyncOn(AlertAsyncOn[i]),
       .SkewCycles(AlertSkewCycles),
-      .IsFatal(AlertIsFatal[i])
+      .IsFatal(IsFatal[i])
     ) u_prim_alert_sender (
       .clk_i,
       .rst_ni,

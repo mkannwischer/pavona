@@ -158,11 +158,13 @@
     recov_alert
   };
 
+  localparam logic [NumAlerts-1:0] AlertFatal = {1'b1, 1'b0};
+
   for (genvar i = 0; i < NumAlerts; i++) begin : gen_alert_tx
     prim_alert_sender #(
       .AsyncOn(AlertAsyncOn[i]),
       .SkewCycles(AlertSkewCycles),
-      .IsFatal(AlertIsFatal[i])
+      .IsFatal(AlertFatal[i])
     ) u_prim_alert_sender (
       .clk_i,
       .rst_ni,

@@ -900,6 +900,8 @@ module rv_core_ibex
   assign alert_test[3] = reg2hw.alert_test.recov_hw_err.q &
                          reg2hw.alert_test.recov_hw_err.qe;
 
+  localparam bit [NumAlerts-1:0] AlertFatal = '{1'b0, 1'b1, 1'b0, 1'b1};
+
   logic [NumAlerts-1:0] alert_events;
   logic [NumAlerts-1:0] alert_acks;
 
@@ -920,9 +922,9 @@ module rv_core_ibex
 
   for (genvar i = 0; i < NumAlerts; i++) begin : gen_alert_senders
     prim_alert_sender #(
-      .AsyncOn(AlertAsyncOn[i]),
+      .AsyncOn(AlertAsyncOn[0]),
       .SkewCycles(AlertSkewCycles),
-      .IsFatal(AlertIsFatal[i])
+      .IsFatal(AlertFatal[i])
     ) u_alert_sender (
       .clk_i,
       .rst_ni,
