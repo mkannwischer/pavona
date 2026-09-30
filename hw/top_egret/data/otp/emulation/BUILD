@@ -58,6 +58,9 @@ otp_json(
                 # populated when `CREATOR_SW_CFG_RNG_EN` is set to true.
                 "CREATOR_SW_CFG_RET_RAM_RESET_MASK": otp_hex(0x0),
                 "CREATOR_SW_CFG_MANUF_STATE": otp_hex(CONST.MANUF_STATE.PERSONALIZED),
+                # ROM execution is enabled if this item is set to a non-zero
+                # value.
+                "CREATOR_SW_CFG_ROM_EXEC_EN": otp_hex(0xffffffff),
                 # Value to write to the cpuctrl CSR in `rom_init()`.
                 # See:
                 # https://ibex-core.readthedocs.io/en/latest/03_reference/cs_registers.html#cpu-control-register-cpuctrl
