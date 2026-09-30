@@ -109,7 +109,6 @@ static rom_error_t rom_verify(const manifest_t *manifest,
   uint32_t sigverify_spx_en = sigverify_spx_verify_enabled(lc_state);
   const manifest_ext_spx_key_t *ext_spx_key = NULL;
   if (launder32(sigverify_spx_en) != kSigverifySpxDisabledOtp) {
-    const manifest_ext_spx_key_t *ext_spx_key;
     HARDENED_RETURN_IF_ERROR(manifest_ext_get_spx_key(manifest, &ext_spx_key));
     // Look up the SPX key in the manifest to ensure it is authorized for the
     // current lifecycle state in OTP.
