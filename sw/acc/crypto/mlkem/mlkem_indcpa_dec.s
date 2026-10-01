@@ -290,9 +290,9 @@ indcpa_dec:
   /* Whitening. */
   bn.xor w0, w0, w0
   loopi 16, 3
-    bn.lid       x0, 0(x11)
+    bn.ld        w0, 0(x11)
     bn.subvm.16h w0, w31, w0
-    bn.sid       x0, 0(x11++)
+    bn.sd        w0, 0(x11++)
   endloop
 
   /*** Step 6: r = masked_poly_tomsg(m). ***/
