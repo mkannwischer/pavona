@@ -42,7 +42,7 @@
  * @param[in]  x11: pointer to input byte array with POLYT1_PACKEDBYTES bytes
  * @param[out] x10: pointer to output polynomial
  *
- * clobbered registers: x6 to x7, x10 to x11, x28 to x31, w1 to w2, w5 to w6
+ * clobbered registers: x7, x10 to x11, x28 to x31, w1 to w2, w5 to w6
  * clobbered flag groups: FG0
  */
 
@@ -856,7 +856,7 @@ _poly_uniform_recompute_first_bad_index:
  * @param[inout] w14: index, either current index or first bad index if found
  * @param[inout] w15: incrementer, 1 if bad index not found yet otherwise 0
  *
- * clobbered registers: x28, w10, w14 to w15, w21, wref-x31
+ * clobbered registers: x28, w10, w14 to w15, w21
  * clobbered flag groups: FG0
  */
 .type poly_uniform_mask_and_check_vectors, @function
@@ -1435,7 +1435,7 @@ polyeta_pack_eta_2:
  * Do not call from anywhere but polyeta_pack_eta_2.
  * Does not adhere to calling convention.
  *
- * clobbered registers: x11, w1 to w2, wref-x6
+ * clobbered registers: x11, w1 to w2
  * clobbered flag groups: none
  */
 _inner_polyeta_pack_eta_2:
@@ -1481,7 +1481,7 @@ polyeta_pack_eta_4:
  * Do not call from anywhere but polyeta_pack_eta_4.
  * Does not adhere to calling convention.
  *
- * clobbered registers: x11, w1 to w2, wref-x6
+ * clobbered registers: x11, w1 to w2
  * clobbered flag groups: none
  */
 _inner_polyeta_pack_eta_4:
@@ -1633,7 +1633,7 @@ _inner_polyt0_pack:
  * @param[in]  x10: pointer to input polynomial
  * @param[out] w0: Representative of nonzero coefficients.
  *
- * clobbered registers: x5, x10, w0 to w4
+ * clobbered registers: x10, w0 to w4
  * clobbered flag groups: FG0
  */
 .globl poly_nonzero_encode
@@ -2899,7 +2899,7 @@ _skip_store_poly_encode_h:
  * @param[in]  w31: all-zero
  * @param[out] x11: dmem pointer to result
  *
- * clobbered registers: x5 to x7, x10 to x11, x28, w2, w4 to w6
+ * clobbered registers: x6 to x7, x10 to x11, x28, w2, w4 to w6
  * clobbered flag groups: none
  */
 .globl poly_reduce32
@@ -2951,7 +2951,7 @@ poly_reduce32:
  * @param[in]  x12: a1, dmem pointer to output polynomial with coefficients c1
  * @param[in]  w31: all-zero
  *
- * clobbered registers: x5 to x7, x10 to x12, x28, w4 to w7
+ * clobbered registers: x6 to x7, x10 to x12, x28, w4 to w7
  * clobbered flag groups: none
  */
 .globl poly_power2round

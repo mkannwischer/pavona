@@ -42,8 +42,8 @@
  * @param[in]  w31: all-zero register
  *
  * UNPROTECTED
- * clobbered registers: x4 to x13, x18 to x28,
- *                      w0 to w15, w17 to w26, mod, acch, acc
+ * clobbered registers: x2, x4 to x31,
+ *                      w0 to w15, w17 to w30, mod, acch, acc
  * clobbered flag groups: FG0
  *
  * HARDENED

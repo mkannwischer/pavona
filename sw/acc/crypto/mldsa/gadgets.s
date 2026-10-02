@@ -50,7 +50,7 @@
  * @param[in]  x15: share stride, distance between shares of r
  * @param[out] x16: dptr_rb, dmem pointer to Boolean shares of r
  *
- * clobbered registers: x4 to x7, x28 to x30, w0 to w8
+ * clobbered registers: x4, x28 to x30, w0 to w8
  * clobbered flag groups: FG0
  */
 .globl secand
@@ -130,7 +130,7 @@ secand:
  * @param[inout] x15: dptr_r0, dmem pointer to Boolean shares of r0 (advanced by 32)
  * @param[out]   x16: dptr_r1, dmem pointer to Boolean shares of r1
  *
- * clobbered registers: x4 to x7, x10 to x11, x15, x28 to x31, w0 to w10
+ * clobbered registers: x4, x10 to x11, x15, x28 to x31, w0 to w10
  * clobbered flag groups: FG0
  */
 .globl secfulladder
@@ -395,7 +395,7 @@ secadd_immd_d1:
  * @param[in]  w17: lane-0 holds the constant
  * @param[in]  w31: all-zero register
  *
- * clobbered registers: x5 to x7, x10, x15, x28 to x31, w0 to w19
+ * clobbered registers: x6 to x7, x10, x15, x28 to x31, w0 to w19
  * clobbered flag groups: FG0
  */
 .globl secadd_immd_d2
@@ -487,7 +487,7 @@ secadd_immd_d2:
  * @param[in]   x10: dptr_z, in/out ((k+1) * 2 * 32 bytes, bit k = 0 on exit)
  * @param[in]   w31: all-zero register
  *
- * clobbered registers: x5 to x7, x10 to x14, x28 to x31, w4 to w16, w20 to w23
+ * clobbered registers: x6 to x7, x10 to x14, x28 to x31, w4 to w16, w20 to w23
  * clobbered flag groups: FG0
  */
 
@@ -742,7 +742,7 @@ seca2bmodq:
  * @param[in]  w31: all-zero register
  * @param[out] w0:  per-lane b (lane i = 1 iff x_i <= psi)
  *
- * clobbered registers: x5 to x7, x10, x12 to x13, x15, x17, x28 to x31, w0 to w19
+ * clobbered registers: x6 to x7, x10, x12 to x13, x15, x17, x28 to x31, w0 to w19
  * clobbered flag groups: FG0
  */
 .globl secleq

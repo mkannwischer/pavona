@@ -62,7 +62,7 @@
  * @param[out] x15: dmem pointer to Boolean shares of r
  * @param[in]  x16: share stride of r
  *
- * clobbered registers: x4 to x5, w0 to w3, w5 to w8
+ * clobbered registers: x5, w0 to w3, w5 to w8
  * clobbered flag groups: FG0
  */
 
@@ -3432,7 +3432,7 @@ _skip_bit_10:
  *                     of masked_poly_compare_{du, dv}
  * @param[in]     w31: all-zero register
  *
- * clobbered registers: x2, x4 to x6, x11 to x13, x15 to x16,
+ * clobbered registers: x2, x5 to x6, x11 to x13, x15 to x16,
  *                      w0 to w3, w5 to w8
  * clobbered flag groups: FG0
  */

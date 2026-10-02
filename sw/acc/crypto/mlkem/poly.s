@@ -24,7 +24,7 @@
  * @param[out] x11: dmem pointer to the output polynomial
  * @param[in]  w31: all-zero register
  *
- * clobbered registers: x4 to x5, x11, w0 to w1, w3
+ * clobbered registers: x5, x11, w0 to w1, w3
  * clobbered flag groups: FG0
  */
 
