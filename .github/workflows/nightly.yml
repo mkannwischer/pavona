@@ -36,20 +36,22 @@ jobs:
       design_suffix: cw340
 
   # Hyper310 nightly FPGA jobs
-  execute_nightly_tests_egret_cw310:
-    name: Egret CW310 Nightly Tests
-    needs: on-demand
-    if: success() || failure()
-    uses: ./.github/workflows/egret-cw310-nightly.yml
-    secrets: inherit
-    with:
-      bitstream: chip_egret_cw310_hyperdebug
+  # Disabled: all of its jobs select zero tests, because every long test
+  # also declares a CW340 environment and the test orchestrator prefers it.
+  #execute_nightly_tests_egret_cw310:
+  #  name: Egret CW310 Nightly Tests
+  #  needs: on-demand
+  #  if: success() || failure()
+  #  uses: ./.github/workflows/egret-cw310-nightly.yml
+  #  secrets: inherit
+  #  with:
+  #    bitstream: chip_egret_cw310_hyperdebug
 
   # CW340 nightly FPGA jobs
   execute_nightly_tests_egret_cw340:
     name: Egret CW340 Nightly Tests
     needs:
-      - on-demand 
+      - on-demand
       - chip_egret_cw340
     if: success() || failure()
     uses: ./.github/workflows/egret-cw340-nightly.yml
