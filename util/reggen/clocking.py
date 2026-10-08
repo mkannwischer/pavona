@@ -7,7 +7,7 @@ from typing import Dict, List, Optional
 import re
 
 from reggen.lib import check_list, check_bool, check_optional_name
-from basegen.validate import create_validator
+from reggen.validate import create_validator
 from basegen.lib import cast_hjson_values
 
 

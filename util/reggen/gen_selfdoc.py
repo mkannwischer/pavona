@@ -10,7 +10,7 @@ from reggen.access import SWACCESS_PERMITTED, HWACCESS_PERMITTED
 from reggen import validate
 
 from typing import Any, Optional, TextIO
-from basegen.validate import document_schema
+from reggen.validate import document_schema
 import jsonschema2md
 
 

@@ -2,7 +2,7 @@
 # Copyright zeroRISC Inc.
 # Licensed under the Apache License, Version 2.0, see LICENSE for details.
 # SPDX-License-Identifier: Apache-2.0
-from basegen.validate import document_schema
+from topgen.validate import document_schema
 import jsonschema2md
 from pathlib import Path
 

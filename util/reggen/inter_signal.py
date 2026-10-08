@@ -5,7 +5,7 @@
 from typing import Dict, Optional, Union
 
 from reggen.lib import check_int, check_name, check_optional_str, check_str
-from basegen.validate import create_validator
+from reggen.validate import create_validator
 from reggen.params import ReggenParams, Parameter
 
 

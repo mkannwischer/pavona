@@ -12,7 +12,7 @@ from reggen.clocking import Clocking, ClockingItem
 from reggen.field import Field
 from reggen.lib import (check_str, check_name, check_bool,
                         check_list, check_str_list, check_int)
-from basegen.validate import create_validator
+from reggen.validate import create_validator
 from basegen.lib import cast_hjson_values
 from reggen.params import ReggenParams
 from reggen.reg_base import RegBase

@@ -8,7 +8,7 @@ from typing import Dict, List, Optional, Tuple
 from reggen.inter_signal import InterSignal
 from reggen.lib import (check_list, check_str, check_optional_bool,
                         check_optional_str)
-from basegen.validate import create_validator
+from reggen.validate import create_validator
 from basegen.lib import cast_hjson_values
 
 

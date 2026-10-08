@@ -8,7 +8,7 @@ Dashboard project JSON file validation
 import logging as log
 
 from basegen.lib import cast_hjson_values
-from basegen.validate import validate_schema
+from reggen.validate import validate_schema
 import jsonschema.exceptions
 
 

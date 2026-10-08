@@ -23,7 +23,7 @@ from reggen.reg_block import RegBlock
 from reggen.signal import Signal
 from semantic_version import Version
 from basegen.lib import cast_hjson_values
-from basegen.validate import create_validator
+from reggen.validate import create_validator
 
 # Known unique comportable IP names and associated CIP_IDs.
 KNOWN_CIP_IDS = {

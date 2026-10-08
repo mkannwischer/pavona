@@ -7,7 +7,7 @@ from typing import Sequence
 from reggen.access import JsonEnum
 from reggen.bits import Bits
 from reggen.lib import check_name, check_str, check_int, check_bool, check_list
-from basegen.validate import create_validator
+from reggen.validate import create_validator
 from basegen.lib import cast_hjson_values
 from reggen.signal import Signal
 

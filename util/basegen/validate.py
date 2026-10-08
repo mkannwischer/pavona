@@ -8,24 +8,21 @@ from referencing.jsonschema import SchemaRegistry, SchemaResource, DRAFT202012
 from referencing import Resource
 import jsonschema2md
 
+import os
+from pathlib import Path
 from typing import Any, TextIO
-from .lib import REPO_TOP, import_hjson
+from .lib import import_hjson
 
 
-SCHEMA_DIRS = {REPO_TOP / "util" / "basegen" / "schemas",
-               REPO_TOP / "util" / "topgen" / "schemas",
-               REPO_TOP / "util" / "reggen" / "schemas"}
-
-BUILTIN_SCHEMAS = []
-for sd in SCHEMA_DIRS:
-    BUILTIN_SCHEMAS += list(import_hjson(hj) for hj in sd.rglob("*.hjson"))
-BUILTIN_SCHEMAS_REGISTRY = SchemaRegistry().with_resources(
-    (s["$id"], SchemaResource(contents=s, specification=DRAFT202012))
-    for s in BUILTIN_SCHEMAS).crawl()
+def build_registry(*schema_dirs: str | os.PathLike[str]) -> SchemaRegistry:
+    """Build a schema registry from every .hjson under the given directories."""
+    schemas = [import_hjson(hj) for sd in schema_dirs for hj in Path(sd).rglob("*.hjson")]
+    return SchemaRegistry().with_resources(
+        (s["$id"], DRAFT202012.create_resource(s)) for s in schemas).crawl()
 
 
 def _resolve_schema(schema: dict[str, Any] | str | SchemaResource,
-                    registry: SchemaRegistry = BUILTIN_SCHEMAS_REGISTRY) -> dict[str, Any]:
+                    registry: SchemaRegistry) -> dict[str, Any]:
     """Flexibly get the correct schema from a dict, URN string, or SchemaResource. If the schema
     is a string, search the registry for that URN.
     """
@@ -37,15 +34,15 @@ def _resolve_schema(schema: dict[str, Any] | str | SchemaResource,
     return schema
 
 
-def validate_schema(data: dict[str, Any], schema: dict[str, Any] | str | Resource,
-                    registry: SchemaRegistry = BUILTIN_SCHEMAS_REGISTRY) -> None:
+def validate_schema(data: dict[str, Any], schema: dict[str, Any] | str | Resource, *,
+                    registry: SchemaRegistry) -> None:
     """Validate some data against a given schema."""
     schema = _resolve_schema(schema, registry)
     jsonschema.validate(data, schema, registry=registry)
 
 
-def create_validator(schema: dict[str, Any] | str | Resource,
-                     registry: SchemaRegistry = BUILTIN_SCHEMAS_REGISTRY) -> Draft202012Validator:
+def create_validator(schema: dict[str, Any] | str | Resource, *,
+                     registry: SchemaRegistry) -> Draft202012Validator:
     """Create a Validator object for validating schemas (metaschema 2020-12)."""
     schema = _resolve_schema(schema, registry)
     return Draft202012Validator(schema, registry=registry)
@@ -53,8 +50,8 @@ def create_validator(schema: dict[str, Any] | str | Resource,
 
 def document_schema(outfile: TextIO | None,
                     schema: dict[str, Any] | str | Resource,
-                    schema_parser: jsonschema2md.Parser = jsonschema2md.Parser(header_level=2),
-                    registry: SchemaRegistry = BUILTIN_SCHEMAS_REGISTRY) -> str | None:
+                    schema_parser: jsonschema2md.Parser = jsonschema2md.Parser(header_level=2), *,
+                    registry: SchemaRegistry) -> str | None:
     """Document the requirements of a given schema in Markdown formatting.
 
     Output can either be directly written to text or returned as str. Schema documentation may be

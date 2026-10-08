@@ -32,11 +32,7 @@ py_library(
         "__init__.py",
         "lib.py",
     ],
-    data = ["//util/reggen/schemas"],
     imports = [".."],
-    deps = [
-        "//util/basegen",
-    ],
 )
 
 py_library(
@@ -52,6 +48,7 @@ py_library(
         ":bits",
         ":lib",
         ":signal",
+        ":validate",
     ],
 )
 
@@ -70,31 +67,44 @@ py_library(
     deps = [
         ":inter_signal",
         ":lib",
+        ":validate",
     ],
 )
 
 py_library(
     name = "clocking",
     srcs = ["clocking.py"],
-    deps = [":lib"],
+    deps = [
+        ":lib",
+        ":validate",
+    ],
 )
 
 py_library(
     name = "countermeasure",
     srcs = ["countermeasure.py"],
-    deps = [":lib"],
+    deps = [
+        ":lib",
+        ":validate",
+    ],
 )
 
 py_library(
     name = "feature",
     srcs = ["feature.py"],
-    deps = [":lib"],
+    deps = [
+        ":lib",
+        ":validate",
+    ],
 )
 
 py_library(
     name = "enum_entry",
     srcs = ["enum_entry.py"],
-    deps = [":lib"],
+    deps = [
+        ":lib",
+        ":validate",
+    ],
 )
 
 py_library(
@@ -106,6 +116,7 @@ py_library(
         ":enum_entry",
         ":lib",
         ":params",
+        ":validate",
         "//util/design/mubi:prim_mubi",
     ],
 )
@@ -118,6 +129,7 @@ py_library(
         ":bits",
         ":lib",
         ":signal",
+        ":validate",
     ],
 )
 
@@ -132,6 +144,7 @@ py_library(
     deps = [
         ":lib",
         ":params",
+        ":validate",
     ],
 )
 
@@ -151,6 +164,7 @@ py_library(
         ":params",
         ":reg_block",
         ":signal",
+        ":validate",
         requirement("hjson"),
         requirement("semantic_version"),
     ],
@@ -159,7 +173,10 @@ py_library(
 py_library(
     name = "params",
     srcs = ["params.py"],
-    deps = [":lib"],
+    deps = [
+        ":lib",
+        ":validate",
+    ],
 )
 
 py_library(
@@ -202,6 +219,7 @@ py_library(
         ":lib",
         ":params",
         ":reg_base",
+        ":validate",
         "//util/design/mubi:prim_mubi",
     ],
 )
@@ -216,6 +234,7 @@ py_library(
         ":params",
         ":reg_base",
         ":register",
+        ":validate",
     ],
 )
 
@@ -225,6 +244,7 @@ py_library(
     deps = [
         ":bits",
         ":lib",
+        ":validate",
     ],
 )
 
@@ -246,6 +266,7 @@ py_library(
         ":access",
         ":lib",
         ":params",
+        ":validate",
     ],
 )
 
@@ -439,6 +460,13 @@ py_library(
 py_library(
     name = "validate",
     srcs = ["validate.py"],
+    data = ["//util/reggen/schemas"],
+    deps = [
+        "//util/basegen",
+        requirement("jsonschema"),
+        requirement("jsonschema2md"),
+        requirement("referencing"),
+    ],
 )
 
 py_library(

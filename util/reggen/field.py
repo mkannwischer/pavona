@@ -18,7 +18,7 @@ from reggen.lib import (
     check_str_list,
     check_xint,
 )
-from basegen.validate import create_validator
+from reggen.validate import create_validator
 from basegen.lib import cast_hjson_values
 from reggen.params import ReggenParams
 

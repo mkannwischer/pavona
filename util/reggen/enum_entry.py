@@ -5,7 +5,7 @@
 from typing import Dict
 
 from reggen.lib import check_str, check_int
-from basegen.validate import create_validator
+from reggen.validate import create_validator
 from basegen.lib import cast_hjson_values
 
 

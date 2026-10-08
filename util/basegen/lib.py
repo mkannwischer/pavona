@@ -9,9 +9,6 @@ from pathlib import Path
 import re
 
 
-REPO_TOP = Path(__file__).parents[2].resolve()
-
-
 class Name:
     """
     We often need to format names in specific ways; this class does so.

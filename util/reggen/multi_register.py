@@ -2,13 +2,13 @@
 # Licensed under the Apache License, Version 2.0, see LICENSE for details.
 # SPDX-License-Identifier: Apache-2.0
 
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 from reggen.clocking import Clocking
 from reggen.field import Field
 from reggen.lib import check_str, check_name, check_bool
-from basegen.validate import create_validator
-from basegen.lib import REPO_TOP, import_hjson, cast_hjson_values
+from reggen.validate import SCHEMA_REGISTRY, create_validator
+from basegen.lib import cast_hjson_values
 from reggen.params import ReggenParams
 from reggen.reg_base import RegBase
 from reggen.register import Register
@@ -155,8 +155,8 @@ class MultiRegister(RegBase):
         # it that removes any fields that are allowed by MultiRegister but
         # aren't allowed by Register. We'll pass that to the register factory
         # method.
-        reg_schema = REPO_TOP / "util" / "reggen" / "schemas" / "register.hjson"
-        reg_allowed_keys = import_hjson(reg_schema)["properties"].keys()
+        reg_schema: Dict[str, Any] = SCHEMA_REGISTRY["urn:reggen:register"].contents
+        reg_allowed_keys = reg_schema["properties"].keys()
         reg_raw = {
             key: value
             for key, value in raw.items() if key in reg_allowed_keys

@@ -6,7 +6,29 @@ Register JSON validation
 """
 
 import logging as log
-from typing import Dict, List, Tuple, Union
+from pathlib import Path
+from typing import Any, Dict, List, TextIO, Tuple, Union
+
+import jsonschema2md
+from basegen import validate as basegen_validate
+from jsonschema.validators import Draft202012Validator
+from referencing import Resource
+
+SCHEMA_REGISTRY = basegen_validate.build_registry(Path(__file__).parent / "schemas")
+
+
+def create_validator(schema: Dict[str, Any] | str | Resource) -> Draft202012Validator:
+    return basegen_validate.create_validator(schema, registry=SCHEMA_REGISTRY)
+
+
+def validate_schema(data: Dict[str, Any], schema: Dict[str, Any] | str | Resource) -> None:
+    basegen_validate.validate_schema(data, schema, registry=SCHEMA_REGISTRY)
+
+
+def document_schema(outfile: TextIO | None, schema: Dict[str, Any] | str | Resource,
+                    schema_parser: jsonschema2md.Parser) -> str | None:
+    return basegen_validate.document_schema(outfile, schema, schema_parser,
+                                            registry=SCHEMA_REGISTRY)
 
 
 # validating version of int(x, 0)

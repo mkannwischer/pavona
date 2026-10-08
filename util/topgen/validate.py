@@ -6,18 +6,31 @@
 import logging as log
 import re
 from enum import Enum
-from typing import Dict, List, Union
+from pathlib import Path
+from typing import Any, Dict, List, TextIO, Union
+
+import jsonschema2md
+from basegen import validate as basegen_validate
+from referencing import Resource
 
 from basegen.typing import ConfigT
 from reggen.ip_block import IpBlock
 from topgen.resets import Resets, UnmanagedResets
 from topgen.typing import IpBlocksT
 from topgen.lib import find_module, find_modules
-from basegen.validate import create_validator
+
+SCHEMA_REGISTRY = basegen_validate.build_registry(Path(__file__).parent / "schemas")
 
 
-TOPCFG_VALIDATOR = create_validator("urn:topgen:topcfg")
-SEEDCFG_VALIDATOR = create_validator("urn:topgen:seedcfg")
+def document_schema(outfile: TextIO | None, schema: Dict[str, Any] | str | Resource,
+                    schema_parser: jsonschema2md.Parser) -> str | None:
+    return basegen_validate.document_schema(outfile, schema, schema_parser,
+                                            registry=SCHEMA_REGISTRY)
+
+
+TOPCFG_VALIDATOR = basegen_validate.create_validator("urn:topgen:topcfg", registry=SCHEMA_REGISTRY)
+SEEDCFG_VALIDATOR = basegen_validate.create_validator("urn:topgen:seedcfg",
+                                                      registry=SCHEMA_REGISTRY)
 
 
 # Supported PAD types.

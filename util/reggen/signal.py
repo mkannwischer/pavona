@@ -6,7 +6,7 @@ from typing import Dict, Sequence
 
 from reggen.bits import Bits
 from reggen.lib import check_name, check_str, check_int, check_list, check_bool
-from basegen.validate import create_validator
+from reggen.validate import create_validator
 from basegen.lib import cast_hjson_values
 
 

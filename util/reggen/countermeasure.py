@@ -7,7 +7,7 @@ import logging as log
 from typing import Dict, List, Sequence, Tuple
 
 from reggen.lib import check_str, check_list
-from basegen.validate import create_validator
+from reggen.validate import create_validator
 
 # The documentation of assets and cm_types can be found here
 # doc/contributing/hw/comportability/README.md#security-countermeasures
