@@ -119,7 +119,7 @@ While we keep the option to rerun jobs available as a courtesy, as sometimes har
 While our CI environment is designed to replicate a generic Pavona development environment, it is not always possible to match your exact environment.
 If you are unable to reproduce a failure locally, here are some things to check:
 
-- **Missing Packages**: Does your test implicitly rely on packages that are not listed in `apt-requirements.txt`, or `python-requirements.txt`?
+- **Missing Packages**: Does your test implicitly rely on packages that are not listed in `apt-requirements.txt`, or declared in `pyproject.toml`?
   Our CI environment automatically installs packages listed in these files, but is otherwise a bare Ubuntu 24.04 environment.
 - **Environment Variables**: Does your test require specific environment variables to be set that are not specified in the Bazel target?
   `Command not found` errors due to missing entries in `$PATH` are a common failure mode.

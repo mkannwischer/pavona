@@ -95,7 +95,7 @@ runs:
         enable-cache: true
         cache-dependency-glob: |
           ${{ inputs.working-directory }}/pyproject.toml
-          ${{ inputs.working-directory }}/python-requirements.txt
+          ${{ inputs.working-directory }}/uv.lock
 
     - name: Install Python
       shell: bash
@@ -112,7 +112,8 @@ runs:
       shell: bash
       run: |
         source ci/scripts/utils.sh
-        retry 5 2 2 uv pip install -r python-requirements.txt --require-hashes
+        export UV_PROJECT_ENVIRONMENT="$HOME/.local/share/venv"
+        retry 5 2 2 uv sync --frozen
       working-directory: ${{ inputs.working-directory }}
 
     - name: Install Verible

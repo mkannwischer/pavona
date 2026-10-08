@@ -21,15 +21,15 @@ ls
 ```
 which prints something like:
 ```
-BLOCKFILE          apt-requirements.txt  python-requirements.txt
-BUILD.bazel        bazelisk.sh           quality
-CLA                bench                 release
-CONTRIBUTING.md    book.toml             rules
-LICENSE            ci                    signing
-MODULE.bazel       compile_flags.txt     sw
-MODULE.bazel.lock  doc                   third_party
-NOTICE             hw                    toolchain
-README.md          mypy.ini              util
+BLOCKFILE          apt-requirements.txt  quality
+BUILD.bazel        bazelisk.sh           release
+CLA                bench                 rules
+CONTRIBUTING.md    book.toml             signing
+LICENSE            ci                    sw
+MODULE.bazel       compile_flags.txt     third_party
+MODULE.bazel.lock  doc                   toolchain
+NOTICE             hw                    util
+README.md          mypy.ini              uv.lock
 SUMMARY.md         pyproject.toml        yum-requirements.txt
 ```
 

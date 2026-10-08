@@ -6,7 +6,7 @@ package(default_visibility = ["//visibility:public"])
 
 exports_files([
     "MODULE.bazel",
-    "python-requirements.txt",
+    "uv.lock",
     "SUMMARY.md",
     "book.toml",
 ])

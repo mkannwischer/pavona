@@ -14,7 +14,7 @@ on:
       - util/container/**
       - apt-requirements.txt
       - Brewfile
-      - python-requirements.txt
+      - uv.lock
       - pyproject.toml
       - MODULE.bazel
       - MODULE.bazel.lock
@@ -90,9 +90,8 @@ jobs:
         run: brew bundle cleanup --force --file=Brewfile
       - name: Install Python dependencies
         run: |
-          python3 -m venv ~/.local/share/venv
           echo "$HOME/.local/share/venv/bin" >> "$GITHUB_PATH"
-          ~/.local/share/venv/bin/pip install -r python-requirements.txt --require-hashes
+          UV_PROJECT_ENVIRONMENT="$HOME/.local/share/venv" uv sync --frozen
       - name: Build device software
         run: ./bazelisk.sh build //sw/device/examples/hello_world:hello_world_sim_dv
       - name: Run UART smoketest on Verilator

@@ -126,18 +126,18 @@ ls
 ```
 which prints something like:
 ```
-BUILD.bazel        SUMMARY.md               quality
-Brewfile           apt-requirements.txt     release
-CLA-Corporate      bazelisk.sh              rfc
-CLA-Individual     bench                    rules
-CONTRIBUTING.md    book.toml                signing
-CONTRIBUTORS       ci                       sw
-LICENSE            compile_flags.txt        third_party
-MODULE.bazel       doc                      toolchain
-MODULE.bazel.lock  hw                       util
-NOTICE             mypy.ini                 yum-requirements.txt
+BUILD.bazel        SUMMARY.md            release
+Brewfile           apt-requirements.txt  rfc
+CLA-Corporate      bazelisk.sh           rules
+CLA-Individual     bench                 signing
+CONTRIBUTING.md    book.toml             sw
+CONTRIBUTORS       ci                    third_party
+LICENSE            compile_flags.txt     toolchain
+MODULE.bazel       doc                   util
+MODULE.bazel.lock  hw                    uv.lock
+NOTICE             mypy.ini              yum-requirements.txt
 README.md          pyproject.toml
-SECURITY.md        python-requirements.txt
+SECURITY.md        quality
 ```
 
 The additional packages you'll need in order to work with Pavona are listed in a file per platform.

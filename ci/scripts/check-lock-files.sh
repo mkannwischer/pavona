@@ -53,8 +53,5 @@ for toml in "${cargo_manifests[@]}"; do
   fi
 done
 
-# Regenerate python lock file.
-./util/sh/scripts/gen-python-requirements.sh
-if ! git diff --exit-code python-requirements.txt; then
-  fail python-requirements.txt ./util/sh/scripts/gen-python-requirements.txt
-fi
+# Check the Python lock file.
+uv lock --check || fail uv.lock "uv lock"

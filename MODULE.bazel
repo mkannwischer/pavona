@@ -344,7 +344,10 @@ pip = use_extension("@rules_python//python/extensions:pip.bzl", "pip")
 pip.parse(
     hub_name = "ot_python_deps",
     python_version = "3.12",
-    requirements_lock = "//:python-requirements.txt",
+    # rules_python ignores requirements_lock when uv_lock is set, but still
+    # evaluates requirements_files_by_platform() eagerly.
+    requirements_lock = "//:uv.lock",
+    uv_lock = "//:uv.lock",
 )
 use_repo(pip, "ot_python_deps")
 

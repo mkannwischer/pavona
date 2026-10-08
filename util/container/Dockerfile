@@ -145,18 +145,12 @@ RUN mkdir -p /tools \
 USER dev:dev
 
 # Install Python plus packages.
-#
-# Explicitly updating pip and setuptools is required to have these tools
-# properly parse Python-version metadata, which some packages uses to
-# specify that an older version of a package must be used for a certain
-# Python version. If that information is not read, pip installs the latest
-# version, which then fails to run.
-ENV PATH="/home/dev/.local/bin:${PATH}"
-COPY --chown=dev:dev python-requirements.txt /tmp/python-requirements.txt
-RUN python3 -m pip install --user -U pip "setuptools<66.0.0" \
-    && python3 -m pip install --user -r /tmp/python-requirements.txt \
-        --no-warn-script-location \
-    && rm -f /tmp/python-requirements.txt
+ENV PATH="/home/dev/.local/venv/bin:/home/dev/.local/bin:${PATH}"
+COPY --chown=dev:dev pyproject.toml uv.lock .python-version /tmp/project/
+RUN python3 -m pip install --user uv --no-warn-script-location \
+    && cd /tmp/project \
+    && UV_PROJECT_ENVIRONMENT=/home/dev/.local/venv uv sync --frozen --no-install-workspace \
+    && rm -rf /tmp/project
 
 USER root:root
 

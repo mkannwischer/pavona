@@ -29,7 +29,7 @@ DVSim relies on the following third-party Python libraries:
 * **[Premailer](https://pypi.org/project/premailer/)**: to inline a block of CSS into the generated HTML report.
 * **[Tabulate](https://pypi.org/project/tabulate/)**: to pretty-print tabular data when displaying the report on the console.
 
-These dependencies are already listed in `$REPO_TOP/python-requirements.txt`.
+These dependencies are already declared in `$REPO_TOP/pyproject.toml`.
 See [Python Environment Setup](../../doc/getting_started/setup_python.md) for how to install them.
 
 ## Other related documents
