@@ -179,3 +179,28 @@ def import_hjson(file: Path | str, no_casting: bool = False) -> dict[str, Any]:
     if no_casting:
         return raw_hjson  # type: ignore
     return cast_hjson_values(raw_hjson)
+
+
+def bitarray(d: int, width: int) -> str:
+    """Print Systemverilog bit array
+
+    @param d the bit width of the signal
+    @param width max character width of the signal group
+
+    For instance, if width is 4, the max d value in the signal group could be
+    9999. If d is 2, then this function pads 3 spaces at the end of the bit
+    slice.
+
+    "[1:0]   " <- d:=2, width=4
+    "[9999:0]" <- max d-1 value
+
+    If d is 1, it means array slice isn't necessary. So it returns empty spaces
+    """
+
+    if d <= 0:
+        raise ValueError("bitarray: given value {} is smaller than 1".format(d))
+    if d == 1:
+        return " " * (width + 4)  # [x:0] needs 4 more space than char_width
+
+    out = "[{}:0]".format(d - 1)
+    return out + (" " * (width - len(str(d))))

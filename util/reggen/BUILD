@@ -341,6 +341,7 @@ py_library(
         ":multi_register",
         ":reg_base",
         ":register",
+        "//util/basegen",
         requirement("mako"),
     ],
 )

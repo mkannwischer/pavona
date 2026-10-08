@@ -9,8 +9,6 @@
   from reggen import (gen_fpv)
   from reggen.register import Register
 
-  from topgen import lib
-
   lblock = block.name.lower()
 
   # This template shouldn't be instantiated if the device interface
