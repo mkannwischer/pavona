@@ -22,7 +22,6 @@ py_library(
     ],
     imports = [".."],
     deps = [
-        "//util:version_file",
         "//util/basegen",
         "//util/raclgen",
         "//util/reggen:gen_dv",
@@ -36,6 +35,7 @@ py_library(
         "//util/reggen:reg_block",
         "//util/reggen:validate",
         "//util/reggen:window",
+        "//util/version_file",
         requirement("hjson"),
         requirement("mako"),
         requirement("pycryptodome"),

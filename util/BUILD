@@ -41,7 +41,7 @@ py_binary(
 py_binary(
     name = "rom_chip_info",
     srcs = ["rom_chip_info.py"],
-    deps = [":version_file"],
+    deps = ["//util/version_file"],
 )
 
 py_test(
@@ -50,7 +50,8 @@ py_test(
         "rom_chip_info.py",
         "rom_chip_info_test.py",
     ],
-    deps = [":version_file"],
+    imports = ["."],
+    deps = ["//util/version_file"],
 )
 
 py_binary(
@@ -58,7 +59,6 @@ py_binary(
     srcs = ["regtool.py"],
     imports = ["."],
     deps = [
-        ":version_file",
         "//util/reggen:countermeasure",
         "//util/reggen:gen_cfg_md",
         "//util/reggen:gen_cheader",
@@ -76,6 +76,7 @@ py_binary(
         "//util/reggen:lib",
         "//util/reggen:systemrdl_exporter",
         "//util/reggen:version",
+        "//util/version_file",
         requirement("tabulate"),
     ],
 )
@@ -168,12 +169,6 @@ py_binary(
 py_library(
     name = "autogen_banner",
     srcs = ["autogen_banner.py"],
-    imports = ["."],
-)
-
-py_library(
-    name = "version_file",
-    srcs = ["version_file.py"],
     imports = ["."],
 )
 

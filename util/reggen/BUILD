@@ -392,7 +392,7 @@ py_library(
         ":register",
         ":signal",
         ":window",
-        "//util:version_file",
+        "//util/version_file",
     ],
 )
 
