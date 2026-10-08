@@ -107,6 +107,7 @@ extend-select = ["E", "E303", "W391"]
 members = [
   "util/basegen",
   "util/design/mubi",
+  "util/reggen",
   "util/version_file",
   "util/testplantool",
   "util/testplantool/testplanlib",

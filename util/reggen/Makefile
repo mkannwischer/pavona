@@ -16,7 +16,7 @@ $(build-dir):
 # Reggen code that doesn't yet have typing annotations
 mypy-excls := gen_json.py gen_selfdoc.py
 
-py-files := $(filter-out $(mypy-excls),$(wildcard *.py))
+py-files := $(filter-out $(addprefix src/reggen/,$(mypy-excls)),$(wildcard src/reggen/*.py))
 
 $(build-dir)/mypy.stamp: $(py-files) | $(build-dir)
 	mypy --strict --config $(repo-top)/mypy.ini $^

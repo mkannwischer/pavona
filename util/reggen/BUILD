@@ -10,12 +10,17 @@ package(default_visibility = ["//visibility:public"])
 
 py_library(
     name = "reggen",
-    srcs = glob(["**/*.py"]),
-    data = [":tpl_files"],
-    imports = [".."],
+    srcs = glob(["src/reggen/**/*.py"]),
+    data = [
+        ":tpl_files",
+        "//util/reggen/src/reggen/schemas",
+    ],
+    imports = ["src"],
     deps = [
         "//util/basegen",
-        "//util/reggen/systemrdl:udp",
+        "//util/design/mubi:prim_mubi",
+        "//util/reggen/src/reggen/systemrdl:udp",
+        "//util/version_file",
         requirement("hjson"),
         requirement("semantic_version"),
         requirement("mako"),
@@ -29,21 +34,21 @@ py_library(
 py_library(
     name = "lib",
     srcs = [
-        "__init__.py",
-        "lib.py",
+        "src/reggen/__init__.py",
+        "src/reggen/lib.py",
     ],
-    imports = [".."],
+    imports = ["src"],
 )
 
 py_library(
     name = "access",
-    srcs = ["access.py"],
+    srcs = ["src/reggen/access.py"],
     deps = [":lib"],
 )
 
 py_library(
     name = "alert",
-    srcs = ["alert.py"],
+    srcs = ["src/reggen/alert.py"],
     deps = [
         ":bits",
         ":lib",
@@ -54,7 +59,7 @@ py_library(
 
 py_library(
     name = "bits",
-    srcs = ["bits.py"],
+    srcs = ["src/reggen/bits.py"],
     deps = [
         ":lib",
         ":params",
@@ -63,7 +68,7 @@ py_library(
 
 py_library(
     name = "bus_interfaces",
-    srcs = ["bus_interfaces.py"],
+    srcs = ["src/reggen/bus_interfaces.py"],
     deps = [
         ":inter_signal",
         ":lib",
@@ -73,7 +78,7 @@ py_library(
 
 py_library(
     name = "clocking",
-    srcs = ["clocking.py"],
+    srcs = ["src/reggen/clocking.py"],
     deps = [
         ":lib",
         ":validate",
@@ -82,7 +87,7 @@ py_library(
 
 py_library(
     name = "countermeasure",
-    srcs = ["countermeasure.py"],
+    srcs = ["src/reggen/countermeasure.py"],
     deps = [
         ":lib",
         ":validate",
@@ -91,7 +96,7 @@ py_library(
 
 py_library(
     name = "feature",
-    srcs = ["feature.py"],
+    srcs = ["src/reggen/feature.py"],
     deps = [
         ":lib",
         ":validate",
@@ -100,7 +105,7 @@ py_library(
 
 py_library(
     name = "enum_entry",
-    srcs = ["enum_entry.py"],
+    srcs = ["src/reggen/enum_entry.py"],
     deps = [
         ":lib",
         ":validate",
@@ -109,7 +114,7 @@ py_library(
 
 py_library(
     name = "field",
-    srcs = ["field.py"],
+    srcs = ["src/reggen/field.py"],
     deps = [
         ":access",
         ":bits",
@@ -123,7 +128,7 @@ py_library(
 
 py_library(
     name = "interrupt",
-    srcs = ["interrupt.py"],
+    srcs = ["src/reggen/interrupt.py"],
     deps = [
         ":access",
         ":bits",
@@ -135,12 +140,12 @@ py_library(
 
 py_library(
     name = "html_helpers",
-    srcs = ["html_helpers.py"],
+    srcs = ["src/reggen/html_helpers.py"],
 )
 
 py_library(
     name = "inter_signal",
-    srcs = ["inter_signal.py"],
+    srcs = ["src/reggen/inter_signal.py"],
     deps = [
         ":lib",
         ":params",
@@ -150,7 +155,7 @@ py_library(
 
 py_library(
     name = "ip_block",
-    srcs = ["ip_block.py"],
+    srcs = ["src/reggen/ip_block.py"],
     deps = [
         ":alert",
         ":bus_interfaces",
@@ -172,7 +177,7 @@ py_library(
 
 py_library(
     name = "params",
-    srcs = ["params.py"],
+    srcs = ["src/reggen/params.py"],
     deps = [
         ":lib",
         ":validate",
@@ -181,7 +186,7 @@ py_library(
 
 py_library(
     name = "reg_base",
-    srcs = ["reg_base.py"],
+    srcs = ["src/reggen/reg_base.py"],
     deps = [
         ":clocking",
         ":field",
@@ -190,7 +195,7 @@ py_library(
 
 py_library(
     name = "reg_block",
-    srcs = ["reg_block.py"],
+    srcs = ["src/reggen/reg_block.py"],
     deps = [
         ":access",
         ":alert",
@@ -211,7 +216,7 @@ py_library(
 
 py_library(
     name = "register",
-    srcs = ["register.py"],
+    srcs = ["src/reggen/register.py"],
     deps = [
         ":access",
         ":clocking",
@@ -226,7 +231,7 @@ py_library(
 
 py_library(
     name = "multi_register",
-    srcs = ["multi_register.py"],
+    srcs = ["src/reggen/multi_register.py"],
     deps = [
         ":clocking",
         ":field",
@@ -240,7 +245,7 @@ py_library(
 
 py_library(
     name = "signal",
-    srcs = ["signal.py"],
+    srcs = ["src/reggen/signal.py"],
     deps = [
         ":bits",
         ":lib",
@@ -250,7 +255,7 @@ py_library(
 
 py_library(
     name = "memory",
-    srcs = ["memory.py"],
+    srcs = ["src/reggen/memory.py"],
     deps = [
         ":access",
         ":lib",
@@ -261,7 +266,7 @@ py_library(
 
 py_library(
     name = "window",
-    srcs = ["window.py"],
+    srcs = ["src/reggen/window.py"],
     deps = [
         ":access",
         ":lib",
@@ -272,7 +277,7 @@ py_library(
 
 py_library(
     name = "gen_cheader",
-    srcs = ["gen_cheader.py"],
+    srcs = ["src/reggen/gen_cheader.py"],
     deps = [
         ":field",
         ":ip_block",
@@ -286,7 +291,7 @@ py_library(
 
 py_library(
     name = "gen_dv",
-    srcs = ["gen_dv.py"],
+    srcs = ["src/reggen/gen_dv.py"],
     data = [":tpl_files"],
     deps = [
         ":ip_block",
@@ -300,7 +305,7 @@ py_library(
 
 py_library(
     name = "gen_fpv",
-    srcs = ["gen_fpv.py"],
+    srcs = ["src/reggen/gen_fpv.py"],
     data = [":tpl_files"],
     deps = [
         ":ip_block",
@@ -311,7 +316,7 @@ py_library(
 
 py_library(
     name = "gen_html",
-    srcs = ["gen_html.py"],
+    srcs = ["src/reggen/gen_html.py"],
     deps = [
         ":html_helpers",
         ":ip_block",
@@ -325,7 +330,7 @@ py_library(
 
 py_library(
     name = "gen_md",
-    srcs = ["gen_md.py"],
+    srcs = ["src/reggen/gen_md.py"],
     deps = [
         ":ip_block",
         ":md_helpers",
@@ -338,7 +343,7 @@ py_library(
 
 py_library(
     name = "gen_cfg_md",
-    srcs = ["gen_cfg_md.py"],
+    srcs = ["src/reggen/gen_cfg_md.py"],
     deps = [
         ":ip_block",
         ":md_helpers",
@@ -348,13 +353,13 @@ py_library(
 
 py_library(
     name = "gen_json",
-    srcs = ["gen_json.py"],
+    srcs = ["src/reggen/gen_json.py"],
     deps = [requirement("hjson")],
 )
 
 py_library(
     name = "gen_rtl",
-    srcs = ["gen_rtl.py"],
+    srcs = ["src/reggen/gen_rtl.py"],
     data = [":tpl_files"],
     deps = [
         ":ip_block",
@@ -369,7 +374,7 @@ py_library(
 
 py_library(
     name = "gen_rust",
-    srcs = ["gen_rust.py"],
+    srcs = ["src/reggen/gen_rust.py"],
     deps = [
         ":field",
         ":ip_block",
@@ -383,7 +388,7 @@ py_library(
 
 py_library(
     name = "gen_tock",
-    srcs = ["gen_tock.py"],
+    srcs = ["src/reggen/gen_tock.py"],
     deps = [
         ":field",
         ":ip_block",
@@ -398,7 +403,7 @@ py_library(
 
 py_library(
     name = "gen_sec_cm_testplan",
-    srcs = ["gen_sec_cm_testplan.py"],
+    srcs = ["src/reggen/gen_sec_cm_testplan.py"],
     data = [":tpl_files"],
     deps = [
         ":ip_block",
@@ -409,7 +414,7 @@ py_library(
 
 py_library(
     name = "gen_selfdoc",
-    srcs = ["gen_selfdoc.py"],
+    srcs = ["src/reggen/gen_selfdoc.py"],
     deps = [
         ":access",
         ":enum_entry",
@@ -425,7 +430,7 @@ py_library(
 
 py_library(
     name = "exporter",
-    srcs = ["exporter.py"],
+    srcs = ["src/reggen/exporter.py"],
     deps = [
         ":ip_block",
     ],
@@ -433,7 +438,7 @@ py_library(
 
 py_library(
     name = "systemrdl_exporter",
-    srcs = ["systemrdl_exporter.py"],
+    srcs = ["src/reggen/systemrdl_exporter.py"],
     deps = [
         ":access",
         ":exporter",
@@ -443,14 +448,14 @@ py_library(
         ":reg_block",
         ":register",
         ":window",
-        "//util/reggen/systemrdl:udp",
+        "//util/reggen/src/reggen/systemrdl:udp",
         requirement("peakrdl_systemrdl"),
     ],
 )
 
 py_library(
     name = "md_helpers",
-    srcs = ["md_helpers.py"],
+    srcs = ["src/reggen/md_helpers.py"],
     deps = [
         ":signal",
         requirement("tabulate"),
@@ -459,8 +464,8 @@ py_library(
 
 py_library(
     name = "validate",
-    srcs = ["validate.py"],
-    data = ["//util/reggen/schemas"],
+    srcs = ["src/reggen/validate.py"],
+    data = ["//util/reggen/src/reggen/schemas"],
     deps = [
         "//util/basegen",
         requirement("jsonschema"),
@@ -471,7 +476,7 @@ py_library(
 
 py_library(
     name = "version",
-    srcs = ["version.py"],
+    srcs = ["src/reggen/version.py"],
 )
 
 filegroup(
