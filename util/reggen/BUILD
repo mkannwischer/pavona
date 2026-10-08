@@ -266,6 +266,7 @@ py_library(
 py_library(
     name = "gen_dv",
     srcs = ["gen_dv.py"],
+    data = [":tpl_files"],
     deps = [
         ":ip_block",
         ":multi_register",
@@ -279,6 +280,7 @@ py_library(
 py_library(
     name = "gen_fpv",
     srcs = ["gen_fpv.py"],
+    data = [":tpl_files"],
     deps = [
         ":ip_block",
         requirement("mako"),
@@ -332,6 +334,7 @@ py_library(
 py_library(
     name = "gen_rtl",
     srcs = ["gen_rtl.py"],
+    data = [":tpl_files"],
     deps = [
         ":ip_block",
         ":lib",
@@ -374,6 +377,7 @@ py_library(
 py_library(
     name = "gen_sec_cm_testplan",
     srcs = ["gen_sec_cm_testplan.py"],
+    data = [":tpl_files"],
     deps = [
         ":ip_block",
         requirement("hjson"),
