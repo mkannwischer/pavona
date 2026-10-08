@@ -10,14 +10,16 @@ package(default_visibility = ["//visibility:public"])
 py_library(
     name = "basegen",
     srcs = [
-        "__init__.py",
-        "lib.py",
-        "typing.py",
-        "validate.py",
+        "src/basegen/__init__.py",
+        "src/basegen/lib.py",
+        "src/basegen/typing.py",
+        "src/basegen/validate.py",
     ],
-    imports = [".."],
+    imports = ["src"],
     deps = [
+        requirement("hjson"),
         requirement("jsonschema"),
         requirement("jsonschema2md"),
+        requirement("referencing"),
     ],
 )

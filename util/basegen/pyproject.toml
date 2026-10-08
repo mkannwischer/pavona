@@ -1,0 +1,22 @@
+# Copyright zeroRISC Inc.
+# Licensed under the Apache License, Version 2.0, see LICENSE for details.
+# SPDX-License-Identifier: Apache-2.0
+
+[project]
+name = "basegen"
+version = "0.1.0"
+description = "Shared hjson loading, typing and schema validation for the generators."
+requires-python = ">=3.10, <3.15"
+dependencies = [
+  "hjson",
+  "jsonschema",
+  "jsonschema2md",
+  "referencing",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/basegen"]
