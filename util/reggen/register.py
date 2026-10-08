@@ -5,7 +5,7 @@
 from typing import Dict, List, Optional, Tuple
 from dataclasses import dataclass, field
 
-from design.mubi import prim_mubi
+from mubi import prim_mubi
 
 from reggen.access import SWAccess, HWAccess
 from reggen.clocking import Clocking, ClockingItem

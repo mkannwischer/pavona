@@ -5,7 +5,7 @@
 from typing import Any, Dict, List, Optional
 from dataclasses import dataclass
 
-from design.mubi import prim_mubi
+from mubi import prim_mubi
 
 from reggen.access import SWAccess, HWAccess
 from reggen.bits import Bits

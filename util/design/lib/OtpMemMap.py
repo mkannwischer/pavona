@@ -11,7 +11,7 @@ from pathlib import Path
 from typing import Dict, List
 
 from basegen.typing import ConfigT
-from design.mubi.prim_mubi import is_width_valid, mubi_value_as_int
+from mubi.prim_mubi import is_width_valid, mubi_value_as_int
 import hjson
 from tabulate import tabulate
 from topgen.secure_prng import SecurePrngFactory

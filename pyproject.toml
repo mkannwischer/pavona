@@ -106,6 +106,7 @@ extend-select = ["E", "E303", "W391"]
 [tool.uv.workspace]
 members = [
   "util/basegen",
+  "util/design/mubi",
   "util/version_file",
   "util/testplantool",
   "util/testplantool/testplanlib",
