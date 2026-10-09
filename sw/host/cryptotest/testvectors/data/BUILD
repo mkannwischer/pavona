@@ -477,7 +477,7 @@ run_binary(
                 function_name,
                 keylen_with_tmode,
             ),
-            "//sw/host/cryptotest/testvectors/data/schemas:aes_kw_schema.json",
+            "//sw/host/cryptotest/testvectors/data/schemas:aes_kwp_schema.json",
         ],
         outs = [":nist_cavp_aes_{}_{}.json".format(
             function_name.lower(),
@@ -500,7 +500,7 @@ run_binary(
             "--transformation_mode",
             "{}".format(transformation_mode),
             "--schema",
-            "$(location //sw/host/cryptotest/testvectors/data/schemas:aes_kw_schema.json)",
+            "$(location //sw/host/cryptotest/testvectors/data/schemas:aes_kwp_schema.json)",
         ],
         tool = "//sw/host/cryptotest/testvectors/parsers:nist_cavp_aes_kw_parser",
     )
@@ -521,9 +521,33 @@ run_binary(
 ]
 
 run_binary(
+    name = "acvp_aes_kwp_json",
+    srcs = [
+        "//sw/host/cryptotest/testvectors/data/schemas:aes_kwp_schema.json",
+        "@acvp_testvectors//ACVP-AES-KWP-1.0:expectedResults.json",
+        "@acvp_testvectors//ACVP-AES-KWP-1.0:prompt.json",
+    ],
+    outs = [":acvp_aes_kwp.json"],
+    args = [
+        "--src",
+        "$(location @acvp_testvectors//ACVP-AES-KWP-1.0:prompt.json)",
+        "--dst",
+        "$(location :acvp_aes_kwp.json)",
+        "--schema",
+        "$(location //sw/host/cryptotest/testvectors/data/schemas:aes_kwp_schema.json)",
+        "--expected",
+        "$(location @acvp_testvectors//ACVP-AES-KWP-1.0:expectedResults.json)",
+        "--test-type",
+        "kwp",
+        "--skip-unsupported",
+    ],
+    tool = "//sw/host/cryptotest/testvectors/parsers:nist_acvp_aes_kwp_parser",
+)
+
+run_binary(
     name = "wycheproof_aes_kwp_json",
     srcs = [
-        "//sw/host/cryptotest/testvectors/data/schemas:aes_kw_schema.json",
+        "//sw/host/cryptotest/testvectors/data/schemas:aes_kwp_schema.json",
         "@wycheproof//testvectors_v1:aes_kwp_test.json",
     ],
     outs = [":wycheproof_aes_kwp.json"],
@@ -533,7 +557,7 @@ run_binary(
         "--dst",
         "$(location :wycheproof_aes_kwp.json)",
         "--schema",
-        "$(location //sw/host/cryptotest/testvectors/data/schemas:aes_kw_schema.json)",
+        "$(location //sw/host/cryptotest/testvectors/data/schemas:aes_kwp_schema.json)",
     ],
     tool = "//sw/host/cryptotest/testvectors/parsers:wycheproof_aes_kwp_parser",
 )
@@ -686,7 +710,7 @@ run_binary(
             "@nist_cavp_aes_kw_sp_800_38f//:{}.txt".format(
                 function_name,
             ),
-            "//sw/host/cryptotest/testvectors/data/schemas:aes_kw_schema.json",
+            "//sw/host/cryptotest/testvectors/data/schemas:aes_kwp_schema.json",
         ],
         outs = [":nist_cavp_aes_{}_{}.json".format(
             function_name.lower(),
@@ -709,7 +733,7 @@ run_binary(
             "--transformation_mode",
             "{}".format(transformation_mode),
             "--schema",
-            "$(location //sw/host/cryptotest/testvectors/data/schemas:aes_kw_schema.json)",
+            "$(location //sw/host/cryptotest/testvectors/data/schemas:aes_kwp_schema.json)",
         ],
         tool = "//sw/host/cryptotest/testvectors/parsers:nist_cavp_aes_kw_parser",
     )
