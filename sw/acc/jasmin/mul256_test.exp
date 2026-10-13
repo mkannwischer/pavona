@@ -1,0 +1,6 @@
+# Copyright zeroRISC Inc.
+# Licensed under the Apache License, Version 2.0, see LICENSE for details.
+# SPDX-License-Identifier: Apache-2.0
+
+w0 = 0xdad4a618536bfd33565eff3285ab75a559b7199e0622d5eeed40926c40529766
+w1 = 0x1066a8691e3ddfeea0a622d04cfd63b4ea93fcc837b795eb3f2b811bfa6dc7f2

@@ -12,6 +12,7 @@ bazel_dep(name = "platforms", version = "1.0.0")
 bazel_dep(name = "rules_cc", version = "0.2.18")
 bazel_dep(name = "rules_foreign_cc", version = "0.9.0")
 bazel_dep(name = "rules_fuzzing", version = "0.8.0")
+bazel_dep(name = "rules_nixpkgs_core", version = "0.13.0")
 bazel_dep(name = "rules_pkg", version = "1.0.1")
 bazel_dep(name = "rules_python", version = "2.2.0")
 bazel_dep(name = "rules_rust_bindgen", version = "0.59.2")
@@ -375,6 +376,25 @@ use_repo(crate, "elf2tab_index")
 
 tock = use_extension("//third_party/tock:extensions.bzl", "tock")
 use_repo(tock, "elf2tab", "libtock", "tock")
+
+nix_repo = use_extension("@rules_nixpkgs_core//extensions:repository.bzl", "nix_repo")
+nix_repo.github(
+    name = "nixpkgs",
+    commit = "7993f34ee47e28a3d607a525aadc6c94b73be728",
+    org = "NixOS",
+    repo = "nixpkgs",
+    sha256 = "4173edcac00da06c8d72decd0ecbe63528f97ec4596d10491ec488640543862f",
+)
+use_repo(nix_repo, "nixpkgs")
+
+nix_pkg = use_extension("@rules_nixpkgs_core//extensions:package.bzl", "nix_pkg")
+nix_pkg.file(
+    name = "jasmin_acc",
+    attr = "",
+    file = "//third_party/jasmin:jasmin.nix",
+    file_deps = ["//third_party/jasmin:jasmin-acc.patch"],
+)
+use_repo(nix_pkg, "jasmin_acc")
 
 # Repository rules:
 bitstreams_repo = use_repo_rule("//rules:bitstreams.bzl", "bitstreams_repo")

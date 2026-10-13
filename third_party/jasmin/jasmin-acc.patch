@@ -1,0 +1,11 @@
+--- a/compiler/src/pp_otbn.ml
++++ b/compiler/src/pp_otbn.ml
+@@ -141,7 +141,7 @@
+     let pp_args = indirect_args pp in
+     let name =
+       Format.sprintf "%s%s"
+-        (pp.pp_aop_name |> String.lowercase)
++        (pp.pp_aop_name |> String.lowercase_ascii)
+         (pp_mnemonic_ext pp.pp_aop_ext)
+     in
+     let args = List.filter_map (fun (_, a) -> pp_asm_arg a) pp_args in

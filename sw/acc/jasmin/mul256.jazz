@@ -1,0 +1,46 @@
+/* Copyright zeroRISC Inc. */
+/* Licensed under the Apache License, Version 2.0, see LICENSE for details. */
+/* SPDX-License-Identifier: Apache-2.0 */
+
+/* 256x256-bit multiply: w1:w0 = w0 * w1. */
+
+export
+fn mul256(reg u256 x y) -> reg u256, reg u256 {
+  reg u256 acc lo hi;
+  reg bool mf lf zf;
+
+  mf, lf, zf, lo = #set0_256();
+  hi = lo;
+
+  /* limbs 0 & 1 */
+  acc = #BN_MULQACC_Z(x, 0, y, 0, 0);
+
+  /* limbs 1 & 2 */
+  acc = #BN_MULQACC(x, 1, y, 0, acc, 64);
+  mf, lf, zf, lo, acc = #BN_MULQACC_SO_L(mf, lf, zf, lo, x, 0, y, 1, acc, 64);
+
+  /* limbs 2 & 3 */
+  acc = #BN_MULQACC(x, 2, y, 0, acc, 0);
+  acc = #BN_MULQACC(x, 1, y, 1, acc, 0);
+  acc = #BN_MULQACC(x, 0, y, 2, acc, 0);
+
+  /* limbs 3 & 4 */
+  acc = #BN_MULQACC(x, 3, y, 0, acc, 64);
+  acc = #BN_MULQACC(x, 2, y, 1, acc, 64);
+  acc = #BN_MULQACC(x, 1, y, 2, acc, 64);
+  mf, lf, zf, lo, acc = #BN_MULQACC_SO_U(mf, lf, zf, lo, x, 0, y, 3, acc, 64);
+
+  /* limbs 4 & 5 */
+  acc = #BN_MULQACC(x, 3, y, 1, acc, 0);
+  acc = #BN_MULQACC(x, 2, y, 2, acc, 0);
+  acc = #BN_MULQACC(x, 1, y, 3, acc, 0);
+
+  /* limbs 5 & 6 */
+  acc = #BN_MULQACC(x, 3, y, 2, acc, 64);
+  mf, lf, zf, hi, acc = #BN_MULQACC_SO_L(mf, lf, zf, hi, x, 2, y, 3, acc, 64);
+
+  /* limbs 6 & 7 */
+  mf, lf, zf, hi, acc = #BN_MULQACC_SO_U(mf, lf, zf, hi, x, 3, y, 3, acc, 0);
+
+  return lo, hi;
+}
