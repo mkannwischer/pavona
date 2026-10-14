@@ -19,7 +19,7 @@ def jasmin_library(name, src, **kwargs):
         name = name + "_asm",
         srcs = [src],
         outs = [name + "_asm.s"],
-        cmd = "$(execpath @jasmin_acc//:bin/jasminc) -arch otbn $(location {}) -o $@".format(src),
+        cmd = "$(execpath @jasmin_acc//:bin/jasminc) -arch otbn -system linux $(location {}) -o $@".format(src),
         tools = ["@jasmin_acc//:bin/jasminc"],
         tags = kwargs.get("tags"),
     )

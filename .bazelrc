@@ -158,6 +158,8 @@ run --sandbox_explicit_pseudoterminal
 # which would help the cacheability.
 build --incompatible_strict_action_env
 
+# Keep the `PATH` below out of repository rules (e.g., `nix-build` lookup); default in Bazel 9.
+common --incompatible_repo_env_ignores_action_env
 common --enable_platform_specific_config
 build:macos --action_env=PATH=/opt/homebrew/opt/bison/bin:/opt/homebrew/opt/flex/bin:/opt/homebrew/bin:/bin:/usr/bin:/usr/local/bin
 build:macos --host_action_env=PATH=/opt/homebrew/opt/bison/bin:/opt/homebrew/opt/flex/bin:/opt/homebrew/bin:/bin:/usr/bin:/usr/local/bin
