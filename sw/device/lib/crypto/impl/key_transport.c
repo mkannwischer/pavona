@@ -236,12 +236,14 @@ otcrypto_status_t otcrypto_key_wrap(const otcrypto_blinded_key_t *key_to_wrap,
 otcrypto_status_t otcrypto_key_unwrap(otcrypto_const_word32_buf_t wrapped_key,
                                       const otcrypto_blinded_key_t *key_kek,
                                       hardened_bool_t *success,
-                                      otcrypto_blinded_key_t *unwrapped_key) {
+                                      otcrypto_blinded_key_t *unwrapped_key,
+                                      otcrypto_word32_buf_t work) {
   *success = kHardenedBoolFalse;
 
   if (wrapped_key.data == NULL || key_kek == NULL || key_kek->keyblob == NULL ||
       success == NULL || unwrapped_key == NULL ||
-      unwrapped_key->keyblob == NULL) {
+      unwrapped_key->keyblob == NULL || work.data == NULL ||
+      work.len < wrapped_key.len) {
     return OTCRYPTO_BAD_ARGS;
   }
 
@@ -259,7 +261,7 @@ otcrypto_status_t otcrypto_key_unwrap(otcrypto_const_word32_buf_t wrapped_key,
   }
 
   // Unwrap the key.
-  uint32_t plaintext[wrapped_key.len];
+  uint32_t *plaintext = work.data;
   size_t plaintext_len;
   HARDENED_TRY(aes_kwp_unwrap(kek, wrapped_key.data,
                               wrapped_key.len * sizeof(uint32_t), success,
