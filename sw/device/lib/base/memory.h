@@ -209,7 +209,7 @@ OT_NONNULL
 void *OT_PREFIX_IF_NOT_RV32(memset)(void *dest, int value, size_t len);
 
 /**
- * Set a region of memory to a particular byte value and prevents the compiler
+ * Set a region of memory to a particular byte value and prevent the compiler
  * from optimizing it away. The purpose is to make sensitive information from
  * a buffer inaccessible.
  *
