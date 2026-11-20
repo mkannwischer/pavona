@@ -398,6 +398,7 @@ status_t aes_gcm_update_encrypted_data(aes_gcm_context_t *ctx, size_t input_len,
                                        uint8_t *output) {
   // If the length is 0, we have nothing to do.
   if (input_len == 0) {
+    *output_len = 0;
     return OTCRYPTO_OK;
   }
 
@@ -539,7 +540,9 @@ status_t aes_gcm_decrypt(const aes_key_t key, const size_t iv_len,
   if (*success != kHardenedBoolTrue) {
     // Zero the whole plaintext so that the caller does not use unauthenticated
     // data.
-    memset_explicit(plaintext_base, 0, ciphertext_len);
+    if (ciphertext_len > 0) {
+      memset_explicit(plaintext_base, 0, ciphertext_len);
+    }
     return result;
   }
   HARDENED_CHECK_EQ(*success, kHardenedBoolTrue);
